@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
 /* ═══════════════════════════════════════════
-   AI CALL with retry
+   AI CALL with retry & Friendly Error
    ═══════════════════════════════════════════ */
 
 async function callAI(system, messages, maxTokens = 600, retries = 2) {
@@ -79,7 +79,27 @@ const SENTENCE_BANK = {
     { word: "今天", pinyin: "jīntiān", meaning: "today", hint: "Say what you do today", example: "今天是星期一。(Jīntiān shì xīngqī yī.) Today is Monday." },
     { word: "很", pinyin: "hěn", meaning: "very", hint: "Describe something", example: "中文很有意思。(Zhōngwén hěn yǒu yìsi.) Chinese is very interesting." },
     { word: "在", pinyin: "zài", meaning: "at/in", hint: "Say where something is", example: "我在图书馆。(Wǒ zài túshūguǎn.) I am at the library." },
-    { word: "买", pinyin: "mǎi", meaning: "to buy", hint: "Say what you buy", example: "我想买一本书。(Wǒ xiǎng mǎi yī běn shū.) I want to buy a book." }
+    { word: "买", pinyin: "mǎi", meaning: "to buy", hint: "Say what you buy", example: "我想买一本书。(Wǒ xiǎng mǎi yī běn shū.) I want to buy a book." },
+    { word: "看", pinyin: "kàn", meaning: "to look/watch", hint: "Say what you watch", example: "我看电影。(Wǒ kàn diànyǐng.)" },
+    { word: "喝", pinyin: "hē", meaning: "to drink", hint: "Say what you drink", example: "我想喝水。(Wǒ xiǎng hē shuǐ.)" },
+    { word: "叫", pinyin: "jiào", meaning: "to be called", hint: "Introduce your name", example: "我叫大卫。(Wǒ jiào Dàwèi.)" },
+    { word: "高兴", pinyin: "gāoxìng", meaning: "happy", hint: "Say you are happy", example: "我今天很高兴。(Wǒ jīntiān hěn gāoxìng.)" },
+    { word: "认识", pinyin: "rènshi", meaning: "to know someone", hint: "Say nice to meet you", example: "很高兴认识你。(Hěn gāoxìng rènshi nǐ.)" },
+    { word: "医生", pinyin: "yīshēng", meaning: "doctor", hint: "Talk about a doctor", example: "他是医生。(Tā shì yīshēng.)" },
+    { word: "医院", pinyin: "yīyuàn", meaning: "hospital", hint: "Say you go to the hospital", example: "我去医院。(Wǒ qù yīyuàn.)" },
+    { word: "商店", pinyin: "shāngdiàn", meaning: "store", hint: "Say you go to the store", example: "他在商店买东西。(Tā zài shāngdiàn mǎi dōngxi.)" },
+    { word: "东西", pinyin: "dōngxi", meaning: "things", hint: "Say you buy things", example: "我要买东西。(Wǒ yào mǎi dōngxi.)" },
+    { word: "苹果", pinyin: "píngguǒ", meaning: "apple", hint: "Talk about an apple", example: "我喜欢吃苹果。(Wǒ xǐhuan chī píngguǒ.)" },
+    { word: "多少", pinyin: "duōshao", meaning: "how many/much", hint: "Ask a price", example: "这个多少钱？(Zhège duōshao qián?)" },
+    { word: "钱", pinyin: "qián", meaning: "money", hint: "Talk about money", example: "我没有钱。(Wǒ méiyǒu qián.)" },
+    { word: "时候", pinyin: "shíhou", meaning: "time/moment", hint: "Ask when", example: "你什么时候去？(Nǐ shénme shíhou qù?)" },
+    { word: "明天", pinyin: "míngtiān", meaning: "tomorrow", hint: "Talk about tomorrow", example: "明天是星期二。(Míngtiān shì xīngqī èr.)" },
+    { word: "昨天", pinyin: "zuótiān", meaning: "yesterday", hint: "Talk about yesterday", example: "昨天我去了北京。(Zuótiān wǒ qùle Běijīng.)" },
+    { word: "天气", pinyin: "tiānqì", meaning: "weather", hint: "Describe weather", example: "今天天气很好。(Jīntiān tiānqì hěn hǎo.)" },
+    { word: "热", pinyin: "rè", meaning: "hot", hint: "Say it is hot", example: "今天很热。(Jīntiān hěn rè.)" },
+    { word: "冷", pinyin: "lěng", meaning: "cold", hint: "Say it is cold", example: "昨天很冷。(Zuótiān hěn lěng.)" },
+    { word: "漂亮", pinyin: "piàoliang", meaning: "beautiful", hint: "Describe someone/something", example: "这件衣服很漂亮。(Zhè jiàn yīfu hěn piàoliang.)" },
+    { word: "知道", pinyin: "zhīdào", meaning: "to know", hint: "Say you know/don't know", example: "我不知道。(Wǒ bù zhīdào.)" }
   ],
   "4-6": [
     { word: "虽然……但是……", pinyin: "suīrán...dànshì...", meaning: "although...but...", hint: "Express a contrast", example: "虽然今天很冷，但是我还是出去跑步了。(Suīrán jīntiān hěn lěng, dànshì wǒ háishì chūqù pǎobù le.) Although it's cold today, I still went out running." },
@@ -146,7 +166,7 @@ const PRONUNCIATION_BANK = {
   ]
 };
 
-const MANUAL_DATA = { /* Keeping it compact as requested, content is same */
+const MANUAL_DATA = { 
   "1-3": { vocab: [ { title: "想 vs 要", desc: "想 = wish, 要 = strong intent/demand.", example: "我想喝茶 vs 我要喝茶" } ], grammar: [ { title: "一般疑问句：吗", desc: "Add 吗 for yes/no question.", example: "你是学生吗？" } ], pinyin: [ { title: "三声变调", desc: "Two 3rd tones -> 2nd + 3rd.", example: "你好 (ní hǎo)" } ] }
 };
 
@@ -216,7 +236,6 @@ function useSpeech(){
   const start=useCallback(cb=>{if(!SRC){alert("Use Chrome for voice.");return;}const x=new SRC();x.lang="zh-CN";x.interimResults=false;x.continuous=false;x.onresult=e=>{cb(e.results[0][0].transcript);sL(false);};x.onerror=()=>sL(false);x.onend=()=>sL(false);r.current=x;x.start();sL(true);},[]);
   const stop=useCallback(()=>{r.current?.stop();sL(false);},[]);
   const speak=useCallback((t, slow = false)=>{
-    // The magical Regex that kills emojis from being read aloud
     const c=clean(t).replace(/\(.*?\)/g,"").replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}]/gu, "");
     const sy=window.speechSynthesis;
     sy.cancel();
@@ -323,7 +342,7 @@ function DrillView({type,hskLevel,onBack,onChangeHSK, mode, onChangeMode}){
         :<><div style={{fontSize:26,fontWeight:700,color:"#1a1a1a",marginBottom:8,lineHeight:1.5}}>{q.sentence}</div>{(mode==="HPE"||mode==="HP")&&<div style={{fontSize:15,color,marginBottom:4}}>{q.pinyin}</div>}{(mode==="HPE"||mode==="HE")&&<div style={{fontSize:14,color:"#999"}}>{q.translation}</div>}
           <div style={{display:"flex",gap:8}}>
             <button onClick={()=>speaking?stopSpeaking():speak(q.sentence)} style={{marginTop:14,background:bg,border:`1px solid ${color}30`,borderRadius:20,padding:"8px 18px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:13,color,fontFamily:"inherit"}}><svg width="13" height="13" viewBox="0 0 24 24" fill={color}><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>{speaking?"Stop":"Listen"}</button>
-            <button onClick={()=>speak(q.sentence, true)} style={{marginTop:14,background:"#fff",border:`1px solid ${color}30`,borderRadius:20,padding:"8px 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:14,color,fontFamily:"inherit"}}>🐢 慢速</button>
+            <button onClick={()=>speak(q.sentence, true)} style={{marginTop:14,background:"#fff",border:`1px solid ${color}30`,borderRadius:20,padding:"8px 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:13,color,fontFamily:"inherit"}}>慢速</button>
           </div></>}
       </div>
       {feedback&&<div ref={fbRef}>
@@ -384,7 +403,7 @@ function ChatView({module,hskLevel,onBack,onChangeHSK,showVoice=true, mode, onCh
               <div style={{padding:"12px 16px",background:isUser?(module.color||"#4A90D9"):"#fff",color:isUser?"#fff":"#1a1a1a",borderRadius:isUser?"18px 18px 4px 18px":"18px 18px 18px 4px",fontSize:15,lineHeight:1.7,whiteSpace:"pre-wrap",boxShadow:isUser?"none":"0 1px 3px rgba(0,0,0,0.04)",border:isUser?"none":"1px solid #f0efe8"}}>{parsed.ui}</div>
               {!isUser&&showVoice&&<div style={{display:"flex",gap:10,opacity:0.6,alignSelf:"flex-start",marginLeft:4}}>
                 <button onClick={()=>speaking?stopSpeaking():speak(parsed.ttsText)} style={{background:"none",border:"none",cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:4}}><svg width="14" height="14" viewBox="0 0 24 24" fill={speaking?(module.color||"#E8A838"):"#888"}><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg><span style={{fontSize:12,color:"#666"}}>{speaking?"Stop":"Play"}</span></button>
-                <button onClick={()=>speak(parsed.ttsText, true)} style={{background:"none",border:"none",cursor:"pointer",padding:0,fontSize:14}}>🐢</button>
+                <button onClick={()=>speak(parsed.ttsText, true)} style={{background:"none",border:"none",cursor:"pointer",padding:"2px 8px",borderRadius:10,fontSize:11,color:"#666",fontWeight:600}}>慢速</button>
               </div>}
             </div>
           </div>
@@ -475,7 +494,7 @@ function StudyManual({hskLevel, onChangeHSK, onBack}) {
 
 function MenuItem({item, onClick, hovered, onHover, badge}){
   return <div onClick={onClick} onMouseEnter={()=>onHover(item.id)} onMouseLeave={()=>onHover(null)}
-    style={{background:"#fff",borderRadius:18,padding:"26px 24px",cursor:"pointer",border:`1.5px solid ${hovered===item.id?item.color+"60":"#f0efe8"}`,transition:"all 0.3s",transform:hovered===item.id?"translateY(-3px)":"none",boxShadow:hovered===item.id?`0 10px 28px ${item.color}15`:"0 1px 3px rgba(0,0,0,0.03)"}}>
+    style={{background:"#fff",borderRadius:18,padding:"26px 24px",cursor:"pointer",border:`1px solid ${hovered===item.id?item.color+"60":"#f0efe8"}`,transition:"all 0.3s",transform:hovered===item.id?"translateY(-3px)":"none",boxShadow:hovered===item.id?`0 10px 28px ${item.color}15`:"0 1px 3px rgba(0,0,0,0.03)"}}>
     <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:12}}>
       <div style={{width:56,height:56,borderRadius:16,background:item.bg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0,transition:"transform 0.2s",transform:hovered===item.id?"scale(1.06)":"none"}}>{item.icon}</div>
       <div style={{flex:1,minWidth:0}}>

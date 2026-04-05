@@ -394,8 +394,7 @@ function useSpeech(){
 /* ═══════════════════════════════════════════
    LAYOUT WRAPPER
    ═══════════════════════════════════════════ */
-// 修改为更宽的默认容器，方便两列布局展示
-function PageWrap({children, maxWidth = 860}){
+function PageWrap({children, maxWidth = 580}){
   return <div style={{padding:"0 20px",maxWidth,margin:"0 auto",width:"100%"}}>{children}</div>;
 }
 
@@ -598,7 +597,6 @@ function StudyManual({hskLevel, onChangeHSK, onBack}) {
       <PageWrap maxWidth={800}>
         <div style={{padding:"32px 0 80px"}}>
           
-          {/* 新增：系统化大纲头部 */}
           <div style={{background: "#fff", borderRadius: 20, padding: "24px 28px", marginBottom: 32, border: "1px solid #f0efe8", display: "flex", gap: 20, alignItems: "center", boxShadow: "0 4px 12px rgba(0,0,0,0.02)"}}>
             <div style={{fontSize: 48}}>{lv?.emoji}</div>
             <div>
@@ -623,7 +621,6 @@ function StudyManual({hskLevel, onChangeHSK, onBack}) {
               return (
                 <div key={i} style={{background:"#fff",borderRadius:16,border:`1.5px solid ${isOpen?"#D4413A40":"#f0efe8"}`,overflow:"hidden",boxShadow:isOpen?"0 6px 16px rgba(212,65,58,0.08)":"0 1px 3px rgba(0,0,0,0.02)",transition:"all 0.3s"}}>
                   <button onClick={()=>setOpenCard(isOpen?null:i)} style={{width:"100%",padding:"20px 24px",border:"none",background:"transparent",display:"flex",alignItems:"center",cursor:"pointer"}}>
-                    {/* 新增：系统化章节编号 */}
                     <span style={{fontSize: 24, fontWeight: 800, color: isOpen?"#D4413A":"#eee", marginRight: 16, transition: "0.3s", fontStyle: "italic"}}>
                       {idxStr}
                     </span>
@@ -678,7 +675,7 @@ function buildFreeModule(hsk){return{id:"free",title:"自由对话",titleEn:"Fre
 function buildWritingChat(mode,hsk){const c={paragraph:{title:"段落写作",titleEn:"Paragraphs",icon:"📝",color:"#E8A838",bg:"#FFF8ED",system:"Chinese writing coach. Review paragraphs, give feedback. No markdown.",greeting:hsk==="1-3"?"汉字: 我们来练习写段落。请写3-4个句子：我的一天\n拼音: Wǒmen lái liànxí xiě duànluò. Qǐng xiě 3-4 gè jùzi: Wǒ de yī tiān\n英文: Let's practice paragraph writing. Write 3-4 sentences: My day":hsk==="4-6"?"汉字: 我们来练习写段落。请写4-5个句子：我最喜欢的城市\n拼音: Wǒmen lái liànxí xiě duànluò. Qǐng xiě 4-5 gè jùzi: Wǒ zuì xǐhuan de chéngshì\n英文: Let's practice paragraph writing. Write 4-5 sentences: My favorite city":"汉字: 我们来练习写段落。请写5-6个句子：网络社交对人际关系的影响\n拼音: Wǒmen lái liànxí xiě duànluò. Qǐng xiě 5-6 gè jùzi: Wǎngluò shèjiāo duì rénjì guānxi de yǐngxiǎng\n英文: Let's practice paragraph writing. Write 5-6 sentences: The impact of social networking on relationships"},essay:{title:"短文写作",titleEn:"Essays",icon:"📄",color:"#7B6CF6",bg:"#F3F0FF",system:"Chinese essay coach. Score /100, detailed feedback. No markdown.",greeting:hsk==="1-3"?"汉字: 我们来练习写短文。请写5-6个句子：我的家人\n拼音: Wǒmen lái liànxí xiě duǎnwén. Qǐng xiě 5-6 gè jùzi: Wǒ de jiārén\n英文: Let's practice essay writing. Write 5-6 sentences: My family":hsk==="4-6"?"汉字: 我们来练习写短文。请写8-10个句子：一次难忘的旅行\n拼音: Wǒmen lái liànxí xiě duǎnwén. Qǐng xiě 8-10 gè jùzi: Yí cì nánwàng de lǚxíng\n英文: Let's practice essay writing. Write 8-10 sentences: An unforgettable trip":"汉字: 我们来练习写短文。请写150字：传统文化在现代社会中的角色\n拼音: Wǒmen lái liànxí xiě duǎnwén. Qǐng xiě 150 zì: Chuántǒng wénhuà zài xiàndài shèhuì zhōng de juésè\n英文: Let's practice essay writing. Write 150 characters: The role of traditional culture in modern society"}};return c[mode];}
 
 /* ═══════════════════════════════════════════
-   PAGES COMPONENTS (使用两列网格布局)
+   PAGES COMPONENTS (恢复单列居中，仅 SceneList 两列)
    ═══════════════════════════════════════════ */
 
 function HSKSelect({onSelect}) {
@@ -688,31 +685,32 @@ function HSKSelect({onSelect}) {
   </div></PageWrap>
 }
 
+// 主菜单恢复单列，宽度变窄 (maxWidth={580})
 function MainMenu({hskLevel, onChangeHSK, onNav, onOpenAbout}) {
   const [hovered, setHovered] = useState(null);
   return <div style={{minHeight:"100vh", background:"#FAFAF7"}}>
     <TopBar title="SpeakWise 主菜单" hskLevel={hskLevel} onChangeHSK={onChangeHSK} onBack={null} />
-    <PageWrap maxWidth={860}>
+    <PageWrap maxWidth={580}>
       <div style={{padding: "40px 0"}}>
-        <div className="menu-grid">
+        <div style={{display: "flex", flexDirection: "column", gap: 16}}>
           <MenuItem item={{id:"oral", title:"口语训练", titleEn:"Speaking", icon:"🗣️", color:"#4A90D9", bg:"#EEF4FB", desc:"场景模拟与发音评测"}} onClick={()=>onNav("oral")} hovered={hovered} onHover={setHovered} />
           <MenuItem item={{id:"written", title:"写作辅导", titleEn:"Writing", icon:"✍️", color:"#E8A838", bg:"#FFF8ED", desc:"AI 批改段落与短文"}} onClick={()=>onNav("written")} hovered={hovered} onHover={setHovered} />
           <MenuItem item={{id:"manual", title:"学习手册", titleEn:"Study Manual", icon:"📚", color:"#D4413A", bg:"#FDF0EF", desc:"核心语法与词汇系统复习"}} onClick={()=>onNav("manual")} hovered={hovered} onHover={setHovered} />
         </div>
-        {/* 取消大按钮，改为底部小字链接 */}
         <div onClick={onOpenAbout} className="footer-link">关于 SpeakWise 项目</div>
       </div>
     </PageWrap>
   </div>
 }
 
+// 口语菜单恢复单列，宽度变窄 (maxWidth={580})
 function OralMenu({hskLevel, onChangeHSK, onBack, onNav}) {
   const [hovered, setHovered] = useState(null);
   return <div style={{minHeight:"100vh", background:"#FAFAF7"}}>
      <TopBar title="口语训练" subtitle="Speaking Training" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} />
-     <PageWrap maxWidth={860}>
+     <PageWrap maxWidth={580}>
        <div style={{padding: "40px 0"}}>
-         <div className="menu-grid">
+         <div style={{display: "flex", flexDirection: "column", gap: 16}}>
            <MenuItem item={{id:"scenes", title:"场景模拟", titleEn:"Roleplay Scenes", icon:"🎭", color:"#9B59B6", bg:"#F5F0FA", desc:"在真实场景中扮演角色对话"}} onClick={()=>onNav("scenes")} hovered={hovered} onHover={setHovered} />
            <MenuItem item={{id:"assess", title:"发音测评", titleEn:"Pronunciation", icon:"🎙️", color:"#7B6CF6", bg:"#F3F0FF", desc:"跟读句子，AI 打分纠音"}} onClick={()=>onNav("assess")} hovered={hovered} onHover={setHovered} />
            <MenuItem item={{id:"free", title:"自由对话", titleEn:"Free Chat", icon:"💬", color:"#2DAA6E", bg:"#EDFAF3", desc:"和 AI 教练随便聊聊"}} onClick={()=>onNav("free")} hovered={hovered} onHover={setHovered} />
@@ -722,6 +720,7 @@ function OralMenu({hskLevel, onChangeHSK, onBack, onNav}) {
   </div>
 }
 
+// 场景菜单：保持两列网格，宽度放宽 (maxWidth={860})
 function SceneList({hskLevel, onChangeHSK, onBack, onSelect, mode, onChangeMode}) {
   const [hovered, setHovered] = useState(null);
   return <div style={{minHeight:"100vh", background:"#FAFAF7"}}>
@@ -736,13 +735,14 @@ function SceneList({hskLevel, onChangeHSK, onBack, onSelect, mode, onChangeMode}
   </div>
 }
 
+// 写作菜单恢复单列，宽度变窄 (maxWidth={580})
 function WrittenMenu({hskLevel, onChangeHSK, onBack, onSelect}) {
   const [hovered, setHovered] = useState(null);
   return <div style={{minHeight:"100vh", background:"#FAFAF7"}}>
      <TopBar title="写作辅导" subtitle="Writing Coach" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} />
-     <PageWrap maxWidth={860}>
+     <PageWrap maxWidth={580}>
        <div style={{padding: "40px 0"}}>
-         <div className="menu-grid">
+         <div style={{display: "flex", flexDirection: "column", gap: 16}}>
            <MenuItem item={{id:"sentence", title:"造句练习", titleEn:"Sentence Building", icon:"✏️", color:"#4A90D9", bg:"#EEF4FB", desc:"使用指定词汇写句子，AI 批改"}} onClick={()=>onSelect({id:"sentence"})} hovered={hovered} onHover={setHovered} />
            <MenuItem item={{id:"paragraph", title:"段落写作", titleEn:"Paragraphs", icon:"📝", color:"#E8A838", bg:"#FFF8ED", desc:"写几个连贯的句子"}} onClick={()=>onSelect({id:"paragraph"})} hovered={hovered} onHover={setHovered} />
            <MenuItem item={{id:"essay", title:"短文写作", titleEn:"Essays", icon:"📄", color:"#7B6CF6", bg:"#F3F0FF", desc:"写一篇完整的短文，打分并反馈"}} onClick={()=>onSelect({id:"essay"})} hovered={hovered} onHover={setHovered} />
@@ -776,7 +776,6 @@ export default function App() {
     const savedMode = localStorage.getItem("viewMode");
     if (savedMode) setViewMode(savedMode);
 
-    // 开屏检测：如果没有浏览过关于弹窗，就主动显示
     const seenAbout = localStorage.getItem("aboutSeen");
     if (!seenAbout) setShowAbout(true);
 
@@ -813,7 +812,7 @@ export default function App() {
         * { box-sizing: border-box; margin: 0 }
         body { font-family: 'Noto Sans SC', sans-serif }
         
-        /* 新增：响应式两列网格布局，专门用于优化 PC 端屏幕显示 */
+        /* 只有 SceneList 使用这个类，保证它在宽屏下是两列 */
         .menu-grid {
           display: grid;
           grid-template-columns: 1fr;

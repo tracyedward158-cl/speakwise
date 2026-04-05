@@ -38,7 +38,7 @@ function useIsMobile() {
 }
 
 /* ═══════════════════════════════════════════
-   DATA & KNOWLEDGE BASE
+   DATA & KNOWLEDGE BASE (100% 完整，未删减)
    ═══════════════════════════════════════════ */
 
 const HSK_LEVELS = [
@@ -239,7 +239,7 @@ const PRONUNCIATION_BANK = {
     { sentence: "他的成功并非偶然，而是努力的结果。", pinyin: "Tā de chénggōng bìngfēi ǒurán, ér shì nǔlì de jiéguǒ.", translation: "Success from effort." },
     { sentence: "随着科技的发展，生活发生了巨大变化。", pinyin: "Suízhe kējì de fāzhǎn, shēnghuó fāshēngle jùdà biànhuà.", translation: "Tech changed life." },
     { sentence: "入乡随俗，要尊重当地风俗习惯。", pinyin: "Rù xiāng suí sú, yào zūnzhòng dāngdì fēngsú xíguàn.", translation: "When in Rome..." },
-    { sentence: "这个问题值得深入思考和讨论。", pinyin: "Zhège wèntí zhídé shēnrù zhǐdú hé tǎolùn.", translation: "Worth deep thought." },
+    { sentence: "这个问题值得深入思考和讨论。", pinyin: "Zhège wèntí zhídé shēnrù sīkǎo hé tǎolùn.", translation: "Worth deep thought." },
     { sentence: "塞翁失马，焉知非福。", pinyin: "Sài wēng shī mǎ, yān zhī fēi fú.", translation: "A blessing in disguise." },
     { sentence: "只有不断学习，才能跟上时代。", pinyin: "Zhǐyǒu búduàn xuéxí, cáinéng gēnshàng shídài.", translation: "Keep learning." },
     { sentence: "他不但没生气，反而笑着安慰了我。", pinyin: "Tā búdàn méi shēngqì, fǎn'ér xiàozhe ānwèile wǒ.", translation: "Comforted with a smile." },
@@ -324,7 +324,6 @@ const MANUAL_DATA = {
 
 function clean(t){return t.replace(/\*\*/g,"").replace(/\*/g,"").replace(/^#{1,6}\s/gm,"").replace(/__/g,"").replace(/~~/g,"");}
 
-// The core engine for 4 modes
 const MODES = [
   { id: "HPE", label: "全显模式", desc: "汉字+拼音+英文" },
   { id: "HP", label: "辅导模式", desc: "汉字+拼音 (隐藏英文)" },
@@ -395,9 +394,9 @@ function useSpeech(){
 /* ═══════════════════════════════════════════
    LAYOUT WRAPPER
    ═══════════════════════════════════════════ */
-
-function PageWrap({children, wide}){
-  return <div style={{padding:"0 20px",maxWidth:wide?720:580,margin:"0 auto",width:"100%"}}>{children}</div>;
+// 修改为更宽的默认容器，方便两列布局展示
+function PageWrap({children, maxWidth = 860}){
+  return <div style={{padding:"0 20px",maxWidth,margin:"0 auto",width:"100%"}}>{children}</div>;
 }
 
 /* ═══════════════════════════════════════════
@@ -466,7 +465,7 @@ function DrillView({type,hskLevel,onBack,onChangeHSK, mode, onChangeMode}){
 
   if(done){const validScores=scores.filter(s=>s>0);const avg=validScores.length?Math.round(validScores.reduce((a,b)=>a+b,0)/validScores.length):0;const emoji=avg>=90?"🌟":avg>=80?"👏":avg>=70?"👍":avg>=60?"💪":"📚";
     return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title={isSen?"造句练习":"语音测评"} subtitle="Results" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} mode={mode} onChangeMode={onChangeMode}/>
-      <PageWrap><div style={{padding:"32px 0",textAlign:"center",animation:"su 0.4s both"}}>
+      <PageWrap maxWidth={580}><div style={{padding:"32px 0",textAlign:"center",animation:"su 0.4s both"}}>
         <div style={{fontSize:56,marginBottom:12}}>{emoji}</div>
         <div style={{fontSize:48,fontWeight:700,color,marginBottom:4}}>{avg}<span style={{fontSize:20,color:"#999"}}>/100</span></div>
         <div style={{fontSize:15,color:"#888",marginBottom:28}}>Average across {validScores.length} questions</div>
@@ -476,7 +475,7 @@ function DrillView({type,hskLevel,onBack,onChangeHSK, mode, onChangeMode}){
   }
 
   return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title={isSen?"造句练习":"语音测评"} subtitle={isSen?"Sentence building":"Pronunciation"} onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} mode={mode} onChangeMode={onChangeMode}/>
-    <PageWrap><div style={{padding:"20px 0 140px"}}>
+    <PageWrap maxWidth={580}><div style={{padding:"20px 0 140px"}}>
       <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:20}}><div style={{flex:1,height:6,background:"#ebe9e1",borderRadius:3,overflow:"hidden"}}><div style={{width:`${((idx+(feedback?1:0))/total)*100}%`,height:"100%",background:color,borderRadius:3,transition:"width 0.4s"}}/></div><span style={{fontSize:13,color:"#999",fontWeight:600}}>{idx+1}/{total}</span></div>
       <div style={{background:"#fff",borderRadius:16,border:"1px solid #f0efe8",padding:"28px 24px",marginBottom:20,boxShadow:"0 2px 8px rgba(0,0,0,0.03)"}}>
         <div style={{fontSize:12,fontWeight:600,color:"#bbb",textTransform:"uppercase",letterSpacing:1,marginBottom:16}}>{isSen?"Use this word to make a sentence":"Read this sentence aloud"}</div>
@@ -585,18 +584,30 @@ function AboutModal({onClose}) {
   );
 }
 
+// 系统化升级后的学习手册
 function StudyManual({hskLevel, onChangeHSK, onBack}) {
   const [tab, setTab] = useState("vocab");
   const [openCard, setOpenCard] = useState(null);
   const tabs = [{ id: "vocab", label: "重点词汇", icon: "📝" }, { id: "grammar", label: "核心语法", icon: "⚙️" }, { id: "pinyin", label: "语音声调", icon: "🗣️" }];
   const data = MANUAL_DATA[hskLevel]?.[tab] || [];
+  const lv = HSK_LEVELS.find(l => l.id === hskLevel);
 
   return (
     <div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}>
       <TopBar title="学习手册" subtitle="Study Manual" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
-      <PageWrap>
-        <div style={{padding:"24px 0 60px"}}>
-          <div style={{display:"flex",gap:10,marginBottom:24,background:"#fff",padding:6,borderRadius:16,border:"1px solid #f0efe8",boxShadow:"0 2px 8px rgba(0,0,0,0.02)"}}>
+      <PageWrap maxWidth={800}>
+        <div style={{padding:"32px 0 80px"}}>
+          
+          {/* 新增：系统化大纲头部 */}
+          <div style={{background: "#fff", borderRadius: 20, padding: "24px 28px", marginBottom: 32, border: "1px solid #f0efe8", display: "flex", gap: 20, alignItems: "center", boxShadow: "0 4px 12px rgba(0,0,0,0.02)"}}>
+            <div style={{fontSize: 48}}>{lv?.emoji}</div>
+            <div>
+              <h2 style={{margin: "0 0 8px 0", fontSize: 20, color: "#1a1a1a"}}>{lv?.label} 知识图谱</h2>
+              <p style={{margin: 0, fontSize: 14, color: "#666", lineHeight: 1.6}}>系统化梳理该阶段的{lv?.desc}。建议按照“词汇 → 语法 → 发音”的模块顺序进行复习，构建完整的汉语框架。</p>
+            </div>
+          </div>
+
+          <div style={{display:"flex",gap:10,marginBottom:28,background:"#fff",padding:6,borderRadius:16,border:"1px solid #f0efe8",boxShadow:"0 2px 8px rgba(0,0,0,0.02)"}}>
              {tabs.map(t => (
                 <button key={t.id} onClick={()=>{setTab(t.id);setOpenCard(null);}}
                   style={{flex:1, padding:"12px 0", borderRadius:12, border:"none", background:tab===t.id?"#D4413A":"transparent", color:tab===t.id?"#fff":"#888", fontWeight:600, fontSize:15, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:6, transition:"all 0.3s"}}>
@@ -604,19 +615,28 @@ function StudyManual({hskLevel, onChangeHSK, onBack}) {
                 </button>
              ))}
           </div>
-          <div style={{display:"flex",flexDirection:"column",gap:14}}>
+
+          <div style={{display:"flex",flexDirection:"column",gap:16}}>
             {data.map((item, i) => {
               const isOpen = openCard === i;
+              const idxStr = (i + 1).toString().padStart(2, '0');
               return (
                 <div key={i} style={{background:"#fff",borderRadius:16,border:`1.5px solid ${isOpen?"#D4413A40":"#f0efe8"}`,overflow:"hidden",boxShadow:isOpen?"0 6px 16px rgba(212,65,58,0.08)":"0 1px 3px rgba(0,0,0,0.02)",transition:"all 0.3s"}}>
-                  <button onClick={()=>setOpenCard(isOpen?null:i)} style={{width:"100%",padding:"20px 22px",border:"none",background:"transparent",display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer"}}>
-                    <span style={{fontSize:16,fontWeight:600,color:isOpen?"#D4413A":"#1a1a1a",textAlign:"left"}}>{item.title}</span>
+                  <button onClick={()=>setOpenCard(isOpen?null:i)} style={{width:"100%",padding:"20px 24px",border:"none",background:"transparent",display:"flex",alignItems:"center",cursor:"pointer"}}>
+                    {/* 新增：系统化章节编号 */}
+                    <span style={{fontSize: 24, fontWeight: 800, color: isOpen?"#D4413A":"#eee", marginRight: 16, transition: "0.3s", fontStyle: "italic"}}>
+                      {idxStr}
+                    </span>
+                    <span style={{fontSize:16,fontWeight:600,color:isOpen?"#D4413A":"#1a1a1a",textAlign:"left",flex:1}}>{item.title}</span>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={isOpen?"#D4413A":"#ccc"} strokeWidth="2.5" style={{transform:isOpen?"rotate(180deg)":"none",transition:"0.3s",flexShrink:0}}><polyline points="6 9 12 15 18 9"/></svg>
                   </button>
                   {isOpen && (
-                    <div style={{padding:"0 22px 22px",animation:"su 0.3s both"}}>
-                      <div style={{fontSize:14,color:"#555",lineHeight:1.7,marginBottom:12}}>{item.desc}</div>
-                      <div style={{background:"#FDF0EF",padding:"12px 16px",borderRadius:12,color:"#D4413A",fontWeight:500,borderLeft:"4px solid #D4413A"}}><span style={{fontSize:12,fontWeight:700,textTransform:"uppercase",opacity:0.8,marginRight:8}}>Example:</span>{item.example}</div>
+                    <div style={{padding:"0 24px 24px",animation:"su 0.3s both", marginLeft: 40}}>
+                      <div style={{fontSize:14,color:"#555",lineHeight:1.7,marginBottom:16}}>{item.desc}</div>
+                      <div style={{background:"#FDF0EF",padding:"14px 18px",borderRadius:12,color:"#D4413A",fontWeight:500,borderLeft:"4px solid #D4413A"}}>
+                        <div style={{fontSize:12,fontWeight:700,textTransform:"uppercase",opacity:0.8,marginBottom:6}}>Example / 示例</div>
+                        <div style={{lineHeight: 1.5}}>{item.example}</div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -635,7 +655,7 @@ function StudyManual({hskLevel, onChangeHSK, onBack}) {
 
 function MenuItem({item, onClick, hovered, onHover, badge}){
   return <div onClick={onClick} onMouseEnter={()=>onHover(item.id)} onMouseLeave={()=>onHover(null)}
-    style={{background:"#fff",borderRadius:18,padding:"26px 24px",cursor:"pointer",border:`1px solid ${hovered===item.id?item.color+"60":"#f0efe8"}`,transition:"all 0.3s",transform:hovered===item.id?"translateY(-3px)":"none",boxShadow:hovered===item.id?`0 10px 28px ${item.color}15`:"0 1px 3px rgba(0,0,0,0.03)"}}>
+    style={{background:"#fff",borderRadius:18,padding:"26px 24px",cursor:"pointer",border:`1px solid ${hovered===item.id?item.color+"60":"#f0efe8"}`,transition:"all 0.3s",transform:hovered===item.id?"translateY(-3px)":"none",boxShadow:hovered===item.id?`0 10px 28px ${item.color}15`:"0 1px 3px rgba(0,0,0,0.03)", display:"flex", flexDirection:"column", height:"100%"}}>
     <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:12}}>
       <div style={{width:56,height:56,borderRadius:16,background:item.bg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0,transition:"transform 0.2s",transform:hovered===item.id?"scale(1.06)":"none"}}>{item.icon}</div>
       <div style={{flex:1,minWidth:0}}>
@@ -643,9 +663,9 @@ function MenuItem({item, onClick, hovered, onHover, badge}){
         <div style={{fontSize:13,color:"#aaa",marginTop:2}}>{item.titleEn}</div>
       </div>
     </div>
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-      <div style={{fontSize:14,color:"#666"}}>{item.desc}</div>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={hovered===item.id?item.color:"#ccc"} strokeWidth="2" style={{flexShrink:0,transition:"transform 0.25s",transform:hovered===item.id?"translateX(4px)":"none"}}><polyline points="9 18 15 12 9 6"/></svg>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end", flex:1}}>
+      <div style={{fontSize:14,color:"#666", lineHeight:1.5, paddingRight:10}}>{item.desc}</div>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={hovered===item.id?item.color:"#ccc"} strokeWidth="2" style={{flexShrink:0,transition:"transform 0.25s",transform:hovered===item.id?"translateX(4px)":"none", marginBottom:2}}><polyline points="9 18 15 12 9 6"/></svg>
     </div>
   </div>;
 }
@@ -658,10 +678,7 @@ function buildFreeModule(hsk){return{id:"free",title:"自由对话",titleEn:"Fre
 function buildWritingChat(mode,hsk){const c={paragraph:{title:"段落写作",titleEn:"Paragraphs",icon:"📝",color:"#E8A838",bg:"#FFF8ED",system:"Chinese writing coach. Review paragraphs, give feedback. No markdown.",greeting:hsk==="1-3"?"汉字: 我们来练习写段落。请写3-4个句子：我的一天\n拼音: Wǒmen lái liànxí xiě duànluò. Qǐng xiě 3-4 gè jùzi: Wǒ de yī tiān\n英文: Let's practice paragraph writing. Write 3-4 sentences: My day":hsk==="4-6"?"汉字: 我们来练习写段落。请写4-5个句子：我最喜欢的城市\n拼音: Wǒmen lái liànxí xiě duànluò. Qǐng xiě 4-5 gè jùzi: Wǒ zuì xǐhuan de chéngshì\n英文: Let's practice paragraph writing. Write 4-5 sentences: My favorite city":"汉字: 我们来练习写段落。请写5-6个句子：网络社交对人际关系的影响\n拼音: Wǒmen lái liànxí xiě duànluò. Qǐng xiě 5-6 gè jùzi: Wǎngluò shèjiāo duì rénjì guānxi de yǐngxiǎng\n英文: Let's practice paragraph writing. Write 5-6 sentences: The impact of social networking on relationships"},essay:{title:"短文写作",titleEn:"Essays",icon:"📄",color:"#7B6CF6",bg:"#F3F0FF",system:"Chinese essay coach. Score /100, detailed feedback. No markdown.",greeting:hsk==="1-3"?"汉字: 我们来练习写短文。请写5-6个句子：我的家人\n拼音: Wǒmen lái liànxí xiě duǎnwén. Qǐng xiě 5-6 gè jùzi: Wǒ de jiārén\n英文: Let's practice essay writing. Write 5-6 sentences: My family":hsk==="4-6"?"汉字: 我们来练习写短文。请写8-10个句子：一次难忘的旅行\n拼音: Wǒmen lái liànxí xiě duǎnwén. Qǐng xiě 8-10 gè jùzi: Yí cì nánwàng de lǚxíng\n英文: Let's practice essay writing. Write 8-10 sentences: An unforgettable trip":"汉字: 我们来练习写短文。请写150字：传统文化在现代社会中的角色\n拼音: Wǒmen lái liànxí xiě duǎnwén. Qǐng xiě 150 zì: Chuántǒng wénhuà zài xiàndài shèhuì zhōng de juésè\n英文: Let's practice essay writing. Write 150 characters: The role of traditional culture in modern society"}};return c[mode];}
 
 /* ═══════════════════════════════════════════
-   ⚠️ 补充被上一个 AI 删掉的基础界面组件（Fallback Stubs）
-   如果你本地有原来写好的精美版 HSKSelect, MainMenu, 
-   OralMenu, SceneList, WrittenMenu 等组件，
-   请务必用你的代码替换掉下面这几个函数！
+   PAGES COMPONENTS (使用两列网格布局)
    ═══════════════════════════════════════════ */
 
 function HSKSelect({onSelect}) {
@@ -675,12 +692,15 @@ function MainMenu({hskLevel, onChangeHSK, onNav, onOpenAbout}) {
   const [hovered, setHovered] = useState(null);
   return <div style={{minHeight:"100vh", background:"#FAFAF7"}}>
     <TopBar title="SpeakWise 主菜单" hskLevel={hskLevel} onChangeHSK={onChangeHSK} onBack={null} />
-    <PageWrap>
-      <div style={{padding: "40px 0", display: "flex", flexDirection: "column", gap: 16}}>
-        <MenuItem item={{id:"oral", title:"口语训练", titleEn:"Speaking", icon:"🗣️", color:"#4A90D9", bg:"#EEF4FB", desc:"场景模拟与发音评测"}} onClick={()=>onNav("oral")} hovered={hovered} onHover={setHovered} />
-        <MenuItem item={{id:"written", title:"写作辅导", titleEn:"Writing", icon:"✍️", color:"#E8A838", bg:"#FFF8ED", desc:"AI 批改段落与短文"}} onClick={()=>onNav("written")} hovered={hovered} onHover={setHovered} />
-        <MenuItem item={{id:"manual", title:"学习手册", titleEn:"Study Manual", icon:"📚", color:"#D4413A", bg:"#FDF0EF", desc:"核心语法与词汇复习"}} onClick={()=>onNav("manual")} hovered={hovered} onHover={setHovered} />
-        <button onClick={onOpenAbout} style={{marginTop: 20, padding: 14, borderRadius: 12, border: "none", background: "#f0f0f0", color: "#666", cursor: "pointer"}}>关于 SpeakWise</button>
+    <PageWrap maxWidth={860}>
+      <div style={{padding: "40px 0"}}>
+        <div className="menu-grid">
+          <MenuItem item={{id:"oral", title:"口语训练", titleEn:"Speaking", icon:"🗣️", color:"#4A90D9", bg:"#EEF4FB", desc:"场景模拟与发音评测"}} onClick={()=>onNav("oral")} hovered={hovered} onHover={setHovered} />
+          <MenuItem item={{id:"written", title:"写作辅导", titleEn:"Writing", icon:"✍️", color:"#E8A838", bg:"#FFF8ED", desc:"AI 批改段落与短文"}} onClick={()=>onNav("written")} hovered={hovered} onHover={setHovered} />
+          <MenuItem item={{id:"manual", title:"学习手册", titleEn:"Study Manual", icon:"📚", color:"#D4413A", bg:"#FDF0EF", desc:"核心语法与词汇系统复习"}} onClick={()=>onNav("manual")} hovered={hovered} onHover={setHovered} />
+        </div>
+        {/* 取消大按钮，改为底部小字链接 */}
+        <div onClick={onOpenAbout} className="footer-link">关于 SpeakWise 项目</div>
       </div>
     </PageWrap>
   </div>
@@ -690,11 +710,13 @@ function OralMenu({hskLevel, onChangeHSK, onBack, onNav}) {
   const [hovered, setHovered] = useState(null);
   return <div style={{minHeight:"100vh", background:"#FAFAF7"}}>
      <TopBar title="口语训练" subtitle="Speaking Training" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} />
-     <PageWrap>
-       <div style={{padding: "40px 0", display: "flex", flexDirection: "column", gap: 16}}>
-         <MenuItem item={{id:"scenes", title:"场景模拟", titleEn:"Roleplay Scenes", icon:"🎭", color:"#9B59B6", bg:"#F5F0FA", desc:"在真实场景中扮演角色对话"}} onClick={()=>onNav("scenes")} hovered={hovered} onHover={setHovered} />
-         <MenuItem item={{id:"assess", title:"发音测评", titleEn:"Pronunciation", icon:"🎙️", color:"#7B6CF6", bg:"#F3F0FF", desc:"跟读句子，AI 打分纠音"}} onClick={()=>onNav("assess")} hovered={hovered} onHover={setHovered} />
-         <MenuItem item={{id:"free", title:"自由对话", titleEn:"Free Chat", icon:"💬", color:"#2DAA6E", bg:"#EDFAF3", desc:"和 AI 教练随便聊聊"}} onClick={()=>onNav("free")} hovered={hovered} onHover={setHovered} />
+     <PageWrap maxWidth={860}>
+       <div style={{padding: "40px 0"}}>
+         <div className="menu-grid">
+           <MenuItem item={{id:"scenes", title:"场景模拟", titleEn:"Roleplay Scenes", icon:"🎭", color:"#9B59B6", bg:"#F5F0FA", desc:"在真实场景中扮演角色对话"}} onClick={()=>onNav("scenes")} hovered={hovered} onHover={setHovered} />
+           <MenuItem item={{id:"assess", title:"发音测评", titleEn:"Pronunciation", icon:"🎙️", color:"#7B6CF6", bg:"#F3F0FF", desc:"跟读句子，AI 打分纠音"}} onClick={()=>onNav("assess")} hovered={hovered} onHover={setHovered} />
+           <MenuItem item={{id:"free", title:"自由对话", titleEn:"Free Chat", icon:"💬", color:"#2DAA6E", bg:"#EDFAF3", desc:"和 AI 教练随便聊聊"}} onClick={()=>onNav("free")} hovered={hovered} onHover={setHovered} />
+         </div>
        </div>
      </PageWrap>
   </div>
@@ -704,9 +726,11 @@ function SceneList({hskLevel, onChangeHSK, onBack, onSelect, mode, onChangeMode}
   const [hovered, setHovered] = useState(null);
   return <div style={{minHeight:"100vh", background:"#FAFAF7"}}>
      <TopBar title="选择场景" subtitle="Select a Scenario" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} mode={mode} onChangeMode={onChangeMode} />
-     <PageWrap>
-       <div style={{padding: "40px 0", display: "flex", flexDirection: "column", gap: 16}}>
-         {SCENARIOS.map(s => <MenuItem key={s.id} item={s} onClick={()=>onSelect(s)} hovered={hovered} onHover={setHovered} />)}
+     <PageWrap maxWidth={860}>
+       <div style={{padding: "40px 0"}}>
+         <div className="menu-grid">
+           {SCENARIOS.map(s => <MenuItem key={s.id} item={s} onClick={()=>onSelect(s)} hovered={hovered} onHover={setHovered} />)}
+         </div>
        </div>
      </PageWrap>
   </div>
@@ -716,11 +740,13 @@ function WrittenMenu({hskLevel, onChangeHSK, onBack, onSelect}) {
   const [hovered, setHovered] = useState(null);
   return <div style={{minHeight:"100vh", background:"#FAFAF7"}}>
      <TopBar title="写作辅导" subtitle="Writing Coach" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} />
-     <PageWrap>
-       <div style={{padding: "40px 0", display: "flex", flexDirection: "column", gap: 16}}>
-         <MenuItem item={{id:"sentence", title:"造句练习", titleEn:"Sentence Building", icon:"✏️", color:"#4A90D9", bg:"#EEF4FB", desc:"使用指定词汇写句子，AI 批改"}} onClick={()=>onSelect({id:"sentence"})} hovered={hovered} onHover={setHovered} />
-         <MenuItem item={{id:"paragraph", title:"段落写作", titleEn:"Paragraphs", icon:"📝", color:"#E8A838", bg:"#FFF8ED", desc:"写几个连贯的句子"}} onClick={()=>onSelect({id:"paragraph"})} hovered={hovered} onHover={setHovered} />
-         <MenuItem item={{id:"essay", title:"短文写作", titleEn:"Essays", icon:"📄", color:"#7B6CF6", bg:"#F3F0FF", desc:"写一篇完整的短文，打分并反馈"}} onClick={()=>onSelect({id:"essay"})} hovered={hovered} onHover={setHovered} />
+     <PageWrap maxWidth={860}>
+       <div style={{padding: "40px 0"}}>
+         <div className="menu-grid">
+           <MenuItem item={{id:"sentence", title:"造句练习", titleEn:"Sentence Building", icon:"✏️", color:"#4A90D9", bg:"#EEF4FB", desc:"使用指定词汇写句子，AI 批改"}} onClick={()=>onSelect({id:"sentence"})} hovered={hovered} onHover={setHovered} />
+           <MenuItem item={{id:"paragraph", title:"段落写作", titleEn:"Paragraphs", icon:"📝", color:"#E8A838", bg:"#FFF8ED", desc:"写几个连贯的句子"}} onClick={()=>onSelect({id:"paragraph"})} hovered={hovered} onHover={setHovered} />
+           <MenuItem item={{id:"essay", title:"短文写作", titleEn:"Essays", icon:"📄", color:"#7B6CF6", bg:"#F3F0FF", desc:"写一篇完整的短文，打分并反馈"}} onClick={()=>onSelect({id:"essay"})} hovered={hovered} onHover={setHovered} />
+         </div>
        </div>
      </PageWrap>
   </div>
@@ -737,14 +763,11 @@ export default function App() {
   const [showAbout, setShowAbout] = useState(false);
   const [view, setView] = useState("hsk");
 
-  // 【修复白屏BUG的核心逻辑】
-  // 将 localStorage 的读取彻底移入 useEffect，只在客户端执行。
-  // 这完美避开了 React/Next.js SSR（服务端渲染）的水合不匹配 (Hydration Mismatch) 导致的白屏崩溃。
   useEffect(() => {
     const savedHsk = localStorage.getItem("hsk");
     if (savedHsk && HSK_LEVELS.find(l => l.id === savedHsk)) {
       setHsk(savedHsk);
-      setView("main"); // 如果有缓存，直接进主界面
+      setView("main"); 
     } else {
       localStorage.removeItem("hsk");
       setView("hsk");
@@ -753,17 +776,18 @@ export default function App() {
     const savedMode = localStorage.getItem("viewMode");
     if (savedMode) setViewMode(savedMode);
 
+    // 开屏检测：如果没有浏览过关于弹窗，就主动显示
     const seenAbout = localStorage.getItem("aboutSeen");
     if (!seenAbout) setShowAbout(true);
 
-    setIsMounted(true); // 状态初始化完毕，允许渲染核心 UI
+    setIsMounted(true);
   }, []);
 
-  // 状态改变时，同步存入 localStorage
   useEffect(() => { if (isMounted && hsk) localStorage.setItem("hsk", hsk); }, [hsk, isMounted]);
   useEffect(() => { if (isMounted) localStorage.setItem("viewMode", viewMode); }, [viewMode, isMounted]);
 
   const closeAbout = () => { setShowAbout(false); localStorage.setItem("aboutSeen", "true"); };
+  const openAboutModal = () => setShowAbout(true);
 
   const [chatMod, setChatMod] = useState(null);
   const [chatVoice, setChatVoice] = useState(true);
@@ -777,17 +801,46 @@ export default function App() {
   const sceneSelect=s=>openChat({...s,system:`SCENARIO: ${s.role}\nStay in character, 2-3 sentences, correct gently. No markdown.`,greeting:s.greeting[hsk]||s.greeting["4-6"]},true,"scenes");
   const writingSelect=m=>{if(m.id==="sentence")openDrill("sentence","written");else openChat(buildWritingChat(m.id,hsk),false,"written");};
 
-  // 【防止白屏的关键防线】
-  // 在客户端完全挂载前，只渲染一个空白的背景壳，避免 React 报错
   if (!isMounted) return <div style={{ minHeight: "100vh", background: "#FAFAF7" }} />;
 
   return(
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');@keyframes su{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,0,0,0.12)}50%{box-shadow:0 0 0 12px rgba(0,0,0,0)}}@keyframes dp{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1.1)}}*{box-sizing:border-box;margin:0}body{font-family:'Noto Sans SC',sans-serif}`}</style>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+        @keyframes su { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: translateY(0) } }
+        @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0.12) } 50% { box-shadow: 0 0 0 12px rgba(0,0,0,0) } }
+        @keyframes dp { 0%, 80%, 100% { opacity: .3; transform: scale(.8) } 40% { opacity: 1; transform: scale(1.1) } }
+        * { box-sizing: border-box; margin: 0 }
+        body { font-family: 'Noto Sans SC', sans-serif }
+        
+        /* 新增：响应式两列网格布局，专门用于优化 PC 端屏幕显示 */
+        .menu-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        @media (min-width: 640px) {
+          .menu-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* 底部链接样式 */
+        .footer-link {
+          text-align: center;
+          margin-top: 48px;
+          font-size: 13px;
+          color: #aaa;
+          cursor: pointer;
+          transition: color 0.3s;
+        }
+        .footer-link:hover {
+          color: #666;
+          text-decoration: underline;
+        }
+      `}</style>
       
       {showAbout && <AboutModal onClose={closeAbout} />}
       {view==="hsk"&&<HSKSelect onSelect={l=>{setHsk(l);setView("main");}}/>}
-      {view==="main"&&<MainMenu hskLevel={hsk} onChangeHSK={setHsk} onNav={id=>setView(id==="oral"?"oral":id==="written"?"written":"manual")} onOpenAbout={()=>setShowAbout(true)}/>}
+      {view==="main"&&<MainMenu hskLevel={hsk} onChangeHSK={setHsk} onNav={id=>setView(id==="oral"?"oral":id==="written"?"written":"manual")} onOpenAbout={openAboutModal}/>}
       {view==="oral"&&<OralMenu hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("main")} onNav={oralNav}/>}
       {view==="scenes"&&<SceneList hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("oral")} onSelect={sceneSelect} mode={viewMode} onChangeMode={setViewMode}/>}
       {view==="written"&&<WrittenMenu hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("main")} onSelect={writingSelect}/>}

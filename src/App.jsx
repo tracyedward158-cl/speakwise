@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
 /* ═══════════════════════════════════════════
-   AI CALL with retry
+   AI CALL with retry & Friendly Error
    ═══════════════════════════════════════════ */
 
 async function callAI(system, messages, maxTokens = 600, retries = 2) {
@@ -38,7 +38,7 @@ function useIsMobile() {
 }
 
 /* ═══════════════════════════════════════════
-   DATA & KNOWLEDGE BASE
+   DATA & KNOWLEDGE BASE (Expanded to 30 items/level)
    ═══════════════════════════════════════════ */
 
 const HSK_LEVELS = [
@@ -78,11 +78,31 @@ const SENTENCE_BANK = {
     { word: "去", pinyin: "qù", meaning: "to go", hint: "Say where you go", example: "我明天去学校。(Wǒ míngtiān qù xuéxiào.)" },
     { word: "吃", pinyin: "chī", meaning: "to eat", hint: "Say what you eat", example: "我每天吃米饭。(Wǒ měitiān chī mǐfàn.)" },
     { word: "学习", pinyin: "xuéxí", meaning: "to study", hint: "Talk about studying", example: "我在学习中文。(Wǒ zài xuéxí Zhōngwén.)" },
-    { word: "朋友", pinyin: "péngyou", meaning: "friend", hint: "Say something about a friend", example: "我的朋友很好。" },
-    { word: "今天", pinyin: "jīntiān", meaning: "today", hint: "Say what you do today", example: "今天是星期一。" },
-    { word: "很", pinyin: "hěn", meaning: "very", hint: "Describe something", example: "中文很有意思。" },
-    { word: "在", pinyin: "zài", meaning: "at/in", hint: "Say where something is", example: "我在图书馆。" },
-    { word: "买", pinyin: "mǎi", meaning: "to buy", hint: "Say what you buy", example: "我想买一本书。" },
+    { word: "朋友", pinyin: "péngyou", meaning: "friend", hint: "Say something about a friend", example: "我的朋友很好。(Wǒ de péngyou hěn hǎo.)" },
+    { word: "今天", pinyin: "jīntiān", meaning: "today", hint: "Say what you do today", example: "今天是星期一。(Jīntiān shì xīngqī yī.)" },
+    { word: "很", pinyin: "hěn", meaning: "very", hint: "Describe something", example: "中文很有意思。(Zhōngwén hěn yǒu yìsi.)" },
+    { word: "在", pinyin: "zài", meaning: "at/in", hint: "Say where something is", example: "我在图书馆。(Wǒ zài túshūguǎn.)" },
+    { word: "买", pinyin: "mǎi", meaning: "to buy", hint: "Say what you buy", example: "我想买一本书。(Wǒ xiǎng mǎi yī běn shū.)" },
+    { word: "看", pinyin: "kàn", meaning: "to look/watch", hint: "Say what you watch", example: "我看电影。(Wǒ kàn diànyǐng.)" },
+    { word: "喝", pinyin: "hē", meaning: "to drink", hint: "Say what you drink", example: "我想喝水。(Wǒ xiǎng hē shuǐ.)" },
+    { word: "叫", pinyin: "jiào", meaning: "to be called", hint: "Introduce your name", example: "我叫大卫。(Wǒ jiào Dàwèi.)" },
+    { word: "高兴", pinyin: "gāoxìng", meaning: "happy", hint: "Say you are happy", example: "我今天很高兴。(Wǒ jīntiān hěn gāoxìng.)" },
+    { word: "认识", pinyin: "rènshi", meaning: "to know someone", hint: "Say nice to meet you", example: "很高兴认识你。(Hěn gāoxìng rènshi nǐ.)" },
+    { word: "医生", pinyin: "yīshēng", meaning: "doctor", hint: "Talk about a doctor", example: "他是医生。(Tā shì yīshēng.)" },
+    { word: "医院", pinyin: "yīyuàn", meaning: "hospital", hint: "Say you go to the hospital", example: "我去医院。(Wǒ qù yīyuàn.)" },
+    { word: "商店", pinyin: "shāngdiàn", meaning: "store", hint: "Say you go to the store", example: "他在商店买东西。(Tā zài shāngdiàn mǎi dōngxi.)" },
+    { word: "东西", pinyin: "dōngxi", meaning: "things", hint: "Say you buy things", example: "我要买东西。(Wǒ yào mǎi dōngxi.)" },
+    { word: "苹果", pinyin: "píngguǒ", meaning: "apple", hint: "Talk about an apple", example: "我喜欢吃苹果。(Wǒ xǐhuan chī píngguǒ.)" },
+    { word: "多少", pinyin: "duōshao", meaning: "how many/much", hint: "Ask a price", example: "这个多少钱？(Zhège duōshao qián?)" },
+    { word: "钱", pinyin: "qián", meaning: "money", hint: "Talk about money", example: "我没有钱。(Wǒ méiyǒu qián.)" },
+    { word: "时候", pinyin: "shíhou", meaning: "time/moment", hint: "Ask when", example: "你什么时候去？(Nǐ shénme shíhou qù?)" },
+    { word: "明天", pinyin: "míngtiān", meaning: "tomorrow", hint: "Talk about tomorrow", example: "明天是星期二。(Míngtiān shì xīngqī èr.)" },
+    { word: "昨天", pinyin: "zuótiān", meaning: "yesterday", hint: "Talk about yesterday", example: "昨天我去了北京。(Zuótiān wǒ qùle Běijīng.)" },
+    { word: "天气", pinyin: "tiānqì", meaning: "weather", hint: "Describe weather", example: "今天天气很好。(Jīntiān tiānqì hěn hǎo.)" },
+    { word: "热", pinyin: "rè", meaning: "hot", hint: "Say it is hot", example: "今天很热。(Jīntiān hěn rè.)" },
+    { word: "冷", pinyin: "lěng", meaning: "cold", hint: "Say it is cold", example: "昨天很冷。(Zuótiān hěn lěng.)" },
+    { word: "漂亮", pinyin: "piàoliang", meaning: "beautiful", hint: "Describe someone/something", example: "这件衣服很漂亮。(Zhè jiàn yīfu hěn piàoliang.)" },
+    { word: "知道", pinyin: "zhīdào", meaning: "to know", hint: "Say you know/don't know", example: "我不知道。(Wǒ bù zhīdào.)" }
   ],
   "4-6": [
     { word: "虽然……但是……", pinyin: "suīrán...dànshì...", meaning: "although...but...", hint: "Express a contrast", example: "虽然今天很冷，但是我还是出去跑步了。" },
@@ -95,6 +115,26 @@ const SENTENCE_BANK = {
     { word: "只要……就……", pinyin: "zhǐyào...jiù...", meaning: "as long as", hint: "State a condition", example: "只要你努力，就一定能学好。" },
     { word: "把", pinyin: "bǎ", meaning: "把-construction", hint: "Act on an object", example: "请你把门关上。" },
     { word: "被", pinyin: "bèi", meaning: "passive", hint: "Passive voice", example: "我的手机被弟弟弄坏了。" },
+    { word: "为了", pinyin: "wèile", meaning: "in order to", hint: "State a purpose", example: "为了学好中文，我每天练习。" },
+    { word: "或者", pinyin: "huòzhě", meaning: "or (in statements)", hint: "Give options", example: "我们去爬山或者看电影吧。" },
+    { word: "还是", pinyin: "háishi", meaning: "or (in questions)", hint: "Ask for a choice", example: "你喝茶还是喝咖啡？" },
+    { word: "先……然后……", pinyin: "xiān...ránhòu...", meaning: "first...then...", hint: "Sequence of actions", example: "我先吃饭，然后做作业。" },
+    { word: "如果……就……", pinyin: "rúguǒ...jiù...", meaning: "if...then...", hint: "Hypothetical condition", example: "如果明天下雨，我就不去。" },
+    { word: "以为", pinyin: "yǐwéi", meaning: "thought (mistakenly)", hint: "Express a wrong assumption", example: "我以为今天是星期五。" },
+    { word: "一直", pinyin: "yìzhí", meaning: "continuously", hint: "Continuous action", example: "他一直在看书。" },
+    { word: "原来", pinyin: "yuánlái", meaning: "originally / turns out", hint: "A sudden realization", example: "原来是你啊！" },
+    { word: "必须", pinyin: "bìxū", meaning: "must", hint: "Express necessity", example: "明天我必须早起。" },
+    { word: "发现", pinyin: "fāxiàn", meaning: "to discover", hint: "Notice something", example: "我发现他不在家。" },
+    { word: "终于", pinyin: "zhōngyú", meaning: "finally", hint: "A delayed result", example: "我终于完成了工作。" },
+    { word: "即使……也……", pinyin: "jíshǐ...yě...", meaning: "even if...still", hint: "Concession", example: "即使很累，他也在坚持。" },
+    { word: "到处", pinyin: "dàochù", meaning: "everywhere", hint: "Describe locations", example: "公园里到处都是花。" },
+    { word: "难道", pinyin: "nándào", meaning: "could it be that", hint: "Rhetorical question", example: "难道你不知道这件事吗？" },
+    { word: "差点儿", pinyin: "chàdiǎnr", meaning: "almost", hint: "A near miss", example: "我差点儿迟到了。" },
+    { word: "不仅……还……", pinyin: "bùjǐn...hái...", meaning: "not only...but also", hint: "Add information", example: "他不仅聪明，还很努力。" },
+    { word: "偶尔", pinyin: "ǒu'ěr", meaning: "occasionally", hint: "Low frequency", example: "我偶尔去图书馆。" },
+    { word: "反而", pinyin: "fǎn'ér", meaning: "on the contrary", hint: "Unexpected result", example: "喝了咖啡反而更困了。" },
+    { word: "随着", pinyin: "suízhe", meaning: "along with", hint: "Accompanying change", example: "随着时间推移，他变了。" },
+    { word: "其实", pinyin: "qíshí", meaning: "actually", hint: "State the reality", example: "其实我并不喜欢吃辣。" }
   ],
   "7-9": [
     { word: "与其……不如……", pinyin: "yǔqí...bùrú...", meaning: "rather than...better to...", hint: "Compare options", example: "与其抱怨，不如行动起来。" },
@@ -107,6 +147,26 @@ const SENTENCE_BANK = {
     { word: "恨不得", pinyin: "hènbude", meaning: "wish one could", hint: "Strong desire", example: "我恨不得马上飞回家。" },
     { word: "不见得", pinyin: "bújiàndé", meaning: "not necessarily", hint: "Polite disagreement", example: "贵的东西不见得就好。" },
     { word: "总而言之", pinyin: "zǒng ér yán zhī", meaning: "in conclusion", hint: "Summarize", example: "总而言之，学语言需要坚持。" },
+    { word: "毋庸置疑", pinyin: "wúyōng zhìyí", meaning: "beyond doubt", hint: "Express absolute certainty", example: "毋庸置疑，科技改变了我们的生活。" },
+    { word: "潜移默化", pinyin: "qiányí mòhuà", meaning: "subtle influence", hint: "Describe unseen impact", example: "父母的言行对孩子有潜移默化的影响。" },
+    { word: "息息相关", pinyin: "xīxī xiāngguān", meaning: "closely related", hint: "Show deep connection", example: "环保与我们每个人的生活息息相关。" },
+    { word: "不可思议", pinyin: "bùkě sīyì", meaning: "unimaginable", hint: "Express shock/wonder", example: "这个魔术简直不可思议。" },
+    { word: "理所当然", pinyin: "lǐsuǒ dāngrán", meaning: "taken for granted", hint: "State what is expected", example: "帮助朋友是理所当然的事。" },
+    { word: "莫名其妙", pinyin: "mòmíng qímiào", meaning: "baffling", hint: "Express confusion", example: "他突然发脾气，真是莫名其妙。" },
+    { word: "无能为力", pinyin: "wúnéng wéilì", meaning: "powerless", hint: "Admit inability", example: "面对这种突发状况，我也无能为力。" },
+    { word: "半途而废", pinyin: "bàntú érfèi", meaning: "give up halfway", hint: "Describe lack of perseverance", example: "做事情要有始有终，不能半途而废。" },
+    { word: "一视同仁", pinyin: "yíshì tóngrén", meaning: "treat equally", hint: "Describe fairness", example: "老师对所有学生都一视同仁。" },
+    { word: "不求甚解", pinyin: "bùqiú shènjiě", meaning: "superficial understanding", hint: "Criticize lazy learning", example: "读书不能不求甚解，要深入思考。" },
+    { word: "既然……就……", pinyin: "jìrán...jiù...", meaning: "since...then...", hint: "Logical conclusion", example: "既然你已经决定了，就大胆去做吧。" },
+    { word: "除非……否则……", pinyin: "chúfēi...fǒuzé...", meaning: "unless...otherwise...", hint: "Strict condition", example: "除非你道歉，否则我不会原谅你。" },
+    { word: "哪怕……也……", pinyin: "nǎpà...yě...", meaning: "even if", hint: "Hypothetical concession", example: "哪怕失败十次，我也要试最后一次。" },
+    { word: "不仅不……反而……", pinyin: "bùjǐn bù...fǎn'ér...", meaning: "not only didn't...but instead...", hint: "Opposite of expectation", example: "他不仅不认错，反而怪别人。" },
+    { word: "究竟", pinyin: "jiūjìng", meaning: "after all / actually", hint: "Emphasize an inquiry", example: "你究竟想说什么？" },
+    { word: "稍微", pinyin: "shāowēi", meaning: "slightly", hint: "Moderate a description", example: "这件衣服稍微有点大。" },
+    { word: "犹如", pinyin: "yóurú", meaning: "just like", hint: "Formal comparison", example: "时间犹如白驹过隙。" },
+    { word: "哪怕", pinyin: "nǎpà", meaning: "even if", hint: "Extreme hypothetical", example: "哪怕天下雨，我也要去。" },
+    { word: "唯独", pinyin: "wéidú", meaning: "only / except", hint: "Highlight an exception", example: "大家都同意，唯独他反对。" },
+    { word: "未免", pinyin: "wèimiǎn", meaning: "a bit too", hint: "Mild criticism", example: "你这样做未免太自私了。" }
   ]
 };
 
@@ -122,6 +182,26 @@ const PRONUNCIATION_BANK = {
     { sentence: "我不知道。", pinyin: "Wǒ bù zhīdào.", translation: "I don't know." },
     { sentence: "请再说一次。", pinyin: "Qǐng zài shuō yī cì.", translation: "Say it again." },
     { sentence: "我很高兴认识你。", pinyin: "Wǒ hěn gāoxìng rènshi nǐ.", translation: "Nice to meet you." },
+    { sentence: "我们在学校学习。", pinyin: "Wǒmen zài xuéxiào xuéxí.", translation: "We study at school." },
+    { sentence: "他是我朋友。", pinyin: "Tā shì wǒ péngyou.", translation: "He is my friend." },
+    { sentence: "我不喜欢吃肉。", pinyin: "Wǒ bù xǐhuan chī ròu.", translation: "I don't like eating meat." },
+    { sentence: "现在几点了？", pinyin: "Xiànzài jǐ diǎn le?", translation: "What time is it now?" },
+    { sentence: "我要买苹果。", pinyin: "Wǒ yào mǎi píngguǒ.", translation: "I want to buy apples." },
+    { sentence: "明天天气很好。", pinyin: "Míngtiān tiānqì hěn hǎo.", translation: "Tomorrow's weather is good." },
+    { sentence: "你去哪里？", pinyin: "Nǐ qù nǎlǐ?", translation: "Where are you going?" },
+    { sentence: "我在家看电视。", pinyin: "Wǒ zài jiā kàn diànshì.", translation: "I am watching TV at home." },
+    { sentence: "这是我的书。", pinyin: "Zhè shì wǒ de shū.", translation: "This is my book." },
+    { sentence: "太贵了！", pinyin: "Tài guì le!", translation: "Too expensive!" },
+    { sentence: "便宜一点，好吗？", pinyin: "Piányi yīdiǎn, hǎo ma?", translation: "A little cheaper, ok?" },
+    { sentence: "洗手间在哪里？", pinyin: "Xǐshǒujiān zài nǎlǐ?", translation: "Where is the restroom?" },
+    { sentence: "对不起。", pinyin: "Duìbuqǐ.", translation: "I'm sorry." },
+    { sentence: "没关系。", pinyin: "Méi guānxi.", translation: "It's okay." },
+    { sentence: "不用谢。", pinyin: "Búyòng xiè.", translation: "You're welcome." },
+    { sentence: "我听不懂。", pinyin: "Wǒ tīng bù dǒng.", translation: "I don't understand." },
+    { sentence: "请写下来。", pinyin: "Qǐng xiě xiàlái.", translation: "Please write it down." },
+    { sentence: "你多大了？", pinyin: "Nǐ duōdà le?", translation: "How old are you?" },
+    { sentence: "我喜欢中国。", pinyin: "Wǒ xǐhuan Zhōngguó.", translation: "I like China." },
+    { sentence: "再见！", pinyin: "Zàijiàn!", translation: "Goodbye!" }
   ],
   "4-6": [
     { sentence: "今天天气不错，适合出去走走。", pinyin: "Jīntiān tiānqì búcuò, shìhé chūqù zǒuzou.", translation: "Nice weather for a walk." },
@@ -134,6 +214,26 @@ const PRONUNCIATION_BANK = {
     { sentence: "这道菜又好吃又便宜。", pinyin: "Zhè dào cài yòu hǎochī yòu piányi.", translation: "Delicious and cheap." },
     { sentence: "他比我大三岁。", pinyin: "Tā bǐ wǒ dà sān suì.", translation: "3 years older." },
     { sentence: "我已经在中国住了两年了。", pinyin: "Wǒ yǐjīng zài Zhōngguó zhùle liǎng nián le.", translation: "Lived in China 2 years." },
+    { sentence: "请把空调打开，有点热。", pinyin: "Qǐng bǎ kōngtiáo dǎkāi, yǒudiǎn rè.", translation: "Please turn on the AC, it's a bit hot." },
+    { sentence: "由于堵车，我迟到了十分钟。", pinyin: "Yóuyú dǔchē, wǒ chídàole shí fēnzhōng.", translation: "Due to traffic, I was 10 mins late." },
+    { sentence: "不论多晚，他都会完成工作。", pinyin: "Búlùn duō wǎn, tā dōu huì wánchéng gōngzuò.", translation: "No matter how late, he finishes work." },
+    { sentence: "他连这么简单的汉字都不认识。", pinyin: "Tā lián zhème jiǎndān de hànzì dōu bú rènshi.", translation: "He doesn't even know such simple characters." },
+    { sentence: "你的中文说得越来越流利了。", pinyin: "Nǐ de Zhōngwén shuō de yuè lái yuè liúlì le.", translation: "Your Chinese is getting more fluent." },
+    { sentence: "除了篮球，我还喜欢踢足球。", pinyin: "Chúle lánqiú, wǒ hái xǐhuan tī zúqiú.", translation: "Besides basketball, I also like soccer." },
+    { sentence: "经过几个月的努力，他终于通过了考试。", pinyin: "Jīngguò jǐ gè yuè de nǔlì, tā zhōngyú tōngguòle kǎoshì.", translation: "After months of effort, he finally passed." },
+    { sentence: "请大家保持安静，会议马上开始。", pinyin: "Qǐng dàjiā bǎochí ānjìng, huìyì mǎshàng kāishǐ.", translation: "Please keep quiet, the meeting is starting." },
+    { sentence: "这件毛衣不但颜色好看，而且很暖和。", pinyin: "Zhè jiàn máoyī búdàn yánsè hǎokàn, érqiě hěn nuǎnhuo.", translation: "This sweater is not only pretty but warm." },
+    { sentence: "遇到不懂的问题，你应该多问老师。", pinyin: "Yùdào bù dǒng de wèntí, nǐ yīnggāi duō wèn lǎoshī.", translation: "Ask the teacher when you don't understand." },
+    { sentence: "我同意你的看法，这个主意不错。", pinyin: "Wǒ tóngyì nǐ de kànfǎ, zhège zhǔyi búcuò.", translation: "I agree with you, good idea." },
+    { sentence: "他平时很少说话，但其实很幽默。", pinyin: "Tā píngshí hěn shǎo shuōhuà, dàn qíshí hěn yōumò.", translation: "He rarely speaks, but is actually humorous." },
+    { sentence: "这件事没有你想的那么复杂。", pinyin: "Zhè jiàn shì méiyǒu nǐ xiǎng de nàme fùzá.", translation: "This isn't as complicated as you think." },
+    { sentence: "我们要养成早睡早起的好习惯。", pinyin: "Wǒmen yào yǎngchéng zǎo shuì zǎo qǐ de hǎo xíguàn.", translation: "Develop the habit of sleeping and waking early." },
+    { sentence: "只要坚持练习，就一定会进步。", pinyin: "Zhǐyào jiānchí liànxí, jiù yídìng huì jìnbù.", translation: "As long as you practice, you will improve." },
+    { sentence: "为了健康，他决定开始减肥。", pinyin: "Wèile jiànkāng, tā juédìng kāishǐ jiǎnféi.", translation: "For his health, he decided to lose weight." },
+    { sentence: "周末你有空的话，我们一起去逛街吧。", pinyin: "Zhōumò nǐ yǒu kòng de huà, wǒmen yìqǐ qù guàngjiē ba.", translation: "If you're free this weekend, let's go shopping." },
+    { sentence: "抱歉，让您久等了。", pinyin: "Bàoqiàn, ràng nín jiǔ děng le.", translation: "Sorry to keep you waiting." },
+    { sentence: "那家餐厅的烤鸭非常地道。", pinyin: "Nà jiā cāntīng de kǎoyā fēicháng dìdào.", translation: "That restaurant's roast duck is very authentic." },
+    { sentence: "我的手机快没电了，借我个充电宝吧。", pinyin: "Wǒ de shǒujī kuài méi diàn le, jiè wǒ gè chōngdiànbǎo ba.", translation: "My phone is dying, lend me a power bank." }
   ],
   "7-9": [
     { sentence: "不管遇到什么困难，都不应该轻易放弃。", pinyin: "Bùguǎn yù dào shénme kùnnan, dōu bù yīnggāi qīngyì fàngqì.", translation: "Never give up." },
@@ -146,6 +246,26 @@ const PRONUNCIATION_BANK = {
     { sentence: "塞翁失马，焉知非福。", pinyin: "Sài wēng shī mǎ, yān zhī fēi fú.", translation: "A blessing in disguise." },
     { sentence: "只有不断学习，才能跟上时代。", pinyin: "Zhǐyǒu búduàn xuéxí, cáinéng gēnshàng shídài.", translation: "Keep learning." },
     { sentence: "他不但没生气，反而笑着安慰了我。", pinyin: "Tā búdàn méi shēngqì, fǎn'ér xiàozhe ānwèile wǒ.", translation: "Comforted with a smile." },
+    { sentence: "这篇文章见解独到，逻辑严密，令人叹服。", pinyin: "Zhè piān wénzhāng jiànjiě dúdào, luójí yánmì, lìng rén tànfú.", translation: "This article is insightful and logical." },
+    { sentence: "我们在追求经济发展的同时，不能忽视环境保护。", pinyin: "Wǒmen zài zhuīqiú jīngjì fāzhǎn de tóngshí, bùnéng hūshì huánjìng bǎohù.", translation: "Don't ignore the environment for economy." },
+    { sentence: "网络虽然拉近了距离，但也让人变得冷漠。", pinyin: "Wǎngluò suīrán lājìnle jùlí, dàn yě ràng rén biànde lěngmò.", translation: "The internet connects but also isolates." },
+    { sentence: "这种观点未免过于片面，缺乏客观性。", pinyin: "Zhè zhǒng guāndiǎn wèimiǎn guòyú piànmiàn, quēfá kèguānxìng.", translation: "This view is a bit too one-sided." },
+    { sentence: "面对激烈的竞争，企业必须不断创新才能生存。", pinyin: "Miànduì jīliè de jìngzhēng, qǐyè bìxū búduàn chuàngxīn cáinéng shēngcún.", translation: "Enterprises must innovate to survive competition." },
+    { sentence: "中华传统文化源远流长，博大精深。", pinyin: "Zhōnghuá chuántǒng wénhuà yuányuǎn liúcháng, bódà jīngshēn.", translation: "Chinese culture is profound and enduring." },
+    { sentence: "哪怕只有一线希望，我们也要尽百分之百的努力。", pinyin: "Nǎpà zhǐyǒu yí xiàn xīwàng, wǒmen yě yào jìn bǎi fēn zhī bǎi de nǔlì.", translation: "Even with slim hope, give 100% effort." },
+    { sentence: "他处理危机时的从容不迫，给所有人留下了深刻印象。", pinyin: "Tā chǔlǐ wēijī shí de cóngróng búpò, gěi suǒyǒu rén liúxiàle shēnkè yìnxiàng.", translation: "His calmness in crisis impressed everyone." },
+    { sentence: "一味地逃避问题并不能解决任何实质性的麻烦。", pinyin: "Yíwèi de táobì wèntí bìng bùnéng jiějué rènhé shízhìxìng de máfan.", translation: "Blindly avoiding won't solve real issues." },
+    { sentence: "教育的根本目的不仅仅是传授知识，更是培养人格。", pinyin: "Jiàoyù de gēnběn mùdì bù jǐnjǐn shì chuánshòu zhīshi, gèng shì péiyǎng réngé.", translation: "Education builds character, not just knowledge." },
+    { sentence: "所谓“己所不欲，勿施于人”，这是最基本的道德底线。", pinyin: "Suǒwèi 'jǐ suǒ bú yù, wù shī yú rén', zhè shì zuì jīběn de dàodé dǐxiàn.", translation: "Do unto others as you would have them do unto you." },
+    { sentence: "在利益面前，人性的弱点往往会暴露无遗。", pinyin: "Zài lìyì miànqián, rénxìng de ruòdiǎn wǎngwǎng huì bàolù wú yí.", translation: "Flaws in human nature show in face of profit." },
+    { sentence: "这座城市的历史变迁，犹如一部生动的纪录片。", pinyin: "Zhè zuò chéngshì de lìshǐ biànqiān, yóurú yí bù shēngdòng de jìlùpiān.", translation: "The city's history is like a vivid documentary." },
+    { sentence: "我们不能只看眼前利益，而要着眼于长远发展。", pinyin: "Wǒmen bùnéng zhǐ kàn yǎnqián lìyì, ér yào zhuóyǎn yú chángyuǎn fāzhǎn.", translation: "Focus on long-term development, not immediate gain." },
+    { sentence: "与其临渊羡鱼，不如退而结网。", pinyin: "Yǔqí línyuān xiànyú, bùrú tuì ér jiéwǎng.", translation: "Better to make a net than covet fish." },
+    { sentence: "在人工智能时代，终身学习已经成为一种必然选择。", pinyin: "Zài réngōng zhìnéng shídài, zhōngshēn xuéxí yǐjīng chéngwéi yì zhǒng bìrán xuǎnzé.", translation: "Lifelong learning is essential in the AI era." },
+    { sentence: "两国在文化交流方面取得了丰硕的成果。", pinyin: "Liǎng guó zài wénhuà jiāoliú fāngmiàn qǔdéle fēngshuò de chéngguǒ.", translation: "Rich results in cultural exchange between the two countries." },
+    { sentence: "这部电影情节跌宕起伏，引人深思。", pinyin: "Zhè bù diànyǐng qíngjié diēdàng qǐfú, yǐn rén shēnsī.", translation: "The movie has twists and provokes thought." },
+    { sentence: "事实胜于雄辩，再多的狡辩也掩盖不了真相。", pinyin: "Shìshí shèng yú xióngbiàn, zài duō de jiǎobiàn yě yǎngài bùliǎo zhēnxiàng.", translation: "Facts speak louder than words." },
+    { sentence: "无论社会如何变迁，有些传统的价值观依然历久弥新。", pinyin: "Wúlùn shèhuì rúhé biànqiān, yǒuxiē chuántǒng de jiàzhíguān yīrán lìjiǔ míxīn.", translation: "Some traditional values endure through changes." }
   ]
 };
 
@@ -218,7 +338,7 @@ function useSpeech(){
 }
 
 /* ═══════════════════════════════════════════
-   LAYOUT WRAPPER — centers content responsively
+   LAYOUT WRAPPER
    ═══════════════════════════════════════════ */
 
 function PageWrap({children, wide}){
@@ -234,10 +354,10 @@ function TopBar({title,subtitle,onBack,hskLevel,onChangeHSK}){
   return(<div style={{padding:"16px 20px",display:"flex",alignItems:"center",gap:12,background:"#fff",borderBottom:"1px solid #f0efe8",position:"sticky",top:0,zIndex:20}}>
     {onBack&&<button onClick={onBack} style={{background:"none",border:"none",cursor:"pointer",padding:6,display:"flex",borderRadius:8}}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>}
     <div style={{flex:1,minWidth:0}}><div style={{fontSize:17,fontWeight:600,color:"#1a1a1a"}}>{title}</div>{subtitle&&<div style={{fontSize:12,color:"#999"}}>{subtitle}</div>}</div>
-    <div style={{position:"relative"}}>
+    {hskLevel && <div style={{position:"relative"}}>
       <button onClick={()=>setOpen(!open)} style={{background:lv.color+"14",border:`1px solid ${lv.color}30`,borderRadius:20,padding:"6px 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:13,fontWeight:600,color:lv.color,fontFamily:"inherit"}}>{lv.emoji} {lv.label}<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={lv.color} strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
       {open&&<><div onClick={()=>setOpen(false)} style={{position:"fixed",inset:0,zIndex:30}}/><div style={{position:"absolute",right:0,top:"calc(100% + 6px)",background:"#fff",borderRadius:12,border:"1px solid #f0efe8",boxShadow:"0 8px 24px rgba(0,0,0,0.1)",zIndex:31,overflow:"hidden",minWidth:180}}>{HSK_LEVELS.map(l=><button key={l.id} onClick={()=>{onChangeHSK(l.id);setOpen(false);}} style={{width:"100%",padding:"12px 16px",border:"none",cursor:"pointer",display:"flex",alignItems:"center",gap:10,background:l.id===hskLevel?l.color+"10":"transparent",fontFamily:"inherit",textAlign:"left"}}><span style={{fontSize:18}}>{l.emoji}</span><div><div style={{fontSize:14,fontWeight:600,color:l.id===hskLevel?l.color:"#1a1a1a"}}>{l.label}</div><div style={{fontSize:12,color:"#999"}}>{l.sub}</div></div>{l.id===hskLevel&&<svg width="16" height="16" viewBox="0 0 24 24" fill={l.color} style={{marginLeft:"auto"}}><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>}</button>)}</div></>}
-    </div>
+    </div>}
   </div>);
 }
 
@@ -262,7 +382,7 @@ function DrillView({type,hskLevel,onBack,onChangeHSK}){
       :`Grade pronunciation. Target: "${q.sentence}". Student said: "${text.trim()}". Reply ONLY:\nSCORE: [0-100]\nFEEDBACK: [1 sentence]\nISSUES: [wrong characters or "None"]`;
     try{const raw=await callAI(sys,[{role:"user",content:text.trim()}],300);const reply=clean(raw);const m=reply.match(/SCORE:\s*(\d+)/i);const score=m?Math.min(parseInt(m[1]),100):70;
       setFeedback({text:reply.replace(/SCORE:\s*\d+\s*/i,"").trim(),score});setScores(p=>[...p,score]);
-    }catch{setFeedback({text:"Network error, please tap 'Next' and try the next question.",score:0});}setLoading(false);
+    }catch{setFeedback({text:"哎呀，网络稍微有点小情绪，请直接点击“Next question”进行下一题哦~ 📡",score:0});}setLoading(false);
   };
 
   const handleMic=()=>{if(listening){stopListening();return;}startListening(t=>{setInput(t);submit(t);});};
@@ -271,7 +391,7 @@ function DrillView({type,hskLevel,onBack,onChangeHSK}){
 
   if(done){const validScores=scores.filter(s=>s>0);const avg=validScores.length?Math.round(validScores.reduce((a,b)=>a+b,0)/validScores.length):0;const emoji=avg>=90?"🌟":avg>=80?"👏":avg>=70?"👍":avg>=60?"💪":"📚";
     return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title={isSen?"造句练习":"语音测评"} subtitle="Results" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
-      <PageWrap><div style={{padding:"32px 0",textAlign:"center"}}>
+      <PageWrap><div style={{padding:"32px 0",textAlign:"center",animation:"su 0.4s both"}}>
         <div style={{fontSize:56,marginBottom:12}}>{emoji}</div>
         <div style={{fontSize:48,fontWeight:700,color,marginBottom:4}}>{avg}<span style={{fontSize:20,color:"#999"}}>/100</span></div>
         <div style={{fontSize:15,color:"#888",marginBottom:28}}>Average across {validScores.length} questions</div>
@@ -320,20 +440,20 @@ function ChatView({module,hskLevel,onBack,onChangeHSK,showVoice=true}){
   const sys=()=>`You are a Chinese language coach.\n${HSK_PROMPT[hskLevel]}\nROLE: ${module.system||module.role||""}\nRULES: Stay in character, 2-3 sentences max, correct gently. No markdown.`;
   const send=async(text)=>{if(!text.trim()||loading)return;const u={role:"user",content:text.trim()};const up=[...messages,u];setMessages(up);setInput("");setLoading(true);
     try{const raw=await callAI(sys(),up.map(m=>({role:m.role,content:m.content})),800);setMessages(p=>[...p,{role:"assistant",content:clean(raw||"Sorry, try again.")}]);}
-    catch{setMessages(p=>[...p,{role:"assistant",content:"Network error. Please try again."}]);}setLoading(false);};
+    catch{setMessages(p=>[...p,{role:"assistant",content:"网络连接不太稳定，请重新发送一下哦~ 📡"}]);}setLoading(false);};
   const handleMic=()=>{if(listening){stopListening();return;}startListening(t=>{setInput(t);send(t);});};
   return(<div style={{height:"100vh",display:"flex",flexDirection:"column",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}>
     <TopBar title={module.title} subtitle={module.titleEn} onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
     <div style={{flex:1,overflowY:"auto",padding:"16px 20px 120px",display:"flex",flexDirection:"column",alignItems:"center"}}>
       <div style={{width:"100%",maxWidth:640}}>
-      {messages.map((msg,i)=><div key={i} style={{display:"flex",justifyContent:msg.role==="user"?"flex-end":"flex-start",marginBottom:14,alignItems:"flex-end",gap:8}}>
+      {messages.map((msg,i)=><div key={i} style={{display:"flex",justifyContent:msg.role==="user"?"flex-end":"flex-start",marginBottom:14,alignItems:"flex-end",gap:8,animation:"su 0.3s both"}}>
         {msg.role==="assistant"&&<div style={{width:32,height:32,borderRadius:"50%",background:module.bg||"#f0f0f0",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>{module.icon}</div>}
         <div style={{maxWidth:"75%",display:"flex",flexDirection:"column",gap:4}}>
           <div style={{padding:"12px 16px",background:msg.role==="user"?(module.color||"#4A90D9"):"#fff",color:msg.role==="user"?"#fff":"#1a1a1a",borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px",fontSize:15,lineHeight:1.7,whiteSpace:"pre-wrap",boxShadow:msg.role==="user"?"none":"0 1px 3px rgba(0,0,0,0.04)",border:msg.role==="user"?"none":"1px solid #f0efe8"}}>{msg.content}</div>
           {msg.role==="assistant"&&showVoice&&<button onClick={()=>speaking?stopSpeaking():speak(msg.content)} style={{background:"none",border:"none",cursor:"pointer",padding:"2px 6px",display:"flex",alignItems:"center",gap:5,opacity:0.5,alignSelf:"flex-start"}}><svg width="14" height="14" viewBox="0 0 24 24" fill={speaking?(module.color||"#E8A838"):"#888"}><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg><span style={{fontSize:12,color:"#999"}}>{speaking?"Stop":"Play"}</span></button>}
         </div>
       </div>)}
-      {loading&&<div style={{display:"flex",gap:6,alignItems:"center",padding:"8px 0"}}><div style={{width:32,height:32,borderRadius:"50%",background:module.bg||"#f0f0f0",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>{module.icon}</div><div style={{background:"#fff",borderRadius:16,padding:"12px 18px",border:"1px solid #f0efe8",display:"flex",gap:5}}>{[0,1,2].map(j=><div key={j} style={{width:7,height:7,borderRadius:"50%",background:"#ccc",animation:`dp 1.2s ${j*0.2}s infinite`}}/>)}</div></div>}
+      {loading&&<div style={{display:"flex",gap:6,alignItems:"center",padding:"8px 0",animation:"su 0.3s both"}}><div style={{width:32,height:32,borderRadius:"50%",background:module.bg||"#f0f0f0",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>{module.icon}</div><div style={{background:"#fff",borderRadius:16,padding:"12px 18px",border:"1px solid #f0efe8",display:"flex",gap:5}}>{[0,1,2].map(j=><div key={j} style={{width:7,height:7,borderRadius:"50%",background:"#ccc",animation:`dp 1.2s ${j*0.2}s infinite`}}/>)}</div></div>}
       <div ref={endRef}/>
       </div>
     </div>
@@ -348,19 +468,17 @@ function ChatView({module,hskLevel,onBack,onChangeHSK,showVoice=true}){
 }
 
 /* ═══════════════════════════════════════════
-   STUDY MANUAL VIEW (NEW)
+   STUDY MANUAL VIEW
    ═══════════════════════════════════════════ */
 
 function StudyManual({hskLevel, onChangeHSK, onBack}) {
   const [tab, setTab] = useState("vocab");
   const [openCard, setOpenCard] = useState(null);
-  
   const tabs = [
     { id: "vocab", label: "重点词汇", icon: "📝" },
     { id: "grammar", label: "核心语法", icon: "⚙️" },
     { id: "pinyin", label: "语音声调", icon: "🗣️" }
   ];
-  
   const data = MANUAL_DATA[hskLevel]?.[tab] || [];
 
   return (
@@ -368,7 +486,6 @@ function StudyManual({hskLevel, onChangeHSK, onBack}) {
       <TopBar title="学习手册" subtitle="Study Manual" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
       <PageWrap>
         <div style={{padding:"24px 0 60px"}}>
-          {/* Tab Selection */}
           <div style={{display:"flex",gap:10,marginBottom:24,background:"#fff",padding:6,borderRadius:16,border:"1px solid #f0efe8",boxShadow:"0 2px 8px rgba(0,0,0,0.02)"}}>
              {tabs.map(t => (
                 <button key={t.id} onClick={()=>{setTab(t.id);setOpenCard(null);}}
@@ -377,8 +494,6 @@ function StudyManual({hskLevel, onChangeHSK, onBack}) {
                 </button>
              ))}
           </div>
-          
-          {/* Cards List */}
           <div style={{display:"flex",flexDirection:"column",gap:14}}>
             {data.map((item, i) => {
               const isOpen = openCard === i;
@@ -397,6 +512,45 @@ function StudyManual({hskLevel, onChangeHSK, onBack}) {
                 </div>
               )
             })}
+          </div>
+        </div>
+      </PageWrap>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   ABOUT PROJECT VIEW (NEW)
+   ═══════════════════════════════════════════ */
+
+function AboutView({onBack}) {
+  return (
+    <div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}>
+      <TopBar title="关于项目" subtitle="About SpeakWise" onBack={onBack}/>
+      <PageWrap>
+        <div style={{padding:"32px 0 60px", animation:"su 0.4s both"}}>
+          <div style={{background:"linear-gradient(135deg,#E8A838,#D4413A)",borderRadius:24,padding:"32px 24px",color:"#fff",textAlign:"center",marginBottom:24,boxShadow:"0 12px 32px rgba(232,168,56,0.2)"}}>
+            <div style={{fontSize:48,marginBottom:12}}>✨</div>
+            <h2 style={{fontSize:24,fontWeight:700,margin:"0 0 8px"}}>SpeakWise 琢音</h2>
+            <p style={{fontSize:15,opacity:0.9,margin:0}}>AI 中文口语教练 (Web端)</p>
+          </div>
+          
+          <div style={{background:"#fff",borderRadius:20,padding:"28px 24px",border:"1px solid #f0efe8",marginBottom:20}}>
+            <h3 style={{fontSize:14,color:"#999",textTransform:"uppercase",letterSpacing:1,margin:"0 0 16px",fontWeight:600}}>项目背景 (Background)</h3>
+            <p style={{fontSize:15,color:"#333",lineHeight:1.8,margin:0,fontWeight:500}}>
+              本项目为 SRTP 科研课题<br/>
+              <span style={{color:"#D4413A",fontWeight:700}}>《师-生-机深度交互式汉语口语教学模式创新研究》</span><br/>
+              的落地应用平台。专为来华留学生打造，致力于解决传统口语教学中“开口难、反馈慢”的痛点。
+            </p>
+          </div>
+
+          <div style={{background:"#fff",borderRadius:20,padding:"28px 24px",border:"1px solid #f0efe8"}}>
+            <h3 style={{fontSize:14,color:"#999",textTransform:"uppercase",letterSpacing:1,margin:"0 0 16px",fontWeight:600}}>核心特色 (Features)</h3>
+            <ul style={{listStyle:"none",padding:0,margin:0,display:"flex",flexDirection:"column",gap:14}}>
+              <li style={{display:"flex",gap:12}}><span style={{fontSize:20}}>🎯</span><div><div style={{fontWeight:600,fontSize:15,color:"#1a1a1a"}}>对标 HSK 3.0 新标准</div><div style={{fontSize:13,color:"#888",marginTop:4}}>采用初等(1-3)、中等(4-6)、高等(7-9)三等九级动态匹配。</div></div></li>
+              <li style={{display:"flex",gap:12}}><span style={{fontSize:20}}>🤖</span><div><div style={{fontWeight:600,fontSize:15,color:"#1a1a1a"}}>大语言模型驱动交互</div><div style={{fontSize:13,color:"#888",marginTop:4}}>无缝集成大模型能力，实现自由对话、场景模拟与智能打分。</div></div></li>
+              <li style={{display:"flex",gap:12}}><span style={{fontSize:20}}>🎙️</span><div><div style={{fontWeight:600,fontSize:15,color:"#1a1a1a"}}>Web 端纯天然语音接入</div><div style={{fontSize:13,color:"#888",marginTop:4}}>无需下载 APP，基于浏览器原生 API 实现语音识别与合成。</div></div></li>
+            </ul>
           </div>
         </div>
       </PageWrap>
@@ -427,7 +581,7 @@ function MenuItem({item, onClick, hovered, onHover, badge}){
 
 function HSKSelect({onSelect}){const[h,sH]=useState(null);return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:24}}>
   <div style={{width:72,height:72,borderRadius:20,background:"linear-gradient(135deg,#E8A838,#D4413A)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:22,boxShadow:"0 8px 24px rgba(232,168,56,0.25)"}}><span style={{fontSize:34,color:"#fff",fontWeight:700}}>说</span></div>
-  <h1 style={{fontSize:26,fontWeight:700,color:"#1a1a1a",margin:"0 0 6px"}}>SpeakWise 雅言</h1>
+  <h1 style={{fontSize:26,fontWeight:700,color:"#1a1a1a",margin:"0 0 6px"}}>SpeakWise 琢音</h1>
   <p style={{fontSize:15,color:"#999",margin:"0 0 8px"}}>AI Chinese language coach</p>
   <p style={{fontSize:14,color:"#bbb",margin:"0 0 36px"}}>What's your Chinese level?</p>
   <div style={{width:"100%",maxWidth:440,display:"flex",flexDirection:"column",gap:14}}>
@@ -443,9 +597,10 @@ function MainMenu({hskLevel,onChangeHSK,onNav}){const[h,sH]=useState(null);const
   const sec=[
     {id:"oral",title:"口语练习",titleEn:"Oral practice",icon:"🗣️",color:"#E8A838",bg:"#FFF8ED",desc:"场景模拟 · 语音测评 · 自由对话"},
     {id:"written",title:"书面语练习",titleEn:"Written practice",icon:"📖",color:"#7B6CF6",bg:"#F3F0FF",desc:"造句 · 段落写作 · 短文写作"},
-    {id:"manual",title:"学习手册",titleEn:"Study Manual",icon:"📚",color:"#D4413A",bg:"#FDF0EF",desc:"重点词汇 · 核心语法 · 语音声调"}
+    {id:"manual",title:"学习手册",titleEn:"Study Manual",icon:"📚",color:"#D4413A",bg:"#FDF0EF",desc:"重点词汇 · 核心语法 · 语音声调"},
+    {id:"about",title:"关于项目",titleEn:"About SpeakWise",icon:"✨",color:"#1ABC9C",bg:"#E8FAF6",desc:"SRTP 创新研究介绍"}
   ];
-  return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title="SpeakWise 雅言" subtitle="AI Chinese language coach" hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
+  return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title="SpeakWise 琢音" subtitle="AI Chinese language coach" hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
     <PageWrap><div style={{padding:"32px 0 40px"}}>
       <p style={{fontSize:22,fontWeight:600,color:"#1a1a1a",margin:"0 0 28px",lineHeight:1.4}}>Hi! 👋 What would you<br/>like to practice?</p>
       <div style={{display:"flex",flexDirection:"column",gap:16}}>
@@ -456,13 +611,12 @@ function MainMenu({hskLevel,onChangeHSK,onNav}){const[h,sH]=useState(null);const
         </div>)}
       </div>
       <div style={{marginTop:24,padding:"14px 18px",background:"#fff",borderRadius:12,border:"1px solid #f0efe8",display:"flex",alignItems:"center",gap:10}}><span>💡</span><p style={{fontSize:13,color:"#999",margin:0}}>Use Chrome for voice. Tap mic to speak Chinese!</p></div>
-      <div style={{marginTop:18,textAlign:"center",fontSize:12,color:"#d0d0d0"}}>Powered by Claude AI · SRTP Project</div>
     </div></PageWrap></div>);}
 
 function OralMenu({hskLevel,onChangeHSK,onBack,onNav}){const[h,sH]=useState(null);
   const items=[
     {id:"scenes",title:"场景模拟",titleEn:"Scenarios",icon:"🎭",color:"#E8A838",bg:"#FFF8ED",desc:"Real-life role play"},
-    {id:"assess",title:"语音测评",titleEn:"Pronunciation",icon:"🎯",color:"#7B6CF6",bg:"#F3F0FF",desc:"10 questions, AI scores"},
+    {id:"assess",title:"语音测评",titleEn:"Pronunciation",icon:"🎯",color:"#7B6CF6",bg:"#F3F0FF",desc:"30 questions, AI scores"},
     {id:"free",title:"自由对话",titleEn:"Free chat",icon:"💬",color:"#2DAA6E",bg:"#EDFAF3",desc:"Chat freely with AI"}];
   return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title="口语练习" subtitle="Oral practice" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
     <PageWrap><div style={{padding:"24px 0",display:"flex",flexDirection:"column",gap:12}}>
@@ -484,12 +638,12 @@ function SceneList({hskLevel,onChangeHSK,onBack,onSelect}){const[filter,setFilte
 
 function WrittenMenu({hskLevel,onChangeHSK,onBack,onSelect}){const[h,sH]=useState(null);
   const modes=[
-    {id:"sentence",title:"造句练习",titleEn:"Sentences",icon:"✏️",color:"#4A90D9",bg:"#EEF4FB",desc:"10 questions, AI grades"},
+    {id:"sentence",title:"造句练习",titleEn:"Sentences",icon:"✏️",color:"#4A90D9",bg:"#EEF4FB",desc:"30 questions, AI grades"},
     {id:"paragraph",title:"段落写作",titleEn:"Paragraphs",icon:"📝",color:"#E8A838",bg:"#FFF8ED",desc:"Write on a topic"},
     {id:"essay",title:"短文写作",titleEn:"Essays",icon:"📄",color:"#7B6CF6",bg:"#F3F0FF",desc:"Full essay, detailed feedback"}];
   return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title="书面语练习" subtitle="Written practice" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
     <PageWrap><div style={{padding:"24px 0",display:"flex",flexDirection:"column",gap:12}}>
-      {modes.map(m=><MenuItem key={m.id} item={m} onClick={()=>onSelect(m)} hovered={h} onHover={sH} badge={m.id==="sentence"?"10Q":null}/>)}
+      {modes.map(m=><MenuItem key={m.id} item={m} onClick={()=>onSelect(m)} hovered={h} onHover={sH} badge={m.id==="sentence"?"30Q":null}/>)}
     </div></PageWrap></div>);}
 
 /* ═══════════════════════════════════════════
@@ -514,11 +668,12 @@ export default function App(){
   const writingSelect=m=>{if(m.id==="sentence")openDrill("sentence","written");else openChat(buildWritingChat(m.id,hsk),false,"written");};
   return(<><style>{`@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');@keyframes su{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,0,0,0.12)}50%{box-shadow:0 0 0 12px rgba(0,0,0,0)}}@keyframes dp{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1.1)}}*{box-sizing:border-box;margin:0}body{font-family:'Noto Sans SC',sans-serif}`}</style>
     {view==="hsk"&&<HSKSelect onSelect={l=>{setHsk(l);setView("main");}}/>}
-    {view==="main"&&<MainMenu hskLevel={hsk} onChangeHSK={setHsk} onNav={id=>setView(id==="oral"?"oral":id==="written"?"written":"manual")}/>}
+    {view==="main"&&<MainMenu hskLevel={hsk} onChangeHSK={setHsk} onNav={id=>setView(id==="oral"?"oral":id==="written"?"written":id==="manual"?"manual":"about")}/>}
     {view==="oral"&&<OralMenu hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("main")} onNav={oralNav}/>}
     {view==="scenes"&&<SceneList hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("oral")} onSelect={sceneSelect}/>}
     {view==="written"&&<WrittenMenu hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("main")} onSelect={writingSelect}/>}
     {view==="manual"&&<StudyManual hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("main")}/>}
+    {view==="about"&&<AboutView onBack={()=>setView("main")}/>}
     {view==="chat"&&chatMod&&<ChatView module={chatMod} hskLevel={hsk} onBack={()=>setView(chatParent)} onChangeHSK={setHsk} showVoice={chatVoice}/>}
     {view==="drill"&&<DrillView type={drillType} hskLevel={hsk} onBack={()=>setView(drillParent)} onChangeHSK={setHsk}/>}
   </>);

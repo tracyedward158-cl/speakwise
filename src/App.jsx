@@ -61,14 +61,14 @@ const IDENTITY_FILTERS = [
 const SCENARIOS = [
   { id: "restaurant", title: "餐厅点餐", titleEn: "Order food", icon: "🍜", color: "#E8A838", bg: "#FFF8ED", identities: ["student","worker","tourist"], role: "You play a restaurant waiter. Take orders, recommend dishes, handle payment.", greeting: { "1-3": "你好！\n(Nǐ hǎo!) Hello!\n\n你想吃什么？\n(Nǐ xiǎng chī shénme?)\nWhat do you want to eat?", "4-6": "你好，欢迎光临！请问几位？\n(Qǐngwèn jǐ wèi?)\nHow many guests?\n\n想坐大厅还是包间？", "7-9": "欢迎光临！请问您有预订吗？今天我们有几道新推出的特色菜，要不要我给您介绍一下？" } },
   { id: "directions", title: "问路 / 打车", titleEn: "Directions & taxi", icon: "🗺️", color: "#4A90D9", bg: "#EEF4FB", identities: ["student","worker","tourist"], role: "You play a taxi driver or passerby. Use: 左转, 右转, 直走, 红绿灯.", greeting: { "1-3": "你好！你去哪里？\n(Nǐ qù nǎlǐ?) 🚕", "4-6": "你好！我是出租车司机。请问你去哪儿？🚕", "7-9": "您好，请问去哪儿？现在有点堵车，我建议走三环，您看行吗？🚕" } },
-  { id: "hospital", title: "看病 / 去药店", titleEn: "Doctor & pharmacy", icon: "🏥", color: "#D4413A", bg: "#FDF0EF", identities: ["student","worker","tourist"], role: "You play a doctor or pharmacist. Teach: 头疼, 发烧, 感冒, 过敏.", greeting: { "1-3": "你好！你哪里不舒服？\n(Nǐ nǎlǐ bù shūfu?) 🩺", "4-6": "你好，请坐。我是王医生。\n你今天哪里不舒服？ 🩺", "7-9": "你好，请坐。我先看一下挂号信息……你是内科对吧？🩺" } },
-  { id: "shopping", title: "购物 / 砍价", titleEn: "Shopping", icon: "🛒", color: "#9B59B6", bg: "#F5F0FA", identities: ["student","worker","tourist"], role: "You play a market vendor. Teach: 多少钱, 太贵了, 便宜一点.", greeting: { "1-3": "你好！你要买什么？\n(Nǐ yào mǎi shénme?) 🛒", "4-6": "来看看！今天水果很新鲜！草莓十块一斤！🍓", "7-9": "哎，来来来！自家种的，纯天然！买两斤送半斤！🍓" } },
-  { id: "social", title: "校园社交", titleEn: "Making friends", icon: "🤝", color: "#2DAA6E", bg: "#EDFAF3", identities: ["student"], role: "You play a friendly classmate. Casual, topics: clubs, food, WeChat.", greeting: { "1-3": "你好！我叫小明。你叫什么？😄", "4-6": "嘿！你也是这个班的吗？我叫小明，你呢？😄", "7-9": "哎，你是新来的交换生吧？加个微信呗？😄" } },
-  { id: "rent", title: "租房沟通", titleEn: "Renting", icon: "🏠", color: "#E67E22", bg: "#FEF5EC", identities: ["student","worker"], role: "You play a landlord. Teach: 房租, 押金, 水电费, 合同.", greeting: { "1-3": "你好！你要租房子吗？🏠", "4-6": "你好，你是来看房的吧？一室一厅，月租三千五。🏠", "7-9": "你好！朝南采光好，家电全新，租金三千五，押一付三。🏠" } },
-  { id: "interview", title: "面试求职", titleEn: "Job interview", icon: "👔", color: "#34495E", bg: "#EDF0F2", identities: ["worker","student"], role: "You play an HR interviewer. Ask: self-intro, experience, salary.", greeting: { "1-3": "你好！请坐。你叫什么名字？💼", "4-6": "你好，请坐！我是张经理。先做个自我介绍吧。💼", "7-9": "你好，欢迎来面试。我是人力资源部张经理。请先做个自我介绍。💼" } },
-  { id: "travel", title: "旅游订酒店", titleEn: "Travel & hotels", icon: "🏨", color: "#1ABC9C", bg: "#E8FAF6", identities: ["tourist","student"], role: "You play a hotel receptionist. Teach: 预订, 入住, 退房, 门票.", greeting: { "1-3": "你好！欢迎！你要住房间吗？🏨", "4-6": "欢迎来到北京大酒店！请问有预订吗？🏨", "7-9": "欢迎光临！请问您是网上预订还是现场办理？🏨" } },
-  { id: "workplace", title: "职场沟通", titleEn: "Workplace", icon: "🏢", color: "#8E44AD", bg: "#F4ECF9", identities: ["worker"], role: "You play a colleague/manager. Topics: meetings, leave, projects.", greeting: { "1-3": "早上好！今天忙吗？🏢", "4-6": "早上好！下午三点有部门会议，准备好了吗？🏢", "7-9": "早！昨天方案客户反馈了，下午开会你汇报一下进度。🏢" } },
-  { id: "sightseeing", title: "景点游览", titleEn: "Sightseeing", icon: "🏯", color: "#C0392B", bg: "#FBEEED", identities: ["tourist"], role: "You play a tour guide. Teach: 拍照, 排队, 纪念品.", greeting: { "1-3": "欢迎！这是长城！好看吗？🏯", "4-6": "欢迎来到长城！我是导游小李。🏯", "7-9": "各位游客朋友们，欢迎来到八达岭长城！🏯" } },
+  { id: "hospital", title: "看病 / 去药店", titleEn: "Doctor & pharmacy", icon: "🏥", color: "#D4413A", bg: "#FDF0EF", identities: ["student","worker","tourist"], role: "You play a doctor or pharmacist. Teach: 头疼, 发烧, 感冒, 过敏.", greeting: { "1-3": "你好！你哪里不舒服？\n(Nǐ nǎlǐ bù shūfu?) 🤒", "4-6": "你好，请坐。我是王医生。\n你今天哪里不舒服？ 🤒", "7-9": "你好，请坐。我先看一下挂号信息……你是内科对吧？👨‍⚕️" } },
+  { id: "shopping", title: "购物 / 砍价", titleEn: "Shopping", icon: "🛍️", color: "#9B59B6", bg: "#F5F0FA", identities: ["student","worker","tourist"], role: "You play a market vendor. Teach: 多少钱, 太贵了, 便宜一点.", greeting: { "1-3": "你好！你要买什么？\n(Nǐ yào mǎi shénme?) 🍎", "4-6": "来看看！今天水果很新鲜！草莓十块一斤！🍓", "7-9": "哎，来来来！自家种的，纯天然！买两斤送半斤！🛒" } },
+  { id: "social", title: "校园社交", titleEn: "Making friends", icon: "👋", color: "#2DAA6E", bg: "#EDFAF3", identities: ["student"], role: "You play a friendly classmate. Casual, topics: clubs, food, WeChat.", greeting: { "1-3": "你好！我叫小明。你叫什么？😊", "4-6": "嘿！你也是这个班的吗？我叫小明，你呢？🙌", "7-9": "哎，你是新来的交换生吧？加个微信呗？📱" } },
+  { id: "rent", title: "租房沟通", titleEn: "Renting", icon: "🏠", color: "#E67E22", bg: "#FEF5EC", identities: ["student","worker"], role: "You play a landlord. Teach: 房租, 押金, 水电费, 合同.", greeting: { "1-3": "你好！你要租房子吗？🔑", "4-6": "你好，你是来看房的吧？一室一厅，月租三千五。🛋️", "7-9": "你好！朝南采光好，家电全新，租金三千五，押一付三。📝" } },
+  { id: "interview", title: "面试求职", titleEn: "Job interview", icon: "💼", color: "#34495E", bg: "#EDF0F2", identities: ["worker","student"], role: "You play an HR interviewer. Ask: self-intro, experience, salary.", greeting: { "1-3": "你好！请坐。你叫什么名字？🤝", "4-6": "你好，请坐！我是张经理。先做个自我介绍吧。📝", "7-9": "你好，欢迎来面试。我是人力资源部张经理。请先做个自我介绍。👔" } },
+  { id: "travel", title: "旅游订酒店", titleEn: "Travel & hotels", icon: "🧳", color: "#1ABC9C", bg: "#E8FAF6", identities: ["tourist","student"], role: "You play a hotel receptionist. Teach: 预订, 入住, 退房, 门票.", greeting: { "1-3": "你好！欢迎！你要住房间吗？🏨", "4-6": "欢迎来到北京大酒店！请问有预订吗？🛎️", "7-9": "欢迎光临！请问您是网上预订还是现场办理？🏨" } },
+  { id: "workplace", title: "职场沟通", titleEn: "Workplace", icon: "💻", color: "#8E44AD", bg: "#F4ECF9", identities: ["worker"], role: "You play a colleague/manager. Topics: meetings, leave, projects.", greeting: { "1-3": "早上好！今天忙吗？☕", "4-6": "早上好！下午三点有部门会议，准备好了吗？📊", "7-9": "早！昨天方案客户反馈了，下午开会你汇报一下进度。📈" } },
+  { id: "sightseeing", title: "景点游览", titleEn: "Sightseeing", icon: "📸", color: "#C0392B", bg: "#FBEEED", identities: ["tourist"], role: "You play a tour guide. Teach: 拍照, 排队, 纪念品.", greeting: { "1-3": "欢迎！这是长城！好看吗？🤩", "4-6": "欢迎来到长城！我是导游小李。🚩", "7-9": "各位游客朋友们，欢迎来到八达岭长城！⛰️" } },
 ];
 
 const SENTENCE_BANK = {
@@ -335,7 +335,19 @@ function useSpeech(){
   const[l,sL]=useState(false);const[s,sS]=useState(false);const r=useRef(null);
   const start=useCallback(cb=>{if(!SRC){alert("Use Chrome for voice.");return;}const x=new SRC();x.lang="zh-CN";x.interimResults=false;x.continuous=false;x.onresult=e=>{cb(e.results[0][0].transcript);sL(false);};x.onerror=()=>sL(false);x.onend=()=>sL(false);r.current=x;x.start();sL(true);},[]);
   const stop=useCallback(()=>{r.current?.stop();sL(false);},[]);
-  const speak=useCallback((t, slow = false)=>{const c=clean(t).replace(/\(.*?\)/g,"");const sy=window.speechSynthesis;sy.cancel();const u=new SpeechSynthesisUtterance(c);u.lang="zh-CN";u.rate=slow ? 0.45 : 0.85;u.onstart=()=>sS(true);u.onend=()=>sS(false);u.onerror=()=>sS(false);sy.speak(u);},[]);
+  const speak=useCallback((t, slow = false)=>{
+    // 【修改点】新增了 \p{Emoji_Presentation}|\p{Extended_Pictographic} 正则来彻底过滤所有 Emoji
+    const c=clean(t).replace(/\(.*?\)/g,"").replace(/\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu, "");
+    const sy=window.speechSynthesis;
+    sy.cancel();
+    const u=new SpeechSynthesisUtterance(c);
+    u.lang="zh-CN";
+    u.rate=slow ? 0.45 : 0.85;
+    u.onstart=()=>sS(true);
+    u.onend=()=>sS(false);
+    u.onerror=()=>sS(false);
+    sy.speak(u);
+  },[]);
   const stopS=useCallback(()=>{window.speechSynthesis.cancel();sS(false);},[]);
   return{listening:l,speaking:s,startListening:start,stopListening:stop,speak,stopSpeaking:stopS};
 }
@@ -395,7 +407,7 @@ function DrillView({type,hskLevel,onBack,onChangeHSK, showPinyin, onTogglePinyin
   const next=()=>{if(idx+1>=total){setDone(true);return;}setIdx(idx+1);setInput("");setFeedback(null);};
   const restart=()=>{setIdx(0);setInput("");setFeedback(null);setScores([]);setDone(false);};
 
-  if(done){const validScores=scores.filter(s=>s>0);const avg=validScores.length?Math.round(validScores.reduce((a,b)=>a+b,0)/validScores.length):0;const emoji=avg>=90?"🌟":avg>=80?"👏":avg>=70?"👍":avg>=60?"💪":"📚";
+  if(done){const validScores=scores.filter(s=>s>0);const avg=validScores.length?Math.round(validScores.reduce((a,b)=>a+b,0)/validScores.length):0;const emoji=avg>=90?"🌟":avg>=80?"👍":avg>=70?"👌":avg>=60?"🤔":"💪";
     return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title={isSen?"造句练习":"语音测评"} subtitle="Results" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} showPinyin={showPinyin} onTogglePinyin={onTogglePinyin}/>
       <PageWrap><div style={{padding:"32px 0",textAlign:"center",animation:"su 0.4s both"}}>
         <div style={{fontSize:56,marginBottom:12}}>{emoji}</div>
@@ -430,7 +442,7 @@ function DrillView({type,hskLevel,onBack,onChangeHSK, showPinyin, onTogglePinyin
       {loading&&<div style={{textAlign:"center",padding:24}}><div style={{display:"inline-flex",gap:5}}>{[0,1,2].map(j=><div key={j} style={{width:8,height:8,borderRadius:"50%",background:color,animation:`dp 1.2s ${j*0.2}s infinite`}}/>)}</div><div style={{fontSize:13,color:"#999",marginTop:8}}>AI grading...</div></div>}
     </div></PageWrap>
     {!feedback&&!loading&&<div style={{position:"fixed",bottom:0,left:0,right:0,padding:"14px 20px",background:"#fff",borderTop:"1px solid #f0efe8",display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{display:"flex",alignItems:"center",gap:10,width:"100%",maxWidth:580}}>
-      <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&submit(input)} placeholder={isSen?"Type your sentence...":"Tap mic or type..."} style={{flex:1,padding:"14px 18px",borderRadius:24,border:"1px solid #e8e6de",background:"#FAFAF7",fontSize:15,outline:"none",color:"#1a1a1a",fontFamily:"inherit"}}/>
+      <input value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&submit(input)} placeholder={isSen?"Type your sentence...":"Tap mic or type..."} style={{flex:1,padding:"14px 18px",borderRadius:24,border:"1px solid #e8e6de",background:"#FAFAF7",fontSize:15,outline:"none",color:"#1a1a1a",fontFamily:"inherit"} }/>
       {!isSen&&<button onClick={handleMic} style={{width:48,height:48,borderRadius:"50%",background:listening?color:"transparent",border:`2px solid ${color}`,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",animation:listening?"pulse 1.5s infinite":"none",flexShrink:0}}><svg width="18" height="18" viewBox="0 0 24 24" fill={listening?"#fff":color}><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg></button>}
       <button onClick={()=>submit(input)} disabled={!input.trim()} style={{width:48,height:48,borderRadius:"50%",background:input.trim()?color:"#e8e6de",border:"none",display:"flex",alignItems:"center",justifyContent:"center",cursor:input.trim()?"pointer":"default",flexShrink:0}}><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
     </div></div>}
@@ -487,7 +499,7 @@ function StudyManual({hskLevel, onChangeHSK, onBack}) {
   const [tab, setTab] = useState("vocab");
   const [openCard, setOpenCard] = useState(null);
   const tabs = [
-    { id: "vocab", label: "重点词汇", icon: "📝" },
+    { id: "vocab", label: "重点词汇", icon: "📚" },
     { id: "grammar", label: "核心语法", icon: "⚙️" },
     { id: "pinyin", label: "语音声调", icon: "🗣️" }
   ];
@@ -594,7 +606,7 @@ function HSKSelect({onSelect}){const[h,sH]=useState(null);return(<div style={{mi
 function MainMenu({hskLevel,onChangeHSK,onNav, onOpenAbout}){const[h,sH]=useState(null);const isMobile=useIsMobile();
   const sec=[
     {id:"oral",title:"口语练习",titleEn:"Oral practice",icon:"🗣️",color:"#E8A838",bg:"#FFF8ED",desc:"场景模拟 · 语音测评 · 自由对话"},
-    {id:"written",title:"书面语练习",titleEn:"Written practice",icon:"📖",color:"#7B6CF6",bg:"#F3F0FF",desc:"造句 · 段落写作 · 短文写作"},
+    {id:"written",title:"书面语练习",titleEn:"Written practice",icon:"✍️",color:"#7B6CF6",bg:"#F3F0FF",desc:"造句 · 段落写作 · 短文写作"},
     {id:"manual",title:"学习手册",titleEn:"Study Manual",icon:"📚",color:"#D4413A",bg:"#FDF0EF",desc:"重点词汇 · 核心语法 · 语音声调"}
   ];
   return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title="SpeakWise 琢音" subtitle="AI Chinese language coach" hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
@@ -617,7 +629,7 @@ function MainMenu({hskLevel,onChangeHSK,onNav, onOpenAbout}){const[h,sH]=useStat
 function OralMenu({hskLevel,onChangeHSK,onBack,onNav}){const[h,sH]=useState(null);
   const items=[
     {id:"scenes",title:"场景模拟",titleEn:"Scenarios",icon:"🎭",color:"#E8A838",bg:"#FFF8ED",desc:"Real-life role play"},
-    {id:"assess",title:"语音测评",titleEn:"Pronunciation",icon:"🎯",color:"#7B6CF6",bg:"#F3F0FF",desc:"30 questions, AI scores"},
+    {id:"assess",title:"语音测评",titleEn:"Pronunciation",icon:"🎙️",color:"#7B6CF6",bg:"#F3F0FF",desc:"30 questions, AI scores"},
     {id:"free",title:"自由对话",titleEn:"Free chat",icon:"💬",color:"#2DAA6E",bg:"#EDFAF3",desc:"Chat freely with AI"}];
   return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title="口语练习" subtitle="Oral practice" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
     <PageWrap><div style={{padding:"24px 0",display:"flex",flexDirection:"column",gap:12}}>
@@ -651,8 +663,8 @@ function WrittenMenu({hskLevel,onChangeHSK,onBack,onSelect}){const[h,sH]=useStat
    MODULE BUILDERS
    ═══════════════════════════════════════════ */
 
-function buildFreeModule(hsk){return{id:"free",title:"自由对话",titleEn:"Free chat",icon:"💬",color:"#2DAA6E",bg:"#EDFAF3",system:"Friendly Chinese conversation partner. Chat naturally, correct gently.",greeting:hsk==="1-3"?"你好！😊\n(Nǐ hǎo!)\n\n你叫什么名字？\n(Nǐ jiào shénme míngzi?)":hsk==="4-6"?"嘿！你好呀！😊\n\n你今天过得怎么样？\n(Nǐ jīntiān guò de zěnmeyàng?)":"嘿！今天想聊点什么？😊\n\n最近有什么有意思的事儿吗？"};}
-function buildWritingChat(mode,hsk){const c={paragraph:{title:"段落写作",titleEn:"Paragraphs",icon:"📝",color:"#E8A838",bg:"#FFF8ED",system:"Chinese writing coach. Review paragraphs, give feedback. No markdown.",greeting:hsk==="1-3"?"Paragraph practice! 📝\n\nWrite 3-4 sentences:\n\n我的一天 \"My day\"":hsk==="4-6"?"Paragraph writing! 📝\n\nWrite 4-5 sentences:\n\n我最喜欢的城市 \"My favorite city\"":"Paragraph writing! 📝\n\nWrite 5-6 sentences:\n\n网络社交对人际关系的影响"},essay:{title:"短文写作",titleEn:"Essays",icon:"📄",color:"#7B6CF6",bg:"#F3F0FF",system:"Chinese essay coach. Score /100, detailed feedback. No markdown.",greeting:hsk==="1-3"?"Essay practice! 📄\n\nWrite 5-6 sentences:\n\n我的家人 \"My family\"":hsk==="4-6"?"Essay writing! 📄\n\nWrite 8-10 sentences:\n\n一次难忘的旅行 \"An unforgettable trip\"":"Essay writing! 📄\n\nWrite 150-200 chars:\n\n传统文化在现代社会中的角色"}};return c[mode];}
+function buildFreeModule(hsk){return{id:"free",title:"自由对话",titleEn:"Free chat",icon:"💬",color:"#2DAA6E",bg:"#EDFAF3",system:"Friendly Chinese conversation partner. Chat naturally, correct gently.",greeting:hsk==="1-3"?"你好！👋\n(Nǐ hǎo!)\n\n你叫什么名字？\n(Nǐ jiào shénme míngzi?)":hsk==="4-6"?"嘿！你好呀！👋\n\n你今天过得怎么样？\n(Nǐ jīntiān guò de zěnmeyàng?)":"嘿！今天想聊点什么？👋\n\n最近有什么有意思的事儿吗？"};}
+function buildWritingChat(mode,hsk){const c={paragraph:{title:"段落写作",titleEn:"Paragraphs",icon:"📝",color:"#E8A838",bg:"#FFF8ED",system:"Chinese writing coach. Review paragraphs, give feedback. No markdown.",greeting:hsk==="1-3"?"Paragraph practice! ✍️\n\nWrite 3-4 sentences:\n\n我的一天 \"My day\"":hsk==="4-6"?"Paragraph writing! ✍️\n\nWrite 4-5 sentences:\n\n我最喜欢的城市 \"My favorite city\"":"Paragraph writing! ✍️\n\nWrite 5-6 sentences:\n\n网络社交对人际关系的影响"},essay:{title:"短文写作",titleEn:"Essays",icon:"📄",color:"#7B6CF6",bg:"#F3F0FF",system:"Chinese essay coach. Score /100, detailed feedback. No markdown.",greeting:hsk==="1-3"?"Essay practice! ✍️\n\nWrite 5-6 sentences:\n\n我的家人 \"My family\"":hsk==="4-6"?"Essay writing! ✍️\n\nWrite 8-10 sentences:\n\n一次难忘的旅行 \"An unforgettable trip\"":"Essay writing! ✍️\n\nWrite 150-200 chars:\n\n传统文化在现代社会中的角色"}};return c[mode];}
 
 /* ═══════════════════════════════════════════
    APP ROOT (State persistence & feature flags)

@@ -38,7 +38,7 @@ function useIsMobile() {
 }
 
 /* ═══════════════════════════════════════════
-   DATA & KNOWLEDGE BASE (Expanded to 30 items/level)
+   DATA & KNOWLEDGE BASE
    ═══════════════════════════════════════════ */
 
 const HSK_LEVELS = [
@@ -327,12 +327,15 @@ const MANUAL_DATA = {
 
 function clean(t){return t.replace(/\*\*/g,"").replace(/\*/g,"").replace(/^#{1,6}\s/gm,"").replace(/__/g,"").replace(/~~/g,"");}
 
+// Helper to strip pinyin parens like (Nǐ hǎo) when toggle is off
+const renderText = (t, show) => show ? t : t.replace(/\n?\(.*?\)\n?/g, '');
+
 const SRC=typeof window!=="undefined"&&(window.SpeechRecognition||window.webkitSpeechRecognition);
 function useSpeech(){
   const[l,sL]=useState(false);const[s,sS]=useState(false);const r=useRef(null);
   const start=useCallback(cb=>{if(!SRC){alert("Use Chrome for voice.");return;}const x=new SRC();x.lang="zh-CN";x.interimResults=false;x.continuous=false;x.onresult=e=>{cb(e.results[0][0].transcript);sL(false);};x.onerror=()=>sL(false);x.onend=()=>sL(false);r.current=x;x.start();sL(true);},[]);
   const stop=useCallback(()=>{r.current?.stop();sL(false);},[]);
-  const speak=useCallback(t=>{const c=clean(t).replace(/\(.*?\)/g,"");const sy=window.speechSynthesis;sy.cancel();const u=new SpeechSynthesisUtterance(c);u.lang="zh-CN";u.rate=0.85;u.onstart=()=>sS(true);u.onend=()=>sS(false);u.onerror=()=>sS(false);sy.speak(u);},[]);
+  const speak=useCallback((t, slow = false)=>{const c=clean(t).replace(/\(.*?\)/g,"");const sy=window.speechSynthesis;sy.cancel();const u=new SpeechSynthesisUtterance(c);u.lang="zh-CN";u.rate=slow ? 0.45 : 0.85;u.onstart=()=>sS(true);u.onend=()=>sS(false);u.onerror=()=>sS(false);sy.speak(u);},[]);
   const stopS=useCallback(()=>{window.speechSynthesis.cancel();sS(false);},[]);
   return{listening:l,speaking:s,startListening:start,stopListening:stop,speak,stopSpeaking:stopS};
 }
@@ -346,26 +349,29 @@ function PageWrap({children, wide}){
 }
 
 /* ═══════════════════════════════════════════
-   TOP BAR
+   TOP BAR (with Pinyin Toggle)
    ═══════════════════════════════════════════ */
 
-function TopBar({title,subtitle,onBack,hskLevel,onChangeHSK}){
+function TopBar({title,subtitle,onBack,hskLevel,onChangeHSK, showPinyin, onTogglePinyin}){
   const[open,setOpen]=useState(false);const lv=HSK_LEVELS.find(l=>l.id===hskLevel);
   return(<div style={{padding:"16px 20px",display:"flex",alignItems:"center",gap:12,background:"#fff",borderBottom:"1px solid #f0efe8",position:"sticky",top:0,zIndex:20}}>
     {onBack&&<button onClick={onBack} style={{background:"none",border:"none",cursor:"pointer",padding:6,display:"flex",borderRadius:8}}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>}
     <div style={{flex:1,minWidth:0}}><div style={{fontSize:17,fontWeight:600,color:"#1a1a1a"}}>{title}</div>{subtitle&&<div style={{fontSize:12,color:"#999"}}>{subtitle}</div>}</div>
-    {hskLevel && <div style={{position:"relative"}}>
-      <button onClick={()=>setOpen(!open)} style={{background:lv.color+"14",border:`1px solid ${lv.color}30`,borderRadius:20,padding:"6px 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:13,fontWeight:600,color:lv.color,fontFamily:"inherit"}}>{lv.emoji} {lv.label}<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={lv.color} strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      {open&&<><div onClick={()=>setOpen(false)} style={{position:"fixed",inset:0,zIndex:30}}/><div style={{position:"absolute",right:0,top:"calc(100% + 6px)",background:"#fff",borderRadius:12,border:"1px solid #f0efe8",boxShadow:"0 8px 24px rgba(0,0,0,0.1)",zIndex:31,overflow:"hidden",minWidth:180}}>{HSK_LEVELS.map(l=><button key={l.id} onClick={()=>{onChangeHSK(l.id);setOpen(false);}} style={{width:"100%",padding:"12px 16px",border:"none",cursor:"pointer",display:"flex",alignItems:"center",gap:10,background:l.id===hskLevel?l.color+"10":"transparent",fontFamily:"inherit",textAlign:"left"}}><span style={{fontSize:18}}>{l.emoji}</span><div><div style={{fontSize:14,fontWeight:600,color:l.id===hskLevel?l.color:"#1a1a1a"}}>{l.label}</div><div style={{fontSize:12,color:"#999"}}>{l.sub}</div></div>{l.id===hskLevel&&<svg width="16" height="16" viewBox="0 0 24 24" fill={l.color} style={{marginLeft:"auto"}}><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>}</button>)}</div></>}
+    {hskLevel && <div style={{display:"flex",alignItems:"center",gap:10}}>
+      {onTogglePinyin && <button onClick={onTogglePinyin} style={{background:"#f0efe8",border:"none",borderRadius:20,padding:"6px 12px",cursor:"pointer",fontSize:13,display:"flex",alignItems:"center",gap:4,fontWeight:600,color:"#666"}}>{showPinyin?"👁️ 拼音":"🙈 汉字"}</button>}
+      <div style={{position:"relative"}}>
+        <button onClick={()=>setOpen(!open)} style={{background:lv.color+"14",border:`1px solid ${lv.color}30`,borderRadius:20,padding:"6px 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:13,fontWeight:600,color:lv.color,fontFamily:"inherit"}}>{lv.emoji} {lv.label}<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={lv.color} strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        {open&&<><div onClick={()=>setOpen(false)} style={{position:"fixed",inset:0,zIndex:30}}/><div style={{position:"absolute",right:0,top:"calc(100% + 6px)",background:"#fff",borderRadius:12,border:"1px solid #f0efe8",boxShadow:"0 8px 24px rgba(0,0,0,0.1)",zIndex:31,overflow:"hidden",minWidth:180}}>{HSK_LEVELS.map(l=><button key={l.id} onClick={()=>{onChangeHSK(l.id);setOpen(false);}} style={{width:"100%",padding:"12px 16px",border:"none",cursor:"pointer",display:"flex",alignItems:"center",gap:10,background:l.id===hskLevel?l.color+"10":"transparent",fontFamily:"inherit",textAlign:"left"}}><span style={{fontSize:18}}>{l.emoji}</span><div><div style={{fontSize:14,fontWeight:600,color:l.id===hskLevel?l.color:"#1a1a1a"}}>{l.label}</div><div style={{fontSize:12,color:"#999"}}>{l.sub}</div></div>{l.id===hskLevel&&<svg width="16" height="16" viewBox="0 0 24 24" fill={l.color} style={{marginLeft:"auto"}}><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>}</button>)}</div></>}
+      </div>
     </div>}
   </div>);
 }
 
 /* ═══════════════════════════════════════════
-   DRILL VIEW
+   DRILL VIEW (with Pinyin hide & Turtle TTS)
    ═══════════════════════════════════════════ */
 
-function DrillView({type,hskLevel,onBack,onChangeHSK}){
+function DrillView({type,hskLevel,onBack,onChangeHSK, showPinyin, onTogglePinyin}){
   const bank=type==="sentence"?SENTENCE_BANK[hskLevel]:PRONUNCIATION_BANK[hskLevel];
   const[idx,setIdx]=useState(0);const[input,setInput]=useState("");const[feedback,setFeedback]=useState(null);
   const[loading,setLoading]=useState(false);const[scores,setScores]=useState([]);const[done,setDone]=useState(false);
@@ -382,7 +388,7 @@ function DrillView({type,hskLevel,onBack,onChangeHSK}){
       :`Grade pronunciation. Target: "${q.sentence}". Student said: "${text.trim()}". Reply ONLY:\nSCORE: [0-100]\nFEEDBACK: [1 sentence]\nISSUES: [wrong characters or "None"]`;
     try{const raw=await callAI(sys,[{role:"user",content:text.trim()}],300);const reply=clean(raw);const m=reply.match(/SCORE:\s*(\d+)/i);const score=m?Math.min(parseInt(m[1]),100):70;
       setFeedback({text:reply.replace(/SCORE:\s*\d+\s*/i,"").trim(),score});setScores(p=>[...p,score]);
-    }catch{setFeedback({text:"哎呀，网络稍微有点小情绪，请直接点击“Next question”进行下一题哦~ 📡",score:0});}setLoading(false);
+    }catch{setFeedback({text:"网络稍有波动，请点击 'Next question' 尝试下一题哦~",score:0});}setLoading(false);
   };
 
   const handleMic=()=>{if(listening){stopListening();return;}startListening(t=>{setInput(t);submit(t);});};
@@ -390,7 +396,7 @@ function DrillView({type,hskLevel,onBack,onChangeHSK}){
   const restart=()=>{setIdx(0);setInput("");setFeedback(null);setScores([]);setDone(false);};
 
   if(done){const validScores=scores.filter(s=>s>0);const avg=validScores.length?Math.round(validScores.reduce((a,b)=>a+b,0)/validScores.length):0;const emoji=avg>=90?"🌟":avg>=80?"👏":avg>=70?"👍":avg>=60?"💪":"📚";
-    return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title={isSen?"造句练习":"语音测评"} subtitle="Results" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
+    return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title={isSen?"造句练习":"语音测评"} subtitle="Results" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} showPinyin={showPinyin} onTogglePinyin={onTogglePinyin}/>
       <PageWrap><div style={{padding:"32px 0",textAlign:"center",animation:"su 0.4s both"}}>
         <div style={{fontSize:56,marginBottom:12}}>{emoji}</div>
         <div style={{fontSize:48,fontWeight:700,color,marginBottom:4}}>{avg}<span style={{fontSize:20,color:"#999"}}>/100</span></div>
@@ -400,14 +406,17 @@ function DrillView({type,hskLevel,onBack,onChangeHSK}){
       </div></PageWrap></div>);
   }
 
-  return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title={isSen?"造句练习":"语音测评"} subtitle={isSen?"Sentence building":"Pronunciation"} onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
+  return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title={isSen?"造句练习":"语音测评"} subtitle={isSen?"Sentence building":"Pronunciation"} onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} showPinyin={showPinyin} onTogglePinyin={onTogglePinyin}/>
     <PageWrap><div style={{padding:"20px 0 140px"}}>
       <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:20}}><div style={{flex:1,height:6,background:"#ebe9e1",borderRadius:3,overflow:"hidden"}}><div style={{width:`${((idx+(feedback?1:0))/total)*100}%`,height:"100%",background:color,borderRadius:3,transition:"width 0.4s"}}/></div><span style={{fontSize:13,color:"#999",fontWeight:600}}>{idx+1}/{total}</span></div>
       <div style={{background:"#fff",borderRadius:16,border:"1px solid #f0efe8",padding:"28px 24px",marginBottom:20,boxShadow:"0 2px 8px rgba(0,0,0,0.03)"}}>
         <div style={{fontSize:12,fontWeight:600,color:"#bbb",textTransform:"uppercase",letterSpacing:1,marginBottom:16}}>{isSen?"Use this word to make a sentence":"Read this sentence aloud"}</div>
-        {isSen?<><div style={{fontSize:30,fontWeight:700,color:"#1a1a1a",marginBottom:8}}>{q.word}</div><div style={{fontSize:15,color,marginBottom:4}}>{q.pinyin} — {q.meaning}</div><div style={{fontSize:14,color:"#999",fontStyle:"italic"}}>Hint: {q.hint}</div></>
-        :<><div style={{fontSize:26,fontWeight:700,color:"#1a1a1a",marginBottom:8,lineHeight:1.5}}>{q.sentence}</div><div style={{fontSize:15,color,marginBottom:4}}>{q.pinyin}</div><div style={{fontSize:14,color:"#999"}}>{q.translation}</div>
-          <button onClick={()=>speaking?stopSpeaking():speak(q.sentence)} style={{marginTop:14,background:bg,border:`1px solid ${color}30`,borderRadius:20,padding:"8px 18px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:13,color,fontFamily:"inherit"}}><svg width="13" height="13" viewBox="0 0 24 24" fill={color}><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>{speaking?"Stop":"Listen"}</button></>}
+        {isSen?<><div style={{fontSize:30,fontWeight:700,color:"#1a1a1a",marginBottom:8}}>{q.word}</div>{showPinyin&&<div style={{fontSize:15,color,marginBottom:4}}>{q.pinyin} — {q.meaning}</div>}<div style={{fontSize:14,color:"#999",fontStyle:"italic"}}>Hint: {q.hint}</div></>
+        :<><div style={{fontSize:26,fontWeight:700,color:"#1a1a1a",marginBottom:8,lineHeight:1.5}}>{q.sentence}</div>{showPinyin&&<div style={{fontSize:15,color,marginBottom:4}}>{q.pinyin}</div>}<div style={{fontSize:14,color:"#999"}}>{q.translation}</div>
+          <div style={{display:"flex",gap:8}}>
+            <button onClick={()=>speaking?stopSpeaking():speak(q.sentence)} style={{marginTop:14,background:bg,border:`1px solid ${color}30`,borderRadius:20,padding:"8px 18px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:13,color,fontFamily:"inherit"}}><svg width="13" height="13" viewBox="0 0 24 24" fill={color}><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>{speaking?"Stop":"Listen"}</button>
+            <button onClick={()=>speak(q.sentence, true)} style={{marginTop:14,background:"#fff",border:`1px solid ${color}30`,borderRadius:20,padding:"8px 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:14,color,fontFamily:"inherit"}}>🐢 慢速</button>
+          </div></>}
       </div>
       {feedback&&<div ref={fbRef}>
         <div style={{background:"#fff",borderRadius:16,border:`1.5px solid ${feedback.score>=80?"#2DAA6E40":feedback.score>=60?"#E8A83840":"#D4413A40"}`,padding:22,marginBottom:14,animation:"su 0.3s both"}}>
@@ -415,7 +424,7 @@ function DrillView({type,hskLevel,onBack,onChangeHSK}){
           {input&&<div style={{fontSize:14,color:"#888",marginBottom:10}}>Your answer: <span style={{color:"#1a1a1a"}}>{input}</span></div>}
           <div style={{fontSize:15,color:"#444",lineHeight:1.7,whiteSpace:"pre-wrap"}}>{feedback.text}</div>
         </div>
-        <div style={{background:bg,borderRadius:14,padding:"18px 20px",marginBottom:20,borderLeft:`3px solid ${color}`}}><div style={{fontSize:12,fontWeight:600,color,marginBottom:8,textTransform:"uppercase",letterSpacing:1}}>Reference example</div><div style={{fontSize:16,color:"#1a1a1a",lineHeight:1.7}}>{q.example||q.sentence}</div></div>
+        <div style={{background:bg,borderRadius:14,padding:"18px 20px",marginBottom:20,borderLeft:`3px solid ${color}`}}><div style={{fontSize:12,fontWeight:600,color,marginBottom:8,textTransform:"uppercase",letterSpacing:1}}>Reference example</div><div style={{fontSize:16,color:"#1a1a1a",lineHeight:1.7}}>{renderText(q.example||q.sentence, showPinyin)}</div></div>
         <button onClick={next} style={{width:"100%",padding:16,borderRadius:12,border:"none",background:color,color:"#fff",fontSize:16,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>{idx+1>=total?"See results →":"Next question →"}</button>
       </div>}
       {loading&&<div style={{textAlign:"center",padding:24}}><div style={{display:"inline-flex",gap:5}}>{[0,1,2].map(j=><div key={j} style={{width:8,height:8,borderRadius:"50%",background:color,animation:`dp 1.2s ${j*0.2}s infinite`}}/>)}</div><div style={{fontSize:13,color:"#999",marginTop:8}}>AI grading...</div></div>}
@@ -429,10 +438,10 @@ function DrillView({type,hskLevel,onBack,onChangeHSK}){
 }
 
 /* ═══════════════════════════════════════════
-   CHAT VIEW
+   CHAT VIEW (with Pinyin hide & Turtle TTS)
    ═══════════════════════════════════════════ */
 
-function ChatView({module,hskLevel,onBack,onChangeHSK,showVoice=true}){
+function ChatView({module,hskLevel,onBack,onChangeHSK,showVoice=true, showPinyin, onTogglePinyin}){
   const[messages,setMessages]=useState([]);const[input,setInput]=useState("");const[loading,setLoading]=useState(false);
   const endRef=useRef(null);const{listening,speaking,startListening,stopListening,speak,stopSpeaking}=useSpeech();
   useEffect(()=>{const g=typeof module.greeting==="object"?module.greeting[hskLevel]||module.greeting["4-6"]:module.greeting;setMessages([{role:"assistant",content:g}]);},[module.id, hskLevel]);
@@ -443,14 +452,17 @@ function ChatView({module,hskLevel,onBack,onChangeHSK,showVoice=true}){
     catch{setMessages(p=>[...p,{role:"assistant",content:"网络连接不太稳定，请重新发送一下哦~ 📡"}]);}setLoading(false);};
   const handleMic=()=>{if(listening){stopListening();return;}startListening(t=>{setInput(t);send(t);});};
   return(<div style={{height:"100vh",display:"flex",flexDirection:"column",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}>
-    <TopBar title={module.title} subtitle={module.titleEn} onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
+    <TopBar title={module.title} subtitle={module.titleEn} onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} showPinyin={showPinyin} onTogglePinyin={onTogglePinyin}/>
     <div style={{flex:1,overflowY:"auto",padding:"16px 20px 120px",display:"flex",flexDirection:"column",alignItems:"center"}}>
       <div style={{width:"100%",maxWidth:640}}>
       {messages.map((msg,i)=><div key={i} style={{display:"flex",justifyContent:msg.role==="user"?"flex-end":"flex-start",marginBottom:14,alignItems:"flex-end",gap:8,animation:"su 0.3s both"}}>
         {msg.role==="assistant"&&<div style={{width:32,height:32,borderRadius:"50%",background:module.bg||"#f0f0f0",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>{module.icon}</div>}
         <div style={{maxWidth:"75%",display:"flex",flexDirection:"column",gap:4}}>
-          <div style={{padding:"12px 16px",background:msg.role==="user"?(module.color||"#4A90D9"):"#fff",color:msg.role==="user"?"#fff":"#1a1a1a",borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px",fontSize:15,lineHeight:1.7,whiteSpace:"pre-wrap",boxShadow:msg.role==="user"?"none":"0 1px 3px rgba(0,0,0,0.04)",border:msg.role==="user"?"none":"1px solid #f0efe8"}}>{msg.content}</div>
-          {msg.role==="assistant"&&showVoice&&<button onClick={()=>speaking?stopSpeaking():speak(msg.content)} style={{background:"none",border:"none",cursor:"pointer",padding:"2px 6px",display:"flex",alignItems:"center",gap:5,opacity:0.5,alignSelf:"flex-start"}}><svg width="14" height="14" viewBox="0 0 24 24" fill={speaking?(module.color||"#E8A838"):"#888"}><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg><span style={{fontSize:12,color:"#999"}}>{speaking?"Stop":"Play"}</span></button>}
+          <div style={{padding:"12px 16px",background:msg.role==="user"?(module.color||"#4A90D9"):"#fff",color:msg.role==="user"?"#fff":"#1a1a1a",borderRadius:msg.role==="user"?"18px 18px 4px 18px":"18px 18px 18px 4px",fontSize:15,lineHeight:1.7,whiteSpace:"pre-wrap",boxShadow:msg.role==="user"?"none":"0 1px 3px rgba(0,0,0,0.04)",border:msg.role==="user"?"none":"1px solid #f0efe8"}}>{msg.role==="assistant"?renderText(msg.content, showPinyin):msg.content}</div>
+          {msg.role==="assistant"&&showVoice&&<div style={{display:"flex",gap:10,opacity:0.6,alignSelf:"flex-start",marginLeft:4}}>
+            <button onClick={()=>speaking?stopSpeaking():speak(msg.content)} style={{background:"none",border:"none",cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:4}}><svg width="14" height="14" viewBox="0 0 24 24" fill={speaking?(module.color||"#E8A838"):"#888"}><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg><span style={{fontSize:12,color:"#666"}}>{speaking?"Stop":"Play"}</span></button>
+            <button onClick={()=>speak(msg.content, true)} style={{background:"none",border:"none",cursor:"pointer",padding:0,fontSize:14}}>🐢</button>
+          </div>}
         </div>
       </div>)}
       {loading&&<div style={{display:"flex",gap:6,alignItems:"center",padding:"8px 0",animation:"su 0.3s both"}}><div style={{width:32,height:32,borderRadius:"50%",background:module.bg||"#f0f0f0",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>{module.icon}</div><div style={{background:"#fff",borderRadius:16,padding:"12px 18px",border:"1px solid #f0efe8",display:"flex",gap:5}}>{[0,1,2].map(j=><div key={j} style={{width:7,height:7,borderRadius:"50%",background:"#ccc",animation:`dp 1.2s ${j*0.2}s infinite`}}/>)}</div></div>}
@@ -520,40 +532,26 @@ function StudyManual({hskLevel, onChangeHSK, onBack}) {
 }
 
 /* ═══════════════════════════════════════════
-   ABOUT PROJECT VIEW (NEW)
+   ABOUT MODAL (Pop-up on first load)
    ═══════════════════════════════════════════ */
 
-function AboutView({onBack}) {
+function AboutModal({onClose}) {
   return (
-    <div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}>
-      <TopBar title="关于项目" subtitle="About SpeakWise" onBack={onBack}/>
-      <PageWrap>
-        <div style={{padding:"32px 0 60px", animation:"su 0.4s both"}}>
-          <div style={{background:"linear-gradient(135deg,#E8A838,#D4413A)",borderRadius:24,padding:"32px 24px",color:"#fff",textAlign:"center",marginBottom:24,boxShadow:"0 12px 32px rgba(232,168,56,0.2)"}}>
-            <div style={{fontSize:48,marginBottom:12}}>✨</div>
-            <h2 style={{fontSize:24,fontWeight:700,margin:"0 0 8px"}}>SpeakWise 琢音</h2>
-            <p style={{fontSize:15,opacity:0.9,margin:0}}>AI 中文口语教练 (Web端)</p>
-          </div>
-          
-          <div style={{background:"#fff",borderRadius:20,padding:"28px 24px",border:"1px solid #f0efe8",marginBottom:20}}>
-            <h3 style={{fontSize:14,color:"#999",textTransform:"uppercase",letterSpacing:1,margin:"0 0 16px",fontWeight:600}}>项目背景 (Background)</h3>
-            <p style={{fontSize:15,color:"#333",lineHeight:1.8,margin:0,fontWeight:500}}>
-              本项目为 SRTP 科研课题<br/>
-              <span style={{color:"#D4413A",fontWeight:700}}>《师-生-机深度交互式汉语口语教学模式创新研究》</span><br/>
-              的落地应用平台。专为来华留学生打造，致力于解决传统口语教学中“开口难、反馈慢”的痛点。
-            </p>
-          </div>
-
-          <div style={{background:"#fff",borderRadius:20,padding:"28px 24px",border:"1px solid #f0efe8"}}>
-            <h3 style={{fontSize:14,color:"#999",textTransform:"uppercase",letterSpacing:1,margin:"0 0 16px",fontWeight:600}}>核心特色 (Features)</h3>
-            <ul style={{listStyle:"none",padding:0,margin:0,display:"flex",flexDirection:"column",gap:14}}>
-              <li style={{display:"flex",gap:12}}><span style={{fontSize:20}}>🎯</span><div><div style={{fontWeight:600,fontSize:15,color:"#1a1a1a"}}>对标 HSK 3.0 新标准</div><div style={{fontSize:13,color:"#888",marginTop:4}}>采用初等(1-3)、中等(4-6)、高等(7-9)三等九级动态匹配。</div></div></li>
-              <li style={{display:"flex",gap:12}}><span style={{fontSize:20}}>🤖</span><div><div style={{fontWeight:600,fontSize:15,color:"#1a1a1a"}}>大语言模型驱动交互</div><div style={{fontSize:13,color:"#888",marginTop:4}}>无缝集成大模型能力，实现自由对话、场景模拟与智能打分。</div></div></li>
-              <li style={{display:"flex",gap:12}}><span style={{fontSize:20}}>🎙️</span><div><div style={{fontWeight:600,fontSize:15,color:"#1a1a1a"}}>Web 端纯天然语音接入</div><div style={{fontSize:13,color:"#888",marginTop:4}}>无需下载 APP，基于浏览器原生 API 实现语音识别与合成。</div></div></li>
-            </ul>
-          </div>
+    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.6)",zIndex:999,display:"flex",alignItems:"center",justifyContent:"center",padding:20,animation:"su 0.3s both"}}>
+      <div style={{background:"#fff",borderRadius:24,width:"100%",maxWidth:400,padding:32,position:"relative",textAlign:"center"}}>
+        <button onClick={onClose} style={{position:"absolute",top:16,right:16,background:"#f0f0f0",border:"none",width:30,height:30,borderRadius:"50%",cursor:"pointer"}}>✕</button>
+        <div style={{fontSize:48,marginBottom:12}}>✨</div>
+        <h2 style={{fontSize:22,fontWeight:700,margin:"0 0 6px",color:"#1a1a1a"}}>SpeakWise 琢音</h2>
+        <p style={{fontSize:14,color:"#666",margin:"0 0 20px"}}>AI 中文口语教练 (Web端)</p>
+        <div style={{background:"#FDF0EF",borderRadius:16,padding:16,textAlign:"left",marginBottom:24,border:"1px solid #fbe3e1"}}>
+          <p style={{fontSize:13,color:"#D4413A",margin:0,lineHeight:1.7}}>
+            本项目为 SRTP 科研课题<br/>
+            <b>《师-生-机深度交互式汉语口语教学模式创新研究》</b><br/>
+            落地应用平台，专为来华留学生打造。
+          </p>
         </div>
-      </PageWrap>
+        <button onClick={onClose} style={{width:"100%",padding:14,background:"#D4413A",color:"#fff",border:"none",borderRadius:12,fontWeight:600,fontSize:15,cursor:"pointer"}}>开始体验</button>
+      </div>
     </div>
   );
 }
@@ -593,12 +591,11 @@ function HSKSelect({onSelect}){const[h,sH]=useState(null);return(<div style={{mi
   <p style={{fontSize:12,color:"#ccc",marginTop:30}}>You can change anytime from the top bar</p>
 </div>);}
 
-function MainMenu({hskLevel,onChangeHSK,onNav}){const[h,sH]=useState(null);const isMobile=useIsMobile();
+function MainMenu({hskLevel,onChangeHSK,onNav, onOpenAbout}){const[h,sH]=useState(null);const isMobile=useIsMobile();
   const sec=[
     {id:"oral",title:"口语练习",titleEn:"Oral practice",icon:"🗣️",color:"#E8A838",bg:"#FFF8ED",desc:"场景模拟 · 语音测评 · 自由对话"},
     {id:"written",title:"书面语练习",titleEn:"Written practice",icon:"📖",color:"#7B6CF6",bg:"#F3F0FF",desc:"造句 · 段落写作 · 短文写作"},
-    {id:"manual",title:"学习手册",titleEn:"Study Manual",icon:"📚",color:"#D4413A",bg:"#FDF0EF",desc:"重点词汇 · 核心语法 · 语音声调"},
-    {id:"about",title:"关于项目",titleEn:"About SpeakWise",icon:"✨",color:"#1ABC9C",bg:"#E8FAF6",desc:"SRTP 创新研究介绍"}
+    {id:"manual",title:"学习手册",titleEn:"Study Manual",icon:"📚",color:"#D4413A",bg:"#FDF0EF",desc:"重点词汇 · 核心语法 · 语音声调"}
   ];
   return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title="SpeakWise 琢音" subtitle="AI Chinese language coach" hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
     <PageWrap><div style={{padding:"32px 0 40px"}}>
@@ -611,6 +608,10 @@ function MainMenu({hskLevel,onChangeHSK,onNav}){const[h,sH]=useState(null);const
         </div>)}
       </div>
       <div style={{marginTop:24,padding:"14px 18px",background:"#fff",borderRadius:12,border:"1px solid #f0efe8",display:"flex",alignItems:"center",gap:10}}><span>💡</span><p style={{fontSize:13,color:"#999",margin:0}}>Use Chrome for voice. Tap mic to speak Chinese!</p></div>
+      <div style={{marginTop:18,textAlign:"center"}}>
+        <div style={{fontSize:12,color:"#d0d0d0"}}>Powered by Claude AI · SRTP Project</div>
+        <button onClick={onOpenAbout} style={{background:"none",border:"none",color:"#aaa",fontSize:12,marginTop:8,cursor:"pointer",textDecoration:"underline",fontFamily:"inherit"}}>ℹ️ 关于项目</button>
+      </div>
     </div></PageWrap></div>);}
 
 function OralMenu({hskLevel,onChangeHSK,onBack,onNav}){const[h,sH]=useState(null);
@@ -623,9 +624,9 @@ function OralMenu({hskLevel,onChangeHSK,onBack,onNav}){const[h,sH]=useState(null
       {items.map(it=><MenuItem key={it.id} item={it} onClick={()=>onNav(it.id)} hovered={h} onHover={sH}/>)}
     </div></PageWrap></div>);}
 
-function SceneList({hskLevel,onChangeHSK,onBack,onSelect}){const[filter,setFilter]=useState("all");const[h,sH]=useState(null);const isMobile=useIsMobile();
+function SceneList({hskLevel,onChangeHSK,onBack,onSelect,showPinyin,onTogglePinyin}){const[filter,setFilter]=useState("all");const[h,sH]=useState(null);const isMobile=useIsMobile();
   const filtered=filter==="all"?SCENARIOS:SCENARIOS.filter(s=>s.identities.includes(filter));
-  return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title="场景模拟" subtitle="Scenarios" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
+  return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title="场景模拟" subtitle="Scenarios" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} showPinyin={showPinyin} onTogglePinyin={onTogglePinyin}/>
     <PageWrap wide>
     <div style={{padding:"14px 0 6px",display:"flex",gap:8,overflowX:"auto"}}>{IDENTITY_FILTERS.map(f=><button key={f.id} onClick={()=>setFilter(f.id)} style={{padding:"7px 18px",borderRadius:20,border:"1px solid",borderColor:filter===f.id?"#E8A838":"#ebe9e1",background:filter===f.id?"#E8A83814":"#fff",color:filter===f.id?"#E8A838":"#888",fontSize:14,fontWeight:filter===f.id?600:400,cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit"}}>{f.label}</button>)}</div>
     <div style={{padding:"14px 0 40px"}}><div style={{display:"grid",gridTemplateColumns:isMobile?"1fr 1fr":"1fr 1fr 1fr",gap:12}}>
@@ -654,27 +655,45 @@ function buildFreeModule(hsk){return{id:"free",title:"自由对话",titleEn:"Fre
 function buildWritingChat(mode,hsk){const c={paragraph:{title:"段落写作",titleEn:"Paragraphs",icon:"📝",color:"#E8A838",bg:"#FFF8ED",system:"Chinese writing coach. Review paragraphs, give feedback. No markdown.",greeting:hsk==="1-3"?"Paragraph practice! 📝\n\nWrite 3-4 sentences:\n\n我的一天 \"My day\"":hsk==="4-6"?"Paragraph writing! 📝\n\nWrite 4-5 sentences:\n\n我最喜欢的城市 \"My favorite city\"":"Paragraph writing! 📝\n\nWrite 5-6 sentences:\n\n网络社交对人际关系的影响"},essay:{title:"短文写作",titleEn:"Essays",icon:"📄",color:"#7B6CF6",bg:"#F3F0FF",system:"Chinese essay coach. Score /100, detailed feedback. No markdown.",greeting:hsk==="1-3"?"Essay practice! 📄\n\nWrite 5-6 sentences:\n\n我的家人 \"My family\"":hsk==="4-6"?"Essay writing! 📄\n\nWrite 8-10 sentences:\n\n一次难忘的旅行 \"An unforgettable trip\"":"Essay writing! 📄\n\nWrite 150-200 chars:\n\n传统文化在现代社会中的角色"}};return c[mode];}
 
 /* ═══════════════════════════════════════════
-   APP ROOT
+   APP ROOT (State persistence & feature flags)
    ═══════════════════════════════════════════ */
 
 export default function App(){
-  const[hsk,setHsk]=useState(null);const[view,setView]=useState("hsk");
-  const[chatMod,setChatMod]=useState(null);const[chatVoice,setChatVoice]=useState(true);const[chatParent,setChatParent]=useState("oral");
-  const[drillType,setDrillType]=useState(null);const[drillParent,setDrillParent]=useState("oral");
+  const [hsk, setHsk] = useState(() => {
+    if (typeof window !== "undefined") return localStorage.getItem("hsk") || null;
+    return null;
+  });
+  useEffect(() => { if (hsk) localStorage.setItem("hsk", hsk); }, [hsk]);
+
+  const [showPinyin, setShowPinyin] = useState(true);
+  const [showAbout, setShowAbout] = useState(() => {
+    if (typeof window !== "undefined") return !localStorage.getItem("aboutSeen");
+    return true;
+  });
+  const closeAbout = () => { setShowAbout(false); localStorage.setItem("aboutSeen", "true"); };
+
+  const [view, setView] = useState(hsk ? "main" : "hsk");
+  const [chatMod, setChatMod] = useState(null);
+  const [chatVoice, setChatVoice] = useState(true);
+  const [chatParent, setChatParent] = useState("oral");
+  const [drillType, setDrillType] = useState(null);
+  const [drillParent, setDrillParent] = useState("oral");
+
   const openChat=(m,v,p)=>{setChatMod(m);setChatVoice(v);setChatParent(p);setView("chat");};
   const openDrill=(t,p)=>{setDrillType(t);setDrillParent(p);setView("drill");};
   const oralNav=id=>{if(id==="scenes")setView("scenes");else if(id==="assess")openDrill("pronunciation","oral");else if(id==="free")openChat(buildFreeModule(hsk),true,"oral");};
   const sceneSelect=s=>openChat({...s,system:`SCENARIO: ${s.role}\nStay in character, 2-3 sentences, correct gently. No markdown.`,greeting:s.greeting[hsk]||s.greeting["4-6"]},true,"scenes");
   const writingSelect=m=>{if(m.id==="sentence")openDrill("sentence","written");else openChat(buildWritingChat(m.id,hsk),false,"written");};
+  
   return(<><style>{`@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');@keyframes su{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,0,0,0.12)}50%{box-shadow:0 0 0 12px rgba(0,0,0,0)}}@keyframes dp{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1.1)}}*{box-sizing:border-box;margin:0}body{font-family:'Noto Sans SC',sans-serif}`}</style>
+    {showAbout && <AboutModal onClose={closeAbout} />}
     {view==="hsk"&&<HSKSelect onSelect={l=>{setHsk(l);setView("main");}}/>}
-    {view==="main"&&<MainMenu hskLevel={hsk} onChangeHSK={setHsk} onNav={id=>setView(id==="oral"?"oral":id==="written"?"written":id==="manual"?"manual":"about")}/>}
+    {view==="main"&&<MainMenu hskLevel={hsk} onChangeHSK={setHsk} onNav={id=>setView(id==="oral"?"oral":id==="written"?"written":"manual")} onOpenAbout={()=>setShowAbout(true)}/>}
     {view==="oral"&&<OralMenu hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("main")} onNav={oralNav}/>}
-    {view==="scenes"&&<SceneList hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("oral")} onSelect={sceneSelect}/>}
+    {view==="scenes"&&<SceneList hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("oral")} onSelect={sceneSelect} showPinyin={showPinyin} onTogglePinyin={()=>setShowPinyin(!showPinyin)}/>}
     {view==="written"&&<WrittenMenu hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("main")} onSelect={writingSelect}/>}
     {view==="manual"&&<StudyManual hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("main")}/>}
-    {view==="about"&&<AboutView onBack={()=>setView("main")}/>}
-    {view==="chat"&&chatMod&&<ChatView module={chatMod} hskLevel={hsk} onBack={()=>setView(chatParent)} onChangeHSK={setHsk} showVoice={chatVoice}/>}
-    {view==="drill"&&<DrillView type={drillType} hskLevel={hsk} onBack={()=>setView(drillParent)} onChangeHSK={setHsk}/>}
+    {view==="chat"&&chatMod&&<ChatView module={chatMod} hskLevel={hsk} onBack={()=>setView(chatParent)} onChangeHSK={setHsk} showVoice={chatVoice} showPinyin={showPinyin} onTogglePinyin={()=>setShowPinyin(!showPinyin)}/>}
+    {view==="drill"&&<DrillView type={drillType} hskLevel={hsk} onBack={()=>setView(drillParent)} onChangeHSK={setHsk} showPinyin={showPinyin} onTogglePinyin={()=>setShowPinyin(!showPinyin)}/>}
   </>);
 }

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
 /* ═══════════════════════════════════════════
-   AI CALL with retry & Friendly Error
+   AI CALL with retry
    ═══════════════════════════════════════════ */
 
 async function callAI(system, messages, maxTokens = 600, retries = 2) {
@@ -111,7 +111,27 @@ const SENTENCE_BANK = {
     { word: "对……感兴趣", pinyin: "duì...gǎn xìngqù", meaning: "interested in", hint: "Your interests", example: "我对中国历史很感兴趣。(Wǒ duì Zhōngguó lìshǐ hěn gǎn xìngqù.) I am very interested in Chinese history." },
     { word: "只要……就……", pinyin: "zhǐyào...jiù...", meaning: "as long as", hint: "State a condition", example: "只要你努力，就一定能学好。(Zhǐyào nǐ nǔlì, jiù yídìng néng xuéhǎo.) As long as you work hard, you will definitely learn well." },
     { word: "把", pinyin: "bǎ", meaning: "把-construction", hint: "Act on an object", example: "请你把门关上。(Qǐng nǐ bǎ mén guānshàng.) Please close the door." },
-    { word: "被", pinyin: "bèi", meaning: "passive", hint: "Passive voice", example: "我的手机被弟弟弄坏了。(Wǒ de shǒujī bèi dìdi nòng huài le.) My phone was broken by my brother." }
+    { word: "被", pinyin: "bèi", meaning: "passive", hint: "Passive voice", example: "我的手机被弟弟弄坏了。(Wǒ de shǒujī bèi dìdi nòng huài le.) My phone was broken by my brother." },
+    { word: "为了", pinyin: "wèile", meaning: "in order to", hint: "State a purpose", example: "为了学好中文，我每天练习。" },
+    { word: "或者", pinyin: "huòzhě", meaning: "or (in statements)", hint: "Give options", example: "我们去爬山或者看电影吧。" },
+    { word: "还是", pinyin: "háishi", meaning: "or (in questions)", hint: "Ask for a choice", example: "你喝茶还是喝咖啡？" },
+    { word: "先……然后……", pinyin: "xiān...ránhòu...", meaning: "first...then...", hint: "Sequence of actions", example: "我先吃饭，然后做作业。" },
+    { word: "如果……就……", pinyin: "rúguǒ...jiù...", meaning: "if...then...", hint: "Hypothetical condition", example: "如果明天下雨，我就不去。" },
+    { word: "以为", pinyin: "yǐwéi", meaning: "thought (mistakenly)", hint: "Express a wrong assumption", example: "我以为今天是星期五。" },
+    { word: "一直", pinyin: "yìzhí", meaning: "continuously", hint: "Continuous action", example: "他一直在看书。" },
+    { word: "原来", pinyin: "yuánlái", meaning: "originally / turns out", hint: "A sudden realization", example: "原来是你啊！" },
+    { word: "必须", pinyin: "bìxū", meaning: "must", hint: "Express necessity", example: "明天我必须早起。" },
+    { word: "发现", pinyin: "fāxiàn", meaning: "to discover", hint: "Notice something", example: "我发现他不在家。" },
+    { word: "终于", pinyin: "zhōngyú", meaning: "finally", hint: "A delayed result", example: "我终于完成了工作。" },
+    { word: "即使……也……", pinyin: "jíshǐ...yě...", meaning: "even if...still", hint: "Concession", example: "即使很累，他也在坚持。" },
+    { word: "到处", pinyin: "dàochù", meaning: "everywhere", hint: "Describe locations", example: "公园里到处都是花。" },
+    { word: "难道", pinyin: "nándào", meaning: "could it be that", hint: "Rhetorical question", example: "难道你不知道这件事吗？" },
+    { word: "差点儿", pinyin: "chàdiǎnr", meaning: "almost", hint: "A near miss", example: "我差点儿迟到了。" },
+    { word: "不仅……还……", pinyin: "bùjǐn...hái...", meaning: "not only...but also", hint: "Add information", example: "他不仅聪明，还很努力。" },
+    { word: "偶尔", pinyin: "ǒu'ěr", meaning: "occasionally", hint: "Low frequency", example: "我偶尔去图书馆。" },
+    { word: "反而", pinyin: "fǎn'ér", meaning: "on the contrary", hint: "Unexpected result", example: "喝了咖啡反而更困了。" },
+    { word: "随着", pinyin: "suízhe", meaning: "along with", hint: "Accompanying change", example: "随着时间推移，他变了。" },
+    { word: "其实", pinyin: "qíshí", meaning: "actually", hint: "State the reality", example: "其实我并不喜欢吃辣。" }
   ],
   "7-9": [
     { word: "与其……不如……", pinyin: "yǔqí...bùrú...", meaning: "rather than...better to...", hint: "Compare options", example: "与其抱怨，不如行动起来。(Yǔqí bàoyuàn, bùrú xíngdòng qǐlái.) Rather than complain, it's better to take action." },
@@ -123,7 +143,27 @@ const SENTENCE_BANK = {
     { word: "即使……也……", pinyin: "jíshǐ...yě...", meaning: "even if...still...", hint: "Strong concession", example: "即使再忙，我也要坚持锻炼。(Jíshǐ zài máng, wǒ yě yào jiānchí duànliàn.) Even if I'm busy, I will keep exercising." },
     { word: "恨不得", pinyin: "hènbude", meaning: "wish one could", hint: "Strong desire", example: "我恨不得马上飞回家。(Wǒ hènbude mǎshàng fēi huí jiā.) I wish I could fly home immediately." },
     { word: "不见得", pinyin: "bújiàndé", meaning: "not necessarily", hint: "Polite disagreement", example: "贵的东西不见得就好。(Guì de dōngxi bújiàndé jiù hǎo.) Expensive things aren't necessarily good." },
-    { word: "总而言之", pinyin: "zǒng ér yán zhī", meaning: "in conclusion", hint: "Summarize", example: "总而言之，学语言需要坚持。(Zǒng ér yán zhī, xué yǔyán xūyào jiānchí.) In conclusion, learning languages requires persistence." }
+    { word: "总而言之", pinyin: "zǒng ér yán zhī", meaning: "in conclusion", hint: "Summarize", example: "总而言之，学语言需要坚持。(Zǒng ér yán zhī, xué yǔyán xūyào jiānchí.) In conclusion, learning languages requires persistence." },
+    { word: "毋庸置疑", pinyin: "wúyōng zhìyí", meaning: "beyond doubt", hint: "Express absolute certainty", example: "毋庸置疑，科技改变了我们的生活。" },
+    { word: "潜移默化", pinyin: "qiányí mòhuà", meaning: "subtle influence", hint: "Describe unseen impact", example: "父母的言行对孩子有潜移默化的影响。" },
+    { word: "息息相关", pinyin: "xīxī xiāngguān", meaning: "closely related", hint: "Show deep connection", example: "环保与我们每个人的生活息息相关。" },
+    { word: "不可思议", pinyin: "bùkě sīyì", meaning: "unimaginable", hint: "Express shock/wonder", example: "这个魔术简直不可思议。" },
+    { word: "理所当然", pinyin: "lǐsuǒ dāngrán", meaning: "taken for granted", hint: "State what is expected", example: "帮助朋友是理所当然的事。" },
+    { word: "莫名其妙", pinyin: "mòmíng qímiào", meaning: "baffling", hint: "Express confusion", example: "他突然发脾气，真是莫名其妙。" },
+    { word: "无能为力", pinyin: "wúnéng wéilì", meaning: "powerless", hint: "Admit inability", example: "面对这种突发状况，我也无能为力。" },
+    { word: "半途而废", pinyin: "bàntú érfèi", meaning: "give up halfway", hint: "Describe lack of perseverance", example: "做事情要有始有终，不能半途而废。" },
+    { word: "一视同仁", pinyin: "yíshì tóngrén", meaning: "treat equally", hint: "Describe fairness", example: "老师对所有学生都一视同仁。" },
+    { word: "不求甚解", pinyin: "bùqiú shènjiě", meaning: "superficial understanding", hint: "Criticize lazy learning", example: "读书不能不求甚解，要深入思考。" },
+    { word: "既然……就……", pinyin: "jìrán...jiù...", meaning: "since...then...", hint: "Logical conclusion", example: "既然你已经决定了，就大胆去做吧。" },
+    { word: "除非……否则……", pinyin: "chúfēi...fǒuzé...", meaning: "unless...otherwise...", hint: "Strict condition", example: "除非你道歉，否则我不会原谅你。" },
+    { word: "哪怕……也……", pinyin: "nǎpà...yě...", meaning: "even if", hint: "Hypothetical concession", example: "哪怕失败十次，我也要试最后一次。" },
+    { word: "不仅不……反而……", pinyin: "bùjǐn bù...fǎn'ér...", meaning: "not only didn't...but instead...", hint: "Opposite of expectation", example: "他不仅不认错，反而怪别人。" },
+    { word: "究竟", pinyin: "jiūjìng", meaning: "after all / actually", hint: "Emphasize an inquiry", example: "你究竟想说什么？" },
+    { word: "稍微", pinyin: "shāowēi", meaning: "slightly", hint: "Moderate a description", example: "这件衣服稍微有点大。" },
+    { word: "犹如", pinyin: "yóurú", meaning: "just like", hint: "Formal comparison", example: "时间犹如白驹过隙。" },
+    { word: "哪怕", pinyin: "nǎpà", meaning: "even if", hint: "Extreme hypothetical", example: "哪怕天下雨，我也要去。" },
+    { word: "唯独", pinyin: "wéidú", meaning: "only / except", hint: "Highlight an exception", example: "大家都同意，唯独他反对。" },
+    { word: "未免", pinyin: "wèimiǎn", meaning: "a bit too", hint: "Mild criticism", example: "你这样做未免太自私了。" }
   ]
 };
 
@@ -138,7 +178,27 @@ const PRONUNCIATION_BANK = {
     { sentence: "你叫什么名字？", pinyin: "Nǐ jiào shénme míngzi?", translation: "What's your name?" },
     { sentence: "我不知道。", pinyin: "Wǒ bù zhīdào.", translation: "I don't know." },
     { sentence: "请再说一次。", pinyin: "Qǐng zài shuō yī cì.", translation: "Say it again." },
-    { sentence: "我很高兴认识你。", pinyin: "Wǒ hěn gāoxìng rènshi nǐ.", translation: "Nice to meet you." }
+    { sentence: "我很高兴认识你。", pinyin: "Wǒ hěn gāoxìng rènshi nǐ.", translation: "Nice to meet you." },
+    { sentence: "我们在学校学习。", pinyin: "Wǒmen zài xuéxiào xuéxí.", translation: "We study at school." },
+    { sentence: "他是我朋友。", pinyin: "Tā shì wǒ péngyou.", translation: "He is my friend." },
+    { sentence: "我不喜欢吃肉。", pinyin: "Wǒ bù xǐhuan chī ròu.", translation: "I don't like eating meat." },
+    { sentence: "现在几点了？", pinyin: "Xiànzài jǐ diǎn le?", translation: "What time is it now?" },
+    { sentence: "我要买苹果。", pinyin: "Wǒ yào mǎi píngguǒ.", translation: "I want to buy apples." },
+    { sentence: "明天天气很好。", pinyin: "Míngtiān tiānqì hěn hǎo.", translation: "Tomorrow's weather is good." },
+    { sentence: "你去哪里？", pinyin: "Nǐ qù nǎlǐ?", translation: "Where are you going?" },
+    { sentence: "我在家看电视。", pinyin: "Wǒ zài jiā kàn diànshì.", translation: "I am watching TV at home." },
+    { sentence: "这是我的书。", pinyin: "Zhè shì wǒ de shū.", translation: "This is my book." },
+    { sentence: "太贵了！", pinyin: "Tài guì le!", translation: "Too expensive!" },
+    { sentence: "便宜一点，好吗？", pinyin: "Piányi yīdiǎn, hǎo ma?", translation: "A little cheaper, ok?" },
+    { sentence: "洗手间在哪里？", pinyin: "Xǐshǒujiān zài nǎlǐ?", translation: "Where is the restroom?" },
+    { sentence: "对不起。", pinyin: "Duìbuqǐ.", translation: "I'm sorry." },
+    { sentence: "没关系。", pinyin: "Méi guānxi.", translation: "It's okay." },
+    { sentence: "不用谢。", pinyin: "Búyòng xiè.", translation: "You're welcome." },
+    { sentence: "我听不懂。", pinyin: "Wǒ tīng bù dǒng.", translation: "I don't understand." },
+    { sentence: "请写下来。", pinyin: "Qǐng xiě xiàlái.", translation: "Please write it down." },
+    { sentence: "你多大了？", pinyin: "Nǐ duōdà le?", translation: "How old are you?" },
+    { sentence: "我喜欢中国。", pinyin: "Wǒ xǐhuan Zhōngguó.", translation: "I like China." },
+    { sentence: "再见！", pinyin: "Zàijiàn!", translation: "Goodbye!" }
   ],
   "4-6": [
     { sentence: "今天天气不错，适合出去走走。", pinyin: "Jīntiān tiānqì búcuò, shìhé chūqù zǒuzou.", translation: "Nice weather for a walk." },
@@ -150,7 +210,27 @@ const PRONUNCIATION_BANK = {
     { sentence: "如果明天下雨，我们就不去了。", pinyin: "Rúguǒ míngtiān xiàyǔ, wǒmen jiù bú qù le.", translation: "If it rains, we won't go." },
     { sentence: "这道菜又好吃又便宜。", pinyin: "Zhè dào cài yòu hǎochī yòu piányi.", translation: "Delicious and cheap." },
     { sentence: "他比我大三岁。", pinyin: "Tā bǐ wǒ dà sān suì.", translation: "3 years older." },
-    { sentence: "我已经在中国住了两年了。", pinyin: "Wǒ yǐjīng zài Zhōngguó zhùle liǎng nián le.", translation: "Lived in China 2 years." }
+    { sentence: "我已经在中国住了两年了。", pinyin: "Wǒ yǐjīng zài Zhōngguó zhùle liǎng nián le.", translation: "Lived in China 2 years." },
+    { sentence: "请把空调打开，有点热。", pinyin: "Qǐng bǎ kōngtiáo dǎkāi, yǒudiǎn rè.", translation: "Please turn on the AC, it's a bit hot." },
+    { sentence: "由于堵车，我迟到了十分钟。", pinyin: "Yóuyú dǔchē, wǒ chídàole shí fēnzhōng.", translation: "Due to traffic, I was 10 mins late." },
+    { sentence: "不论多晚，他都会完成工作。", pinyin: "Búlùn duō wǎn, tā dōu huì wánchéng gōngzuò.", translation: "No matter how late, he finishes work." },
+    { sentence: "他连这么简单的汉字都不认识。", pinyin: "Tā lián zhème jiǎndān de hànzì dōu bú rènshi.", translation: "He doesn't even know such simple characters." },
+    { sentence: "你的中文说得越来越流利了。", pinyin: "Nǐ de Zhōngwén shuō de yuè lái yuè liúlì le.", translation: "Your Chinese is getting more fluent." },
+    { sentence: "除了篮球，我还喜欢踢足球。", pinyin: "Chúle lánqiú, wǒ hái xǐhuan tī zúqiú.", translation: "Besides basketball, I also like soccer." },
+    { sentence: "经过几个月的努力，他终于通过了考试。", pinyin: "Jīngguò jǐ gè yuè de nǔlì, tā zhōngyú tōngguòle kǎoshì.", translation: "After months of effort, he finally passed." },
+    { sentence: "请大家保持安静，会议马上开始。", pinyin: "Qǐng dàjiā bǎochí ānjìng, huìyì mǎshàng kāishǐ.", translation: "Please keep quiet, the meeting is starting." },
+    { sentence: "这件毛衣不但颜色好看，而且很暖和。", pinyin: "Zhè jiàn máoyī búdàn yánsè hǎokàn, érqiě hěn nuǎnhuo.", translation: "This sweater is not only pretty but warm." },
+    { sentence: "遇到不懂的问题，你应该多问老师。", pinyin: "Yùdào bù dǒng de wèntí, nǐ yīnggāi duō wèn lǎoshī.", translation: "Ask the teacher when you don't understand." },
+    { sentence: "我同意你的看法，这个主意不错。", pinyin: "Wǒ tóngyì nǐ de kànfǎ, zhège zhǔyi búcuò.", translation: "I agree with you, good idea." },
+    { sentence: "他平时很少说话，但其实很幽默。", pinyin: "Tā píngshí hěn shǎo shuōhuà, dàn qíshí hěn yōumò.", translation: "He rarely speaks, but is actually humorous." },
+    { sentence: "这件事没有你想的那么复杂。", pinyin: "Zhè jiàn shì méiyǒu nǐ xiǎng de nàme fùzá.", translation: "This isn't as complicated as you think." },
+    { sentence: "我们要养成早睡早起的好习惯。", pinyin: "Wǒmen yào yǎngchéng zǎo shuì zǎo qǐ de hǎo xíguàn.", translation: "Develop the habit of sleeping and waking early." },
+    { sentence: "只要坚持练习，就一定会进步。", pinyin: "Zhǐyào jiānchí liànxí, jiù yídìng huì jìnbù.", translation: "As long as you practice, you will improve." },
+    { sentence: "为了健康，他决定开始减肥。", pinyin: "Wèile jiànkāng, tā juédìng kāishǐ jiǎnféi.", translation: "For his health, he decided to lose weight." },
+    { sentence: "周末你有空的话，我们一起去逛街吧。", pinyin: "Zhōumò nǐ yǒu kòng de huà, wǒmen yìqǐ qù guàngjiē ba.", translation: "If you're free this weekend, let's go shopping." },
+    { sentence: "抱歉，让您久等了。", pinyin: "Bàoqiàn, ràng nín jiǔ děng le.", translation: "Sorry to keep you waiting." },
+    { sentence: "那家餐厅的烤鸭非常地道。", pinyin: "Nà jiā cāntīng de kǎoyā fēicháng dìdào.", translation: "That restaurant's roast duck is very authentic." },
+    { sentence: "我的手机快没电了，借我个充电宝吧。", pinyin: "Wǒ de shǒujī kuài méi diàn le, jiè wǒ gè chōngdiànbǎo ba.", translation: "My phone is dying, lend me a power bank." }
   ],
   "7-9": [
     { sentence: "不管遇到什么困难，都不应该轻易放弃。", pinyin: "Bùguǎn yù dào shénme kùnnan, dōu bù yīnggāi qīngyì fàngqì.", translation: "Never give up." },
@@ -162,12 +242,80 @@ const PRONUNCIATION_BANK = {
     { sentence: "这个问题值得深入思考和讨论。", pinyin: "Zhège wèntí zhídé shēnrù sīkǎo hé tǎolùn.", translation: "Worth deep thought." },
     { sentence: "塞翁失马，焉知非福。", pinyin: "Sài wēng shī mǎ, yān zhī fēi fú.", translation: "A blessing in disguise." },
     { sentence: "只有不断学习，才能跟上时代。", pinyin: "Zhǐyǒu búduàn xuéxí, cáinéng gēnshàng shídài.", translation: "Keep learning." },
-    { sentence: "他不但没生气，反而笑着安慰了我。", pinyin: "Tā búdàn méi shēngqì, fǎn'ér xiàozhe ānwèile wǒ.", translation: "Comforted with a smile." }
+    { sentence: "他不但没生气，反而笑着安慰了我。", pinyin: "Tā búdàn méi shēngqì, fǎn'ér xiàozhe ānwèile wǒ.", translation: "Comforted with a smile." },
+    { sentence: "这篇文章见解独到，逻辑严密，令人叹服。", pinyin: "Zhè piān wénzhāng jiànjiě dúdào, luójí yánmì, lìng rén tànfú.", translation: "This article is insightful and logical." },
+    { sentence: "我们在追求经济发展的同时，不能忽视环境保护。", pinyin: "Wǒmen zài zhuīqiú jīngjì fāzhǎn de tóngshí, bùnéng hūshì huánjìng bǎohù.", translation: "Don't ignore the environment for economy." },
+    { sentence: "网络虽然拉近了距离，但也让人变得冷漠。", pinyin: "Wǎngluò suīrán lājìnle jùlí, dàn yě ràng rén biànde lěngmò.", translation: "The internet connects but also isolates." },
+    { sentence: "这种观点未免过于片面，缺乏客观性。", pinyin: "Zhè zhǒng guāndiǎn wèimiǎn guòyú piànmiàn, quēfá kèguānxìng.", translation: "This view is a bit too one-sided." },
+    { sentence: "面对激烈的竞争，企业必须不断创新才能生存。", pinyin: "Miànduì jīliè de jìngzhēng, qǐyè bìxū búduàn chuàngxīn cáinéng shēngcún.", translation: "Enterprises must innovate to survive competition." },
+    { sentence: "中华传统文化源远流长，博大精深。", pinyin: "Zhōnghuá chuántǒng wénhuà yuányuǎn liúcháng, bódà jīngshēn.", translation: "Chinese culture is profound and enduring." },
+    { sentence: "哪怕只有一线希望，我们也要尽百分之百的努力。", pinyin: "Nǎpà zhǐyǒu yí xiàn xīwàng, wǒmen yě yào jìn bǎi fēn zhī bǎi de nǔlì.", translation: "Even with slim hope, give 100% effort." },
+    { sentence: "他处理危机时的从容不迫，给所有人留下了深刻印象。", pinyin: "Tā chǔlǐ wēijī shí de cóngróng búpò, gěi suǒyǒu rén liúxiàle shēnkè yìnxiàng.", translation: "His calmness in crisis impressed everyone." },
+    { sentence: "一味地逃避问题并不能解决任何实质性的麻烦。", pinyin: "Yíwèi de táobì wèntí bìng bùnéng jiějué rènhé shízhìxìng de máfan.", translation: "Blindly avoiding won't solve real issues." },
+    { sentence: "教育的根本目的不仅仅是传授知识，更是培养人格。", pinyin: "Jiàoyù de gēnběn mùdì bù jǐnjǐn shì chuánshòu zhīshi, gèng shì péiyǎng réngé.", translation: "Education builds character, not just knowledge." },
+    { sentence: "所谓“己所不欲，勿施于人”，这是最基本的道德底线。", pinyin: "Suǒwèi 'jǐ suǒ bú yù, wù shī yú rén', zhè shì zuì jīběn de dàodé dǐxiàn.", translation: "Do unto others as you would have them do unto you." },
+    { sentence: "在利益面前，人性的弱点往往会暴露无遗。", pinyin: "Zài lìyì miànqián, rénxìng de ruòdiǎn wǎngwǎng huì bàolù wú yí.", translation: "Flaws in human nature show in face of profit." },
+    { sentence: "这座城市的历史变迁，犹如一部生动的纪录片。", pinyin: "Zhè zuò chéngshì de lìshǐ biànqiān, yóurú yí bù shēngdòng de jìlùpiān.", translation: "The city's history is like a vivid documentary." },
+    { sentence: "我们不能只看眼前利益，而要着眼于长远发展。", pinyin: "Wǒmen bùnéng zhǐ kàn yǎnqián lìyì, ér yào zhuóyǎn yú chángyuǎn fāzhǎn.", translation: "Focus on long-term development, not immediate gain." },
+    { sentence: "与其临渊羡鱼，不如退而结网。", pinyin: "Yǔqí línyuān xiànyú, bùrú tuì ér jiéwǎng.", translation: "Better to make a net than covet fish." },
+    { sentence: "在人工智能时代，终身学习已经成为一种必然选择。", pinyin: "Zài réngōng zhìnéng shídài, zhōngshēn xuéxí yǐjīng chéngwéi yì zhǒng bìrán xuǎnzé.", translation: "Lifelong learning is essential in the AI era." },
+    { sentence: "两国在文化交流方面取得了丰硕的成果。", pinyin: "Liǎng guó zài wénhuà jiāoliú fāngmiàn qǔdéle fēngshuò de chéngguǒ.", translation: "Rich results in cultural exchange between the two countries." },
+    { sentence: "这部电影情节跌宕起伏，引人深思。", pinyin: "Zhè bù diànyǐng qíngjié diēdàng qǐfú, yǐn rén shēnsī.", translation: "The movie has twists and provokes thought." },
+    { sentence: "事实胜于雄辩，再多的狡辩也掩盖不了真相。", pinyin: "Shìshí shèng yú xióngbiàn, zài duō de jiǎobiàn yě yǎngài bùliǎo zhēnxiàng.", translation: "Facts speak louder than words." },
+    { sentence: "无论社会如何变迁，有些传统的价值观依然历久弥新。", pinyin: "Wúlùn shèhuì rúhé biànqiān, yǒuxiē chuántǒng de jiàzhíguān yīrán lìjiǔ míxīn.", translation: "Some traditional values endure through changes." }
   ]
 };
 
-const MANUAL_DATA = { 
-  "1-3": { vocab: [ { title: "想 vs 要", desc: "想 = wish, 要 = strong intent/demand.", example: "我想喝茶 vs 我要喝茶" } ], grammar: [ { title: "一般疑问句：吗", desc: "Add 吗 for yes/no question.", example: "你是学生吗？" } ], pinyin: [ { title: "三声变调", desc: "Two 3rd tones -> 2nd + 3rd.", example: "你好 (ní hǎo)" } ] }
+const MANUAL_DATA = {
+  "1-3": {
+    vocab: [
+      { title: "高频动词：想 (xiǎng) vs 要 (yào)", desc: "想 indicates a wish or missing someone. 要 indicates a stronger intent, demand, or future action.", example: "我想喝茶 (I'd like tea) vs 我要喝茶 (I want/will have tea)." },
+      { title: "方向与位置：在 (zài)", desc: "Use 在 to indicate location. Structure: Subject + 在 + Place.", example: "我在家。(I am at home.) 书在桌子上。(The book is on the table.)" },
+      { title: "数量词：二 (èr) vs 两 (liǎng)", desc: "Use 二 for counting numbers (1, 2, 3). Use 两 when quantifying objects with a measure word.", example: "一二三 (1, 2, 3). 两个人 (two people)." }
+    ],
+    grammar: [
+      { title: "一般疑问句：吗 (ma)", desc: "Add 吗 at the end of a statement to turn it into a yes/no question.", example: "你是学生吗？(Are you a student?)" },
+      { title: "正反疑问句：V 不 V", desc: "Form a question by stating the verb and its negative form side-by-side.", example: "你去不去？(Are you going or not?)" },
+      { title: "完成体：了 (le)", desc: "Place 了 after a verb or at the end of a sentence to indicate a completed action.", example: "我吃饭了。(I ate.)" }
+    ],
+    pinyin: [
+      { title: "三声变调 (3rd Tone Sandhi)", desc: "When two 3rd tones are back-to-back, the first one is pronounced as a 2nd tone.", example: "你好 (nǐ hǎo -> ní hǎo)" },
+      { title: "“不”的变调 (Tone of bù)", desc: "When '不' (4th tone) is followed by another 4th tone, it changes to the 2nd tone (bú).", example: "不是 (bú shì), 不去 (bú qù)" },
+      { title: "“一”的变调 (Tone of yī)", desc: "Before a 4th tone, it becomes 2nd tone (yí). Before 1st/2nd/3rd tones, it becomes 4th tone (yì).", example: "一个 (yí gè), 一起 (yì qǐ)" }
+    ]
+  },
+  "4-6": {
+    vocab: [
+      { title: "成语入门：莫名其妙", desc: "Meaning 'baffling' or 'without rhyme or reason'. Very common in daily complaints.", example: "他突然生气了，真是莫名其妙。(He suddenly got angry, it's really baffling.)" },
+      { title: "连词：既然...就...", desc: "Since... then... Used to draw a conclusion from a stated premise.", example: "既然下雨了，我们就别去了。(Since it's raining, let's not go.)" },
+      { title: "程度副词：简直 (jiǎnzhí)", desc: "Meaning 'simply' or 'absolutely'. Used for exaggeration.", example: "这儿的风景简直太美了！(The scenery here is simply too beautiful!)" }
+    ],
+    grammar: [
+      { title: "把字句 (bǎ-construction)", desc: "Subject + 把 + Object + Verb + Complement. Used when the subject does something to change the state/location of a specific object.", example: "请把门关上。(Please close the door.)" },
+      { title: "被字句 (Passive Voice)", desc: "Receiver + 被 + Doer + Verb. Often used for negative or unfavorable situations.", example: "我的手机被弟弟弄坏了。(My phone was broken by my brother.)" },
+      { title: "趋向补语 (Directional Complements)", desc: "Verb + 来/去 (towards/away from speaker) indicating direction of action.", example: "他走过来了。(He walked over here.)" }
+    ],
+    pinyin: [
+      { title: "轻声 (Neutral Tone)", desc: "Certain syllables lose their tone and are pronounced short and light, especially structural particles or second syllables in some words.", example: "东西 (dōng xi), 喜欢 (xǐ huan), 我的 (wǒ de)" },
+      { title: "儿化音 (Erhua)", desc: "Adding 'r' sound to the end of a syllable, common in Northern China accents, sometimes changes the meaning.", example: "画 (huà, picture) -> 画儿 (huàr, a painting)" }
+    ]
+  },
+  "7-9": {
+    vocab: [
+      { title: "高级成语：塞翁失马，焉知非福", desc: "A blessing in disguise. Lit: The old man lost his horse, how could one know it isn't a blessing?", example: "这次没考上也许是塞翁失马，焉知非福呢。" },
+      { title: "书面语：旨在 (zhǐ zài)", desc: "Formal vocabulary meaning 'aimed at' or 'with the purpose of'.", example: "这项政策旨在提高教学质量。(This policy is aimed at improving teaching quality.)" },
+      { title: "双音节词的正式表达", desc: "In advanced HSK, colloquial 1-character words are replaced by formal 2-character words.", example: "给 -> 给予 (jǐ yǔ); 办 -> 处理 (chǔ lǐ)" }
+    ],
+    grammar: [
+      { title: "反问句 (Rhetorical Questions)", desc: "Using structures like 难道...吗？ or 怎么会...呢？ to make a strong statement through a question.", example: "难道你连这个都不知道吗？(Don't tell me you don't even know this?)" },
+      { title: "复杂关联词：与其...不如...", desc: "Rather than A... it is better to B. Used for evaluating choices.", example: "与其抱怨环境，不如改变自己。(Rather than complaining about the environment, it's better to change yourself.)" },
+      { title: "插入语 (Parentheticals)", desc: "Phrases inserted to express the speaker's attitude or source of info.", example: "总而言之 (in conclusion), 依我看 (in my opinion), 据报道 (according to reports)" }
+    ],
+    pinyin: [
+      { title: "语调与情感表达 (Intonation & Emotion)", desc: "At advanced levels, tone isn't just about pronunciation, but sentence intonation. Rising intonation expresses doubt/surprise, falling expresses certainty/command.", example: "他真的来了？(Rising: He really came?!) 他真的来了。(Falling: He really came.)" },
+      { title: "连续语流中的停顿 (Pausing in speech)", desc: "Knowing where to pause (sense groups) is crucial for advanced fluency and conveying correct grammatical meaning.", example: "我发现 / 他其实 / 并不了解 / 这个项目。(Sense group pauses)" }
+    ]
+  }
 };
 
 /* ═══════════════════════════════════════════
@@ -186,7 +334,6 @@ const MODES = [
 
 // Parser for the Example sentences in DrillView
 function renderExampleText(text, mode) {
-  // Regex to parse: "汉字。(pinyin) English"
   const hzMatch = text.match(/^(.*?)\(/);
   const hz = hzMatch ? hzMatch[1].trim() : text;
   const pyMatch = text.match(/\((.*?)\)/);
@@ -215,7 +362,6 @@ function renderChatBubble(text, mode, themeColor) {
     else if(t.startsWith('英文:') || t.startsWith('英文：')) en = t.substring(3).trim();
   });
 
-  // Fallback if AI fails to format
   if (!hz && !py && !en) hz = clean(text).replace(/\(.*?\)/g, '').replace(/[a-zA-Z].*$/, '');
 
   return { 
@@ -257,7 +403,7 @@ function PageWrap({children, wide}){
 }
 
 /* ═══════════════════════════════════════════
-   TOP BAR (With Mode Selector)
+   TOP BAR
    ═══════════════════════════════════════════ */
 
 function TopBar({title, subtitle, onBack, hskLevel, onChangeHSK, mode, onChangeMode}){
@@ -269,9 +415,8 @@ function TopBar({title, subtitle, onBack, hskLevel, onChangeHSK, mode, onChangeM
   return(<div style={{padding:"16px 20px",display:"flex",alignItems:"center",gap:12,background:"#fff",borderBottom:"1px solid #f0efe8",position:"sticky",top:0,zIndex:20}}>
     {onBack&&<button onClick={onBack} style={{background:"none",border:"none",cursor:"pointer",padding:6,display:"flex",borderRadius:8}}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>}
     <div style={{flex:1,minWidth:0}}><div style={{fontSize:17,fontWeight:600,color:"#1a1a1a"}}>{title}</div>{subtitle&&<div style={{fontSize:12,color:"#999"}}>{subtitle}</div>}</div>
-    {hskLevel && <div style={{display:"flex",alignItems:"center",gap:8}}>
+    {hskLevel && lv && <div style={{display:"flex",alignItems:"center",gap:8}}>
       
-      {/* Mode Selector Dropdown */}
       {onChangeMode && <div style={{position:"relative"}}>
         <button onClick={()=>setOpenMode(!openMode)} style={{background:"#f0efe8",border:"none",borderRadius:20,padding:"6px 12px",cursor:"pointer",fontSize:13,display:"flex",alignItems:"center",gap:4,fontWeight:600,color:"#666"}}>⚙️ {curMode?.label.slice(0,2)}</button>
         {openMode&&<><div onClick={()=>setOpenMode(false)} style={{position:"fixed",inset:0,zIndex:30}}/><div style={{position:"absolute",right:0,top:"calc(100% + 6px)",background:"#fff",borderRadius:12,border:"1px solid #f0efe8",boxShadow:"0 8px 24px rgba(0,0,0,0.1)",zIndex:31,overflow:"hidden",minWidth:150}}>
@@ -282,7 +427,6 @@ function TopBar({title, subtitle, onBack, hskLevel, onChangeHSK, mode, onChangeM
         </div></>}
       </div>}
 
-      {/* HSK Selector Dropdown */}
       <div style={{position:"relative"}}>
         <button onClick={()=>setOpenHSK(!openHSK)} style={{background:lv.color+"14",border:`1px solid ${lv.color}30`,borderRadius:20,padding:"6px 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:13,fontWeight:600,color:lv.color,fontFamily:"inherit"}}>{lv.emoji} {lv.label}<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={lv.color} strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         {openHSK&&<><div onClick={()=>setOpenHSK(false)} style={{position:"fixed",inset:0,zIndex:30}}/><div style={{position:"absolute",right:0,top:"calc(100% + 6px)",background:"#fff",borderRadius:12,border:"1px solid #f0efe8",boxShadow:"0 8px 24px rgba(0,0,0,0.1)",zIndex:31,overflow:"hidden",minWidth:180}}>
@@ -367,7 +511,7 @@ function DrillView({type,hskLevel,onBack,onChangeHSK, mode, onChangeMode}){
 }
 
 /* ═══════════════════════════════════════════
-   CHAT VIEW (With Strict 3-line parsing)
+   CHAT VIEW
    ═══════════════════════════════════════════ */
 
 function ChatView({module,hskLevel,onBack,onChangeHSK,showVoice=true, mode, onChangeMode}){
@@ -381,7 +525,6 @@ function ChatView({module,hskLevel,onBack,onChangeHSK,showVoice=true, mode, onCh
   
   useEffect(()=>{endRef.current?.scrollIntoView({behavior:"smooth"});},[messages,loading]);
   
-  // The Strict Command for AI Output
   const sys=()=>`You are a Chinese language coach.\n${HSK_PROMPT[hskLevel]}\nROLE: ${module.system||module.role||""}\nRULES: Stay in character, 2-3 sentences max. You MUST format your reply strictly in these 3 lines using exactly these prefixes:\n汉字: [Chinese Characters]\n拼音: [Pinyin]\n英文: [English Translation]\nDo not use markdown.`;
   
   const send=async(text)=>{if(!text.trim()||loading)return;const u={role:"user",content:text.trim()};const up=[...messages,u];setMessages(up);setInput("");setLoading(true);
@@ -489,7 +632,7 @@ function StudyManual({hskLevel, onChangeHSK, onBack}) {
 }
 
 /* ═══════════════════════════════════════════
-   MENU ITEM COMPONENT (大卡片)
+   MENU ITEM COMPONENT
    ═══════════════════════════════════════════ */
 
 function MenuItem({item, onClick, hovered, onHover, badge}){
@@ -510,7 +653,7 @@ function MenuItem({item, onClick, hovered, onHover, badge}){
 }
 
 /* ═══════════════════════════════════════════
-   MODULE BUILDERS (强制三行格式)
+   MODULE BUILDERS
    ═══════════════════════════════════════════ */
 
 function buildFreeModule(hsk){return{id:"free",title:"自由对话",titleEn:"Free chat",icon:"💬",color:"#2DAA6E",bg:"#EDFAF3",system:"Friendly Chinese conversation partner. Chat naturally, correct gently.",greeting:hsk==="1-3"?"汉字: 你好！你叫什么名字？\n拼音: Nǐ hǎo! Nǐ jiào shénme míngzi?\n英文: Hello! What is your name?":hsk==="4-6"?"汉字: 嘿！你好呀！你今天过得怎么样？\n拼音: Hēi! Nǐ hǎo ya! Nǐ jīntiān guò de zěnmeyàng?\n英文: Hey! Hello! How is your day today?":"汉字: 嘿！今天想聊点什么？最近有什么有意思的事儿吗？\n拼音: Hēi! Jīntiān xiǎng liáo diǎn shénme? Zuìjìn yǒu shénme yǒu yìsi de shìr ma?\n英文: Hey! What do you want to chat about today? Anything interesting lately?"};}
@@ -521,7 +664,19 @@ function buildWritingChat(mode,hsk){const c={paragraph:{title:"段落写作",tit
    ═══════════════════════════════════════════ */
 
 export default function App(){
-  const [hsk, setHsk] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("hsk") : null));
+  const [hsk, setHsk] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("hsk");
+      // 【这里修复白屏Bug】检查缓存里的等级是否还是旧版的，如果是，直接清除并重置
+      if (saved && !HSK_LEVELS.find(l => l.id === saved)) {
+        localStorage.removeItem("hsk");
+        return null;
+      }
+      return saved;
+    }
+    return null;
+  });
+
   const [viewMode, setViewMode] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("viewMode") || "HPE" : "HPE"));
   const [showAbout, setShowAbout] = useState(() => (typeof window !== "undefined" ? !localStorage.getItem("aboutSeen") : true));
   

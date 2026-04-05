@@ -38,19 +38,19 @@ function useIsMobile() {
 }
 
 /* ═══════════════════════════════════════════
-   DATA
+   DATA & KNOWLEDGE BASE
    ═══════════════════════════════════════════ */
 
 const HSK_LEVELS = [
-  { id: "1-2", label: "HSK 1-2", sub: "Beginner", desc: "Basic greetings, numbers, simple sentences", color: "#2DAA6E", emoji: "🌱" },
-  { id: "3-4", label: "HSK 3-4", sub: "Intermediate", desc: "Daily conversations, express opinions", color: "#E8A838", emoji: "🌿" },
-  { id: "5-6", label: "HSK 5-6", sub: "Advanced", desc: "Complex discussions, idioms, formal expressions", color: "#7B6CF6", emoji: "🌳" },
+  { id: "1-3", label: "初等 HSK 1-3", sub: "Beginner", desc: "基础交流、拼音与简单句", color: "#2DAA6E", emoji: "🌱" },
+  { id: "4-6", label: "中等 HSK 4-6", sub: "Intermediate", desc: "日常交际、表达观点与意图", color: "#E8A838", emoji: "🌿" },
+  { id: "7-9", label: "高等 HSK 7-9", sub: "Advanced", desc: "复杂话题讨论、高级书面语体", color: "#7B6CF6", emoji: "🌳" },
 ];
 
 const HSK_PROMPT = {
-  "1-2": "Student is HSK 1-2 beginner. Use basic vocab, short sentences, always give pinyin + English. NEVER use markdown (no ** # _ ~~).",
-  "3-4": "Student is HSK 3-4 intermediate. Use common vocab, moderate complexity, pinyin for hard words. NEVER use markdown (no ** # _ ~~).",
-  "5-6": "Student is HSK 5-6 advanced. Use rich vocab, idioms, complex grammar. Pinyin only for rare words. NEVER use markdown (no ** # _ ~~).",
+  "1-3": "Student is HSK 1-3 beginner. Use basic vocab, short sentences, always give pinyin + English. NEVER use markdown (no ** # _ ~~).",
+  "4-6": "Student is HSK 4-6 intermediate. Use common vocab, moderate complexity, pinyin for hard words. NEVER use markdown (no ** # _ ~~).",
+  "7-9": "Student is HSK 7-9 advanced. Use rich vocab, idioms, complex grammar. Pinyin only for rare words. NEVER use markdown (no ** # _ ~~).",
 };
 
 const IDENTITY_FILTERS = [
@@ -59,20 +59,20 @@ const IDENTITY_FILTERS = [
 ];
 
 const SCENARIOS = [
-  { id: "restaurant", title: "餐厅点餐", titleEn: "Order food", icon: "🍜", color: "#E8A838", bg: "#FFF8ED", identities: ["student","worker","tourist"], role: "You play a restaurant waiter. Take orders, recommend dishes, handle payment.", greeting: { "1-2": "你好！\n(Nǐ hǎo!) Hello!\n\n你想吃什么？\n(Nǐ xiǎng chī shénme?)\nWhat do you want to eat?", "3-4": "你好，欢迎光临！请问几位？\n(Qǐngwèn jǐ wèi?)\nHow many guests?\n\n想坐大厅还是包间？", "5-6": "欢迎光临！请问您有预订吗？今天我们有几道新推出的特色菜，要不要我给您介绍一下？" } },
-  { id: "directions", title: "问路 / 打车", titleEn: "Directions & taxi", icon: "🗺️", color: "#4A90D9", bg: "#EEF4FB", identities: ["student","worker","tourist"], role: "You play a taxi driver or passerby. Use: 左转, 右转, 直走, 红绿灯.", greeting: { "1-2": "你好！你去哪里？\n(Nǐ qù nǎlǐ?) 🚕", "3-4": "你好！我是出租车司机。请问你去哪儿？🚕", "5-6": "您好，请问去哪儿？现在有点堵车，我建议走三环，您看行吗？🚕" } },
-  { id: "hospital", title: "看病 / 去药店", titleEn: "Doctor & pharmacy", icon: "🏥", color: "#D4413A", bg: "#FDF0EF", identities: ["student","worker","tourist"], role: "You play a doctor or pharmacist. Teach: 头疼, 发烧, 感冒, 过敏.", greeting: { "1-2": "你好！你哪里不舒服？\n(Nǐ nǎlǐ bù shūfu?) 🩺", "3-4": "你好，请坐。我是王医生。\n你今天哪里不舒服？ 🩺", "5-6": "你好，请坐。我先看一下挂号信息……你是内科对吧？🩺" } },
-  { id: "shopping", title: "购物 / 砍价", titleEn: "Shopping", icon: "🛒", color: "#9B59B6", bg: "#F5F0FA", identities: ["student","worker","tourist"], role: "You play a market vendor. Teach: 多少钱, 太贵了, 便宜一点.", greeting: { "1-2": "你好！你要买什么？\n(Nǐ yào mǎi shénme?) 🛒", "3-4": "来看看！今天水果很新鲜！草莓十块一斤！🍓", "5-6": "哎，来来来！自家种的，纯天然！买两斤送半斤！🍓" } },
-  { id: "social", title: "校园社交", titleEn: "Making friends", icon: "🤝", color: "#2DAA6E", bg: "#EDFAF3", identities: ["student"], role: "You play a friendly classmate. Casual, topics: clubs, food, WeChat.", greeting: { "1-2": "你好！我叫小明。你叫什么？😄", "3-4": "嘿！你也是这个班的吗？我叫小明，你呢？😄", "5-6": "哎，你是新来的交换生吧？加个微信呗？😄" } },
-  { id: "rent", title: "租房沟通", titleEn: "Renting", icon: "🏠", color: "#E67E22", bg: "#FEF5EC", identities: ["student","worker"], role: "You play a landlord. Teach: 房租, 押金, 水电费, 合同.", greeting: { "1-2": "你好！你要租房子吗？🏠", "3-4": "你好，你是来看房的吧？一室一厅，月租三千五。🏠", "5-6": "你好！朝南采光好，家电全新，租金三千五，押一付三。🏠" } },
-  { id: "interview", title: "面试求职", titleEn: "Job interview", icon: "👔", color: "#34495E", bg: "#EDF0F2", identities: ["worker","student"], role: "You play an HR interviewer. Ask: self-intro, experience, salary.", greeting: { "1-2": "你好！请坐。你叫什么名字？💼", "3-4": "你好，请坐！我是张经理。先做个自我介绍吧。💼", "5-6": "你好，欢迎来面试。我是人力资源部张经理。请先做个自我介绍。💼" } },
-  { id: "travel", title: "旅游订酒店", titleEn: "Travel & hotels", icon: "🏨", color: "#1ABC9C", bg: "#E8FAF6", identities: ["tourist","student"], role: "You play a hotel receptionist. Teach: 预订, 入住, 退房, 门票.", greeting: { "1-2": "你好！欢迎！你要住房间吗？🏨", "3-4": "欢迎来到北京大酒店！请问有预订吗？🏨", "5-6": "欢迎光临！请问您是网上预订还是现场办理？🏨" } },
-  { id: "workplace", title: "职场沟通", titleEn: "Workplace", icon: "🏢", color: "#8E44AD", bg: "#F4ECF9", identities: ["worker"], role: "You play a colleague/manager. Topics: meetings, leave, projects.", greeting: { "1-2": "早上好！今天忙吗？🏢", "3-4": "早上好！下午三点有部门会议，准备好了吗？🏢", "5-6": "早！昨天方案客户反馈了，下午开会你汇报一下进度。🏢" } },
-  { id: "sightseeing", title: "景点游览", titleEn: "Sightseeing", icon: "🏯", color: "#C0392B", bg: "#FBEEED", identities: ["tourist"], role: "You play a tour guide. Teach: 拍照, 排队, 纪念品.", greeting: { "1-2": "欢迎！这是长城！好看吗？🏯", "3-4": "欢迎来到长城！我是导游小李。🏯", "5-6": "各位游客朋友们，欢迎来到八达岭长城！🏯" } },
+  { id: "restaurant", title: "餐厅点餐", titleEn: "Order food", icon: "🍜", color: "#E8A838", bg: "#FFF8ED", identities: ["student","worker","tourist"], role: "You play a restaurant waiter. Take orders, recommend dishes, handle payment.", greeting: { "1-3": "你好！\n(Nǐ hǎo!) Hello!\n\n你想吃什么？\n(Nǐ xiǎng chī shénme?)\nWhat do you want to eat?", "4-6": "你好，欢迎光临！请问几位？\n(Qǐngwèn jǐ wèi?)\nHow many guests?\n\n想坐大厅还是包间？", "7-9": "欢迎光临！请问您有预订吗？今天我们有几道新推出的特色菜，要不要我给您介绍一下？" } },
+  { id: "directions", title: "问路 / 打车", titleEn: "Directions & taxi", icon: "🗺️", color: "#4A90D9", bg: "#EEF4FB", identities: ["student","worker","tourist"], role: "You play a taxi driver or passerby. Use: 左转, 右转, 直走, 红绿灯.", greeting: { "1-3": "你好！你去哪里？\n(Nǐ qù nǎlǐ?) 🚕", "4-6": "你好！我是出租车司机。请问你去哪儿？🚕", "7-9": "您好，请问去哪儿？现在有点堵车，我建议走三环，您看行吗？🚕" } },
+  { id: "hospital", title: "看病 / 去药店", titleEn: "Doctor & pharmacy", icon: "🏥", color: "#D4413A", bg: "#FDF0EF", identities: ["student","worker","tourist"], role: "You play a doctor or pharmacist. Teach: 头疼, 发烧, 感冒, 过敏.", greeting: { "1-3": "你好！你哪里不舒服？\n(Nǐ nǎlǐ bù shūfu?) 🩺", "4-6": "你好，请坐。我是王医生。\n你今天哪里不舒服？ 🩺", "7-9": "你好，请坐。我先看一下挂号信息……你是内科对吧？🩺" } },
+  { id: "shopping", title: "购物 / 砍价", titleEn: "Shopping", icon: "🛒", color: "#9B59B6", bg: "#F5F0FA", identities: ["student","worker","tourist"], role: "You play a market vendor. Teach: 多少钱, 太贵了, 便宜一点.", greeting: { "1-3": "你好！你要买什么？\n(Nǐ yào mǎi shénme?) 🛒", "4-6": "来看看！今天水果很新鲜！草莓十块一斤！🍓", "7-9": "哎，来来来！自家种的，纯天然！买两斤送半斤！🍓" } },
+  { id: "social", title: "校园社交", titleEn: "Making friends", icon: "🤝", color: "#2DAA6E", bg: "#EDFAF3", identities: ["student"], role: "You play a friendly classmate. Casual, topics: clubs, food, WeChat.", greeting: { "1-3": "你好！我叫小明。你叫什么？😄", "4-6": "嘿！你也是这个班的吗？我叫小明，你呢？😄", "7-9": "哎，你是新来的交换生吧？加个微信呗？😄" } },
+  { id: "rent", title: "租房沟通", titleEn: "Renting", icon: "🏠", color: "#E67E22", bg: "#FEF5EC", identities: ["student","worker"], role: "You play a landlord. Teach: 房租, 押金, 水电费, 合同.", greeting: { "1-3": "你好！你要租房子吗？🏠", "4-6": "你好，你是来看房的吧？一室一厅，月租三千五。🏠", "7-9": "你好！朝南采光好，家电全新，租金三千五，押一付三。🏠" } },
+  { id: "interview", title: "面试求职", titleEn: "Job interview", icon: "👔", color: "#34495E", bg: "#EDF0F2", identities: ["worker","student"], role: "You play an HR interviewer. Ask: self-intro, experience, salary.", greeting: { "1-3": "你好！请坐。你叫什么名字？💼", "4-6": "你好，请坐！我是张经理。先做个自我介绍吧。💼", "7-9": "你好，欢迎来面试。我是人力资源部张经理。请先做个自我介绍。💼" } },
+  { id: "travel", title: "旅游订酒店", titleEn: "Travel & hotels", icon: "🏨", color: "#1ABC9C", bg: "#E8FAF6", identities: ["tourist","student"], role: "You play a hotel receptionist. Teach: 预订, 入住, 退房, 门票.", greeting: { "1-3": "你好！欢迎！你要住房间吗？🏨", "4-6": "欢迎来到北京大酒店！请问有预订吗？🏨", "7-9": "欢迎光临！请问您是网上预订还是现场办理？🏨" } },
+  { id: "workplace", title: "职场沟通", titleEn: "Workplace", icon: "🏢", color: "#8E44AD", bg: "#F4ECF9", identities: ["worker"], role: "You play a colleague/manager. Topics: meetings, leave, projects.", greeting: { "1-3": "早上好！今天忙吗？🏢", "4-6": "早上好！下午三点有部门会议，准备好了吗？🏢", "7-9": "早！昨天方案客户反馈了，下午开会你汇报一下进度。🏢" } },
+  { id: "sightseeing", title: "景点游览", titleEn: "Sightseeing", icon: "🏯", color: "#C0392B", bg: "#FBEEED", identities: ["tourist"], role: "You play a tour guide. Teach: 拍照, 排队, 纪念品.", greeting: { "1-3": "欢迎！这是长城！好看吗？🏯", "4-6": "欢迎来到长城！我是导游小李。🏯", "7-9": "各位游客朋友们，欢迎来到八达岭长城！🏯" } },
 ];
 
 const SENTENCE_BANK = {
-  "1-2": [
+  "1-3": [
     { word: "喜欢", pinyin: "xǐhuan", meaning: "to like", hint: "Say something you like", example: "我喜欢吃中国菜。(Wǒ xǐhuan chī Zhōngguó cài.)" },
     { word: "想", pinyin: "xiǎng", meaning: "to want", hint: "Say what you want to do", example: "我想去北京。(Wǒ xiǎng qù Běijīng.)" },
     { word: "去", pinyin: "qù", meaning: "to go", hint: "Say where you go", example: "我明天去学校。(Wǒ míngtiān qù xuéxiào.)" },
@@ -84,7 +84,7 @@ const SENTENCE_BANK = {
     { word: "在", pinyin: "zài", meaning: "at/in", hint: "Say where something is", example: "我在图书馆。" },
     { word: "买", pinyin: "mǎi", meaning: "to buy", hint: "Say what you buy", example: "我想买一本书。" },
   ],
-  "3-4": [
+  "4-6": [
     { word: "虽然……但是……", pinyin: "suīrán...dànshì...", meaning: "although...but...", hint: "Express a contrast", example: "虽然今天很冷，但是我还是出去跑步了。" },
     { word: "因为……所以……", pinyin: "yīnwèi...suǒyǐ...", meaning: "because...so...", hint: "Cause and effect", example: "因为下雨了，所以我没去公园。" },
     { word: "不但……而且……", pinyin: "búdàn...érqiě...", meaning: "not only...but also...", hint: "List two positives", example: "他不但会说中文，而且会说日语。" },
@@ -96,7 +96,7 @@ const SENTENCE_BANK = {
     { word: "把", pinyin: "bǎ", meaning: "把-construction", hint: "Act on an object", example: "请你把门关上。" },
     { word: "被", pinyin: "bèi", meaning: "passive", hint: "Passive voice", example: "我的手机被弟弟弄坏了。" },
   ],
-  "5-6": [
+  "7-9": [
     { word: "与其……不如……", pinyin: "yǔqí...bùrú...", meaning: "rather than...better to...", hint: "Compare options", example: "与其抱怨，不如行动起来。" },
     { word: "既……又……", pinyin: "jì...yòu...", meaning: "both...and...", hint: "Dual qualities", example: "这道菜既好吃又健康。" },
     { word: "不得不", pinyin: "bùdébù", meaning: "have no choice but to", hint: "Being forced", example: "飞机取消了，我不得不改签。" },
@@ -111,7 +111,7 @@ const SENTENCE_BANK = {
 };
 
 const PRONUNCIATION_BANK = {
-  "1-2": [
+  "1-3": [
     { sentence: "你好吗？", pinyin: "Nǐ hǎo ma?", translation: "How are you?" },
     { sentence: "我是学生。", pinyin: "Wǒ shì xuéshēng.", translation: "I am a student." },
     { sentence: "谢谢你！", pinyin: "Xièxie nǐ!", translation: "Thank you!" },
@@ -123,7 +123,7 @@ const PRONUNCIATION_BANK = {
     { sentence: "请再说一次。", pinyin: "Qǐng zài shuō yī cì.", translation: "Say it again." },
     { sentence: "我很高兴认识你。", pinyin: "Wǒ hěn gāoxìng rènshi nǐ.", translation: "Nice to meet you." },
   ],
-  "3-4": [
+  "4-6": [
     { sentence: "今天天气不错，适合出去走走。", pinyin: "Jīntiān tiānqì búcuò, shìhé chūqù zǒuzou.", translation: "Nice weather for a walk." },
     { sentence: "你能帮我一个忙吗？", pinyin: "Nǐ néng bāng wǒ yī gè máng ma?", translation: "Can you help me?" },
     { sentence: "我对中国文化特别感兴趣。", pinyin: "Wǒ duì Zhōngguó wénhuà tèbié gǎn xìngqù.", translation: "I'm interested in Chinese culture." },
@@ -135,7 +135,7 @@ const PRONUNCIATION_BANK = {
     { sentence: "他比我大三岁。", pinyin: "Tā bǐ wǒ dà sān suì.", translation: "3 years older." },
     { sentence: "我已经在中国住了两年了。", pinyin: "Wǒ yǐjīng zài Zhōngguó zhùle liǎng nián le.", translation: "Lived in China 2 years." },
   ],
-  "5-6": [
+  "7-9": [
     { sentence: "不管遇到什么困难，都不应该轻易放弃。", pinyin: "Bùguǎn yù dào shénme kùnnan, dōu bù yīnggāi qīngyì fàngqì.", translation: "Never give up." },
     { sentence: "与其抱怨环境，不如改变自己。", pinyin: "Yǔqí bàoyuàn huánjìng, bùrú gǎibiàn zìjǐ.", translation: "Change yourself." },
     { sentence: "这件事说起来容易，做起来难。", pinyin: "Zhè jiàn shì shuō qǐlái róngyì, zuò qǐlái nán.", translation: "Easier said than done." },
@@ -147,6 +147,58 @@ const PRONUNCIATION_BANK = {
     { sentence: "只有不断学习，才能跟上时代。", pinyin: "Zhǐyǒu búduàn xuéxí, cáinéng gēnshàng shídài.", translation: "Keep learning." },
     { sentence: "他不但没生气，反而笑着安慰了我。", pinyin: "Tā búdàn méi shēngqì, fǎn'ér xiàozhe ānwèile wǒ.", translation: "Comforted with a smile." },
   ]
+};
+
+const MANUAL_DATA = {
+  "1-3": {
+    vocab: [
+      { title: "高频动词：想 (xiǎng) vs 要 (yào)", desc: "想 indicates a wish or missing someone. 要 indicates a stronger intent, demand, or future action.", example: "我想喝茶 (I'd like tea) vs 我要喝茶 (I want/will have tea)." },
+      { title: "方向与位置：在 (zài)", desc: "Use 在 to indicate location. Structure: Subject + 在 + Place.", example: "我在家。(I am at home.) 书在桌子上。(The book is on the table.)" },
+      { title: "数量词：二 (èr) vs 两 (liǎng)", desc: "Use 二 for counting numbers (1, 2, 3). Use 两 when quantifying objects with a measure word.", example: "一二三 (1, 2, 3). 两个人 (two people)." }
+    ],
+    grammar: [
+      { title: "一般疑问句：吗 (ma)", desc: "Add 吗 at the end of a statement to turn it into a yes/no question.", example: "你是学生吗？(Are you a student?)" },
+      { title: "正反疑问句：V 不 V", desc: "Form a question by stating the verb and its negative form side-by-side.", example: "你去不去？(Are you going or not?)" },
+      { title: "完成体：了 (le)", desc: "Place 了 after a verb or at the end of a sentence to indicate a completed action.", example: "我吃饭了。(I ate.)" }
+    ],
+    pinyin: [
+      { title: "三声变调 (3rd Tone Sandhi)", desc: "When two 3rd tones are back-to-back, the first one is pronounced as a 2nd tone.", example: "你好 (nǐ hǎo -> ní hǎo)" },
+      { title: "“不”的变调 (Tone of bù)", desc: "When '不' (4th tone) is followed by another 4th tone, it changes to the 2nd tone (bú).", example: "不是 (bú shì), 不去 (bú qù)" },
+      { title: "“一”的变调 (Tone of yī)", desc: "Before a 4th tone, it becomes 2nd tone (yí). Before 1st/2nd/3rd tones, it becomes 4th tone (yì).", example: "一个 (yí gè), 一起 (yì qǐ)" }
+    ]
+  },
+  "4-6": {
+    vocab: [
+      { title: "成语入门：莫名其妙", desc: "Meaning 'baffling' or 'without rhyme or reason'. Very common in daily complaints.", example: "他突然生气了，真是莫名其妙。(He suddenly got angry, it's really baffling.)" },
+      { title: "连词：既然...就...", desc: "Since... then... Used to draw a conclusion from a stated premise.", example: "既然下雨了，我们就别去了。(Since it's raining, let's not go.)" },
+      { title: "程度副词：简直 (jiǎnzhí)", desc: "Meaning 'simply' or 'absolutely'. Used for exaggeration.", example: "这儿的风景简直太美了！(The scenery here is simply too beautiful!)" }
+    ],
+    grammar: [
+      { title: "把字句 (bǎ-construction)", desc: "Subject + 把 + Object + Verb + Complement. Used when the subject does something to change the state/location of a specific object.", example: "请把门关上。(Please close the door.)" },
+      { title: "被字句 (Passive Voice)", desc: "Receiver + 被 + Doer + Verb. Often used for negative or unfavorable situations.", example: "我的手机被弟弟弄坏了。(My phone was broken by my brother.)" },
+      { title: "趋向补语 (Directional Complements)", desc: "Verb + 来/去 (towards/away from speaker) indicating direction of action.", example: "他走过来了。(He walked over here.)" }
+    ],
+    pinyin: [
+      { title: "轻声 (Neutral Tone)", desc: "Certain syllables lose their tone and are pronounced short and light, especially structural particles or second syllables in some words.", example: "东西 (dōng xi), 喜欢 (xǐ huan), 我的 (wǒ de)" },
+      { title: "儿化音 (Erhua)", desc: "Adding 'r' sound to the end of a syllable, common in Northern China accents, sometimes changes the meaning.", example: "画 (huà, picture) -> 画儿 (huàr, a painting)" }
+    ]
+  },
+  "7-9": {
+    vocab: [
+      { title: "高级成语：塞翁失马，焉知非福", desc: "A blessing in disguise. Lit: The old man lost his horse, how could one know it isn't a blessing?", example: "这次没考上也许是塞翁失马，焉知非福呢。" },
+      { title: "书面语：旨在 (zhǐ zài)", desc: "Formal vocabulary meaning 'aimed at' or 'with the purpose of'.", example: "这项政策旨在提高教学质量。(This policy is aimed at improving teaching quality.)" },
+      { title: "双音节词的正式表达", desc: "In advanced HSK, colloquial 1-character words are replaced by formal 2-character words.", example: "给 -> 给予 (jǐ yǔ); 办 -> 处理 (chǔ lǐ)" }
+    ],
+    grammar: [
+      { title: "反问句 (Rhetorical Questions)", desc: "Using structures like 难道...吗？ or 怎么会...呢？ to make a strong statement through a question.", example: "难道你连这个都不知道吗？(Don't tell me you don't even know this?)" },
+      { title: "复杂关联词：与其...不如...", desc: "Rather than A... it is better to B. Used for evaluating choices.", example: "与其抱怨环境，不如改变自己。(Rather than complaining about the environment, it's better to change yourself.)" },
+      { title: "插入语 (Parentheticals)", desc: "Phrases inserted to express the speaker's attitude or source of info.", example: "总而言之 (in conclusion), 依我看 (in my opinion), 据报道 (according to reports)" }
+    ],
+    pinyin: [
+      { title: "语调与情感表达 (Intonation & Emotion)", desc: "At advanced levels, tone isn't just about pronunciation, but sentence intonation. Rising intonation expresses doubt/surprise, falling expresses certainty/command.", example: "他真的来了？(Rising: He really came?!) 他真的来了。(Falling: He really came.)" },
+      { title: "连续语流中的停顿 (Pausing in speech)", desc: "Knowing where to pause (sense groups) is crucial for advanced fluency and conveying correct grammatical meaning.", example: "我发现 / 他其实 / 并不了解 / 这个项目。(Sense group pauses)" }
+    ]
+  }
 };
 
 /* ═══════════════════════════════════════════
@@ -263,7 +315,7 @@ function DrillView({type,hskLevel,onBack,onChangeHSK}){
 function ChatView({module,hskLevel,onBack,onChangeHSK,showVoice=true}){
   const[messages,setMessages]=useState([]);const[input,setInput]=useState("");const[loading,setLoading]=useState(false);
   const endRef=useRef(null);const{listening,speaking,startListening,stopListening,speak,stopSpeaking}=useSpeech();
-  useEffect(()=>{const g=typeof module.greeting==="object"?module.greeting[hskLevel]:module.greeting;setMessages([{role:"assistant",content:g}]);},[module.id]);
+  useEffect(()=>{const g=typeof module.greeting==="object"?module.greeting[hskLevel]||module.greeting["4-6"]:module.greeting;setMessages([{role:"assistant",content:g}]);},[module.id, hskLevel]);
   useEffect(()=>{endRef.current?.scrollIntoView({behavior:"smooth"});},[messages,loading]);
   const sys=()=>`You are a Chinese language coach.\n${HSK_PROMPT[hskLevel]}\nROLE: ${module.system||module.role||""}\nRULES: Stay in character, 2-3 sentences max, correct gently. No markdown.`;
   const send=async(text)=>{if(!text.trim()||loading)return;const u={role:"user",content:text.trim()};const up=[...messages,u];setMessages(up);setInput("");setLoading(true);
@@ -296,6 +348,63 @@ function ChatView({module,hskLevel,onBack,onChangeHSK,showVoice=true}){
 }
 
 /* ═══════════════════════════════════════════
+   STUDY MANUAL VIEW (NEW)
+   ═══════════════════════════════════════════ */
+
+function StudyManual({hskLevel, onChangeHSK, onBack}) {
+  const [tab, setTab] = useState("vocab");
+  const [openCard, setOpenCard] = useState(null);
+  
+  const tabs = [
+    { id: "vocab", label: "重点词汇", icon: "📝" },
+    { id: "grammar", label: "核心语法", icon: "⚙️" },
+    { id: "pinyin", label: "语音声调", icon: "🗣️" }
+  ];
+  
+  const data = MANUAL_DATA[hskLevel]?.[tab] || [];
+
+  return (
+    <div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}>
+      <TopBar title="学习手册" subtitle="Study Manual" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
+      <PageWrap>
+        <div style={{padding:"24px 0 60px"}}>
+          {/* Tab Selection */}
+          <div style={{display:"flex",gap:10,marginBottom:24,background:"#fff",padding:6,borderRadius:16,border:"1px solid #f0efe8",boxShadow:"0 2px 8px rgba(0,0,0,0.02)"}}>
+             {tabs.map(t => (
+                <button key={t.id} onClick={()=>{setTab(t.id);setOpenCard(null);}}
+                  style={{flex:1, padding:"12px 0", borderRadius:12, border:"none", background:tab===t.id?"#D4413A":"transparent", color:tab===t.id?"#fff":"#888", fontWeight:600, fontSize:15, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:6, transition:"all 0.3s"}}>
+                  <span style={{fontSize:16}}>{t.icon}</span>{t.label}
+                </button>
+             ))}
+          </div>
+          
+          {/* Cards List */}
+          <div style={{display:"flex",flexDirection:"column",gap:14}}>
+            {data.map((item, i) => {
+              const isOpen = openCard === i;
+              return (
+                <div key={i} style={{background:"#fff",borderRadius:16,border:`1.5px solid ${isOpen?"#D4413A40":"#f0efe8"}`,overflow:"hidden",boxShadow:isOpen?"0 6px 16px rgba(212,65,58,0.08)":"0 1px 3px rgba(0,0,0,0.02)",transition:"all 0.3s"}}>
+                  <button onClick={()=>setOpenCard(isOpen?null:i)} style={{width:"100%",padding:"20px 22px",border:"none",background:"transparent",display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer"}}>
+                    <span style={{fontSize:16,fontWeight:600,color:isOpen?"#D4413A":"#1a1a1a",textAlign:"left"}}>{item.title}</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={isOpen?"#D4413A":"#ccc"} strokeWidth="2.5" style={{transform:isOpen?"rotate(180deg)":"none",transition:"0.3s",flexShrink:0}}><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  {isOpen && (
+                    <div style={{padding:"0 22px 22px",animation:"su 0.3s both"}}>
+                      <div style={{fontSize:14,color:"#555",lineHeight:1.7,marginBottom:12}}>{item.desc}</div>
+                      <div style={{background:"#FDF0EF",padding:"12px 16px",borderRadius:12,color:"#D4413A",fontWeight:500,borderLeft:"4px solid #D4413A"}}><span style={{fontSize:12,fontWeight:700,textTransform:"uppercase",opacity:0.8,marginRight:8}}>Example:</span>{item.example}</div>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </PageWrap>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
    MENU ITEM COMPONENT
    ═══════════════════════════════════════════ */
 
@@ -318,7 +427,7 @@ function MenuItem({item, onClick, hovered, onHover, badge}){
 
 function HSKSelect({onSelect}){const[h,sH]=useState(null);return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:24}}>
   <div style={{width:72,height:72,borderRadius:20,background:"linear-gradient(135deg,#E8A838,#D4413A)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:22,boxShadow:"0 8px 24px rgba(232,168,56,0.25)"}}><span style={{fontSize:34,color:"#fff",fontWeight:700}}>说</span></div>
-  <h1 style={{fontSize:26,fontWeight:700,color:"#1a1a1a",margin:"0 0 6px"}}>SpeakWise 说慧</h1>
+  <h1 style={{fontSize:26,fontWeight:700,color:"#1a1a1a",margin:"0 0 6px"}}>SpeakWise 雅言</h1>
   <p style={{fontSize:15,color:"#999",margin:"0 0 8px"}}>AI Chinese language coach</p>
   <p style={{fontSize:14,color:"#bbb",margin:"0 0 36px"}}>What's your Chinese level?</p>
   <div style={{width:"100%",maxWidth:440,display:"flex",flexDirection:"column",gap:14}}>
@@ -331,11 +440,15 @@ function HSKSelect({onSelect}){const[h,sH]=useState(null);return(<div style={{mi
 </div>);}
 
 function MainMenu({hskLevel,onChangeHSK,onNav}){const[h,sH]=useState(null);const isMobile=useIsMobile();
-  const sec=[{id:"oral",title:"口语练习",titleEn:"Oral practice",icon:"🗣️",color:"#E8A838",bg:"#FFF8ED",desc:"场景模拟 · 语音测评 · 自由对话"},{id:"written",title:"书面语练习",titleEn:"Written practice",icon:"📖",color:"#7B6CF6",bg:"#F3F0FF",desc:"造句 · 段落写作 · 短文写作"}];
-  return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title="SpeakWise 说慧" subtitle="AI Chinese language coach" hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
+  const sec=[
+    {id:"oral",title:"口语练习",titleEn:"Oral practice",icon:"🗣️",color:"#E8A838",bg:"#FFF8ED",desc:"场景模拟 · 语音测评 · 自由对话"},
+    {id:"written",title:"书面语练习",titleEn:"Written practice",icon:"📖",color:"#7B6CF6",bg:"#F3F0FF",desc:"造句 · 段落写作 · 短文写作"},
+    {id:"manual",title:"学习手册",titleEn:"Study Manual",icon:"📚",color:"#D4413A",bg:"#FDF0EF",desc:"重点词汇 · 核心语法 · 语音声调"}
+  ];
+  return(<div style={{minHeight:"100vh",background:"#FAFAF7",fontFamily:"'Noto Sans SC',sans-serif"}}><TopBar title="SpeakWise 雅言" subtitle="AI Chinese language coach" hskLevel={hskLevel} onChangeHSK={onChangeHSK}/>
     <PageWrap><div style={{padding:"32px 0 40px"}}>
       <p style={{fontSize:22,fontWeight:600,color:"#1a1a1a",margin:"0 0 28px",lineHeight:1.4}}>Hi! 👋 What would you<br/>like to practice?</p>
-      <div style={{display:"flex",flexDirection:isMobile?"column":"row",gap:16}}>
+      <div style={{display:"flex",flexDirection:"column",gap:16}}>
         {sec.map((s,i)=><div key={s.id} onClick={()=>onNav(s.id)} onMouseEnter={()=>sH(s.id)} onMouseLeave={()=>sH(null)}
           style={{flex:1,background:"#fff",borderRadius:18,padding:"26px 24px",cursor:"pointer",border:`1.5px solid ${h===s.id?s.color+"60":"#f0efe8"}`,transition:"all 0.3s",transform:h===s.id?"translateY(-3px)":"none",boxShadow:h===s.id?`0 10px 28px ${s.color}15`:"0 1px 3px rgba(0,0,0,0.03)",animation:`su 0.5s ${i*0.12}s both`}}>
           <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:12}}><div style={{width:56,height:56,borderRadius:16,background:s.bg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:28}}>{s.icon}</div><div><div style={{fontSize:20,fontWeight:600,color:"#1a1a1a"}}>{s.title}</div><div style={{fontSize:13,color:"#aaa"}}>{s.titleEn}</div></div></div>
@@ -383,8 +496,8 @@ function WrittenMenu({hskLevel,onChangeHSK,onBack,onSelect}){const[h,sH]=useStat
    MODULE BUILDERS
    ═══════════════════════════════════════════ */
 
-function buildFreeModule(hsk){return{id:"free",title:"自由对话",titleEn:"Free chat",icon:"💬",color:"#2DAA6E",bg:"#EDFAF3",system:"Friendly Chinese conversation partner. Chat naturally, correct gently.",greeting:hsk==="1-2"?"你好！😊\n(Nǐ hǎo!)\n\n你叫什么名字？\n(Nǐ jiào shénme míngzi?)":hsk==="3-4"?"嘿！你好呀！😊\n\n你今天过得怎么样？\n(Nǐ jīntiān guò de zěnmeyàng?)":"嘿！今天想聊点什么？😊\n\n最近有什么有意思的事儿吗？"};}
-function buildWritingChat(mode,hsk){const c={paragraph:{title:"段落写作",titleEn:"Paragraphs",icon:"📝",color:"#E8A838",bg:"#FFF8ED",system:"Chinese writing coach. Review paragraphs, give feedback. No markdown.",greeting:hsk==="1-2"?"Paragraph practice! 📝\n\nWrite 3-4 sentences:\n\n我的一天 \"My day\"":hsk==="3-4"?"Paragraph writing! 📝\n\nWrite 4-5 sentences:\n\n我最喜欢的城市 \"My favorite city\"":"Paragraph writing! 📝\n\nWrite 5-6 sentences:\n\n网络社交对人际关系的影响"},essay:{title:"短文写作",titleEn:"Essays",icon:"📄",color:"#7B6CF6",bg:"#F3F0FF",system:"Chinese essay coach. Score /100, detailed feedback. No markdown.",greeting:hsk==="1-2"?"Essay practice! 📄\n\nWrite 5-6 sentences:\n\n我的家人 \"My family\"":hsk==="3-4"?"Essay writing! 📄\n\nWrite 8-10 sentences:\n\n一次难忘的旅行 \"An unforgettable trip\"":"Essay writing! 📄\n\nWrite 150-200 chars:\n\n传统文化在现代社会中的角色"}};return c[mode];}
+function buildFreeModule(hsk){return{id:"free",title:"自由对话",titleEn:"Free chat",icon:"💬",color:"#2DAA6E",bg:"#EDFAF3",system:"Friendly Chinese conversation partner. Chat naturally, correct gently.",greeting:hsk==="1-3"?"你好！😊\n(Nǐ hǎo!)\n\n你叫什么名字？\n(Nǐ jiào shénme míngzi?)":hsk==="4-6"?"嘿！你好呀！😊\n\n你今天过得怎么样？\n(Nǐ jīntiān guò de zěnmeyàng?)":"嘿！今天想聊点什么？😊\n\n最近有什么有意思的事儿吗？"};}
+function buildWritingChat(mode,hsk){const c={paragraph:{title:"段落写作",titleEn:"Paragraphs",icon:"📝",color:"#E8A838",bg:"#FFF8ED",system:"Chinese writing coach. Review paragraphs, give feedback. No markdown.",greeting:hsk==="1-3"?"Paragraph practice! 📝\n\nWrite 3-4 sentences:\n\n我的一天 \"My day\"":hsk==="4-6"?"Paragraph writing! 📝\n\nWrite 4-5 sentences:\n\n我最喜欢的城市 \"My favorite city\"":"Paragraph writing! 📝\n\nWrite 5-6 sentences:\n\n网络社交对人际关系的影响"},essay:{title:"短文写作",titleEn:"Essays",icon:"📄",color:"#7B6CF6",bg:"#F3F0FF",system:"Chinese essay coach. Score /100, detailed feedback. No markdown.",greeting:hsk==="1-3"?"Essay practice! 📄\n\nWrite 5-6 sentences:\n\n我的家人 \"My family\"":hsk==="4-6"?"Essay writing! 📄\n\nWrite 8-10 sentences:\n\n一次难忘的旅行 \"An unforgettable trip\"":"Essay writing! 📄\n\nWrite 150-200 chars:\n\n传统文化在现代社会中的角色"}};return c[mode];}
 
 /* ═══════════════════════════════════════════
    APP ROOT
@@ -397,14 +510,15 @@ export default function App(){
   const openChat=(m,v,p)=>{setChatMod(m);setChatVoice(v);setChatParent(p);setView("chat");};
   const openDrill=(t,p)=>{setDrillType(t);setDrillParent(p);setView("drill");};
   const oralNav=id=>{if(id==="scenes")setView("scenes");else if(id==="assess")openDrill("pronunciation","oral");else if(id==="free")openChat(buildFreeModule(hsk),true,"oral");};
-  const sceneSelect=s=>openChat({...s,system:`SCENARIO: ${s.role}\nStay in character, 2-3 sentences, correct gently. No markdown.`,greeting:s.greeting[hsk]||s.greeting["3-4"]},true,"scenes");
+  const sceneSelect=s=>openChat({...s,system:`SCENARIO: ${s.role}\nStay in character, 2-3 sentences, correct gently. No markdown.`,greeting:s.greeting[hsk]||s.greeting["4-6"]},true,"scenes");
   const writingSelect=m=>{if(m.id==="sentence")openDrill("sentence","written");else openChat(buildWritingChat(m.id,hsk),false,"written");};
   return(<><style>{`@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');@keyframes su{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,0,0,0.12)}50%{box-shadow:0 0 0 12px rgba(0,0,0,0)}}@keyframes dp{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1.1)}}*{box-sizing:border-box;margin:0}body{font-family:'Noto Sans SC',sans-serif}`}</style>
     {view==="hsk"&&<HSKSelect onSelect={l=>{setHsk(l);setView("main");}}/>}
-    {view==="main"&&<MainMenu hskLevel={hsk} onChangeHSK={setHsk} onNav={id=>setView(id==="oral"?"oral":"written")}/>}
+    {view==="main"&&<MainMenu hskLevel={hsk} onChangeHSK={setHsk} onNav={id=>setView(id==="oral"?"oral":id==="written"?"written":"manual")}/>}
     {view==="oral"&&<OralMenu hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("main")} onNav={oralNav}/>}
     {view==="scenes"&&<SceneList hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("oral")} onSelect={sceneSelect}/>}
     {view==="written"&&<WrittenMenu hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("main")} onSelect={writingSelect}/>}
+    {view==="manual"&&<StudyManual hskLevel={hsk} onChangeHSK={setHsk} onBack={()=>setView("main")}/>}
     {view==="chat"&&chatMod&&<ChatView module={chatMod} hskLevel={hsk} onBack={()=>setView(chatParent)} onChangeHSK={setHsk} showVoice={chatVoice}/>}
     {view==="drill"&&<DrillView type={drillType} hskLevel={hsk} onBack={()=>setView(drillParent)} onChangeHSK={setHsk}/>}
   </>);

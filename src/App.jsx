@@ -679,11 +679,34 @@ function buildWritingChat(mode,hsk){const c={paragraph:{title:"段落写作",tit
    ═══════════════════════════════════════════ */
  
 function HSKSelect({onSelect}) {
-  return <PageWrap><div style={{padding: "60px 0", textAlign: 'center'}}>
-    <h1 style={{fontSize: 28, fontWeight: 700, color: "#D4413A", marginBottom: 8}}>欢迎来到 SpeakWise 琢音</h1>
-    <h2 style={{marginBottom: 20}}>请选择你的汉语水平</h2>
-    {HSK_LEVELS.map(l => <button key={l.id} onClick={()=>onSelect(l.id)} style={{display:"block", width:"100%", padding: 16, marginBottom: 12, borderRadius: 12, border:`1px solid ${l.color}`, background: l.color+"10", color: l.color, fontSize: 16, cursor: "pointer"}}>{l.emoji} {l.label} ({l.sub})</button>)}
-  </div></PageWrap>
+  const [hovered, setHovered] = useState(null);
+  return (
+    <PageWrap maxWidth={580}>
+      <div style={{padding: "60px 0", textAlign: 'center'}}>
+        <h1 style={{fontSize: 28, fontWeight: 700, color: "#D4413A", marginBottom: 8}}>欢迎来到 SpeakWise 琢音</h1>
+        <h2 style={{marginBottom: 32}}>请选择你的汉语水平</h2>
+        <div style={{display: "flex", flexDirection: "column", gap: 16, textAlign: "left"}}>
+          {HSK_LEVELS.map(l => (
+            <MenuItem 
+              key={l.id} 
+              item={{
+                id: l.id, 
+                title: l.label, 
+                titleEn: l.sub, 
+                icon: l.emoji, 
+                color: l.color, 
+                bg: l.color + "15", 
+                desc: l.desc
+              }} 
+              onClick={() => onSelect(l.id)} 
+              hovered={hovered} 
+              onHover={setHovered} 
+            />
+          ))}
+        </div>
+      </div>
+    </PageWrap>
+  );
 }
  
 function MainMenu({hskLevel, onChangeHSK, onNav, onOpenAbout}) {

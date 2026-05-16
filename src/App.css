@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+@keyframes su {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0.12); }
+  50% { box-shadow: 0 0 0 12px rgba(0,0,0,0); }
+}
+
+@keyframes dp {
+  0%, 80%, 100% { opacity: .3; transform: scale(.8); }
+  40% { opacity: 1; transform: scale(1.1); }
+}
+
+* { box-sizing: border-box; margin: 0; }
+
+body { font-family: 'Noto Sans SC', sans-serif; }
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .menu-grid { grid-template-columns: 1fr; }
+}
+
+.footer-link {
+  text-align: center;
+  margin-top: 48px;
+  font-size: 13px;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.footer-link:hover {
+  color: #666;
+  text-decoration: underline;
+}

@@ -16,3 +16,14 @@ export async function callAI(system, messages, maxTokens = 600, retries = 2) {
     }
   }
 }
+
+export async function evaluatePronunciation(audioBase64, refText, core = "sent") {
+  const res = await fetch("/api/evaluate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ audio: audioBase64, refText, core }),
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  return data;
+}

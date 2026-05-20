@@ -1,5 +1,4 @@
 // Vercel Serverless Function — proxies pronunciation evaluation to iFlytek Suntone API
-// API credentials stored in Vercel environment variables (never exposed to frontend)
 
 const crypto = require('crypto');
 const fs = require('fs');

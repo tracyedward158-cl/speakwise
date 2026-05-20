@@ -1,7 +1,15 @@
+// ── SCF API endpoints ──
+// 生产环境：前端静态页面托管 → 直连 SCF
+// 本地开发：Vite proxy /api → localhost:3000 (server.js)
+const AI_SCF_URL = "https://1421249792-bj1fnrrvy7.ap-nanjing.tencentscf.com/";
+const EVAL_SCF_URL = import.meta.env.DEV
+  ? "/api/evaluate"
+  : "https://your-evaluate-scf.ap-nanjing.tencentscf.com/"; // 部署后替换
+
 export async function callAI(system, messages, maxTokens = 600, retries = 2) {
   for (let i = 0; i <= retries; i++) {
     try {
-      const res = await fetch("https://1421249792-bj1fnrrvy7.ap-nanjing.tencentscf.com/", {
+      const res = await fetch(AI_SCF_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ system, messages, max_tokens: maxTokens }),
@@ -18,7 +26,7 @@ export async function callAI(system, messages, maxTokens = 600, retries = 2) {
 }
 
 export async function evaluatePronunciation(audioBase64, refText, core = "sent") {
-  const res = await fetch("/api/evaluate", {
+  const res = await fetch(EVAL_SCF_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ audio: audioBase64, refText, core }),

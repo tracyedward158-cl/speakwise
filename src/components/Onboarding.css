@@ -1,0 +1,110 @@
+/* ── Overlay (background appears instantly) ── */
+.onboard-overlay {
+  position: fixed; inset: 0;
+  background: #FAFAF7;
+  display: flex; justify-content: center; align-items: center;
+  z-index: 9999;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+/* ── Phone-like window (slides up, background stays still) ── */
+.onboard-window {
+  width: 100%; max-width: 390px;
+  height: 100%; max-height: 740px;
+  background: #fff;
+  box-shadow: 0 20px 50px -12px rgba(0,0,0,0.12);
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  display: flex; flex-direction: column;
+  animation: onboardIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes onboardIn {
+  from { transform: translateY(1800px); }
+  to   { transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+  .onboard-window {
+    max-width: 100vw; max-height: 100vh;
+    border-radius: 0; box-shadow: none;
+  }
+}
+
+/* ── Swiper (flex: 1 → takes space above the fixed button) ── */
+.onboard-swiper { width: 100%; flex: 1; }
+
+.onboard-slide {
+  padding: 44px 28px 20px;
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+/* ── Illustration ── */
+.onboard-illustration {
+  width: 100%; height: 270px;
+  margin-bottom: 50px;  /* extra space for dots */
+  display: flex; justify-content: center; align-items: center;
+}
+.onboard-illustration img {
+  max-width: 100%; max-height: 100%;
+  object-fit: contain;
+}
+
+/* ── Text ── */
+.onboard-title {
+  font-size: 22px; font-weight: 700;
+  color: #1a1a1a; margin-bottom: 10px;
+}
+.onboard-desc {
+  font-size: 14px; color: #888;
+  line-height: 1.65; padding: 0 8px;
+}
+
+/* ── Pagination dots (centered between illustration and title) ── */
+.onboard-dots-wrap {
+  position: absolute;
+  top: 600px;          /* below illustration, above title */
+  left: 40%; right: 0;
+  display: flex; justify-content: center;
+  z-index: 10; pointer-events: none;
+}
+.onboard-dots {
+  display: flex; gap: 8px; pointer-events: auto;
+}
+.onboard-dots .swiper-pagination-bullet {
+  width: 8px; height: 8px;
+  background: #e2e8f0; opacity: 1;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+.onboard-dots .swiper-pagination-bullet-active {
+  width: 24px;
+  background: #D4413A;
+  border-radius: 4px;
+}
+
+/* ── Fixed button area (outside Swiper) ── */
+.onboard-btn-area {
+  padding: 0 28px 24px;
+  flex-shrink: 0;
+}
+.onboard-btn {
+  width: 100%; padding: 16px;
+  border-radius: 16px; font-size: 16px; font-weight: 600;
+  border: none; cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.onboard-btn-primary {
+  background: #D4413A; color: #fff;
+  box-shadow: 0 8px 16px -3px rgba(212,65,58,0.3);
+}
+.onboard-btn-primary:active { background: #b83830; transform: scale(0.98); }
+.onboard-btn-success {
+  background: #2DAA6E; color: #fff;
+  box-shadow: 0 8px 16px -3px rgba(45,170,110,0.3);
+}
+.onboard-btn-success:active { background: #239a5e; transform: scale(0.98); }

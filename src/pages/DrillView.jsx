@@ -7,6 +7,7 @@ import { useSpeech } from "../hooks/useSpeech.js";
 import { clean, renderExampleText } from "../utils/helpers.jsx";
 import { callAI, evaluatePronunciation } from "../utils/api.js";
 import { createAudioRecorder } from "../utils/audioRecorder.js";
+import { buildRecord, saveRecord } from "../utils/recordStore.js";
 
 export function DrillView({ type, hskLevel, onBack, onChangeHSK, mode, onChangeMode }) {
   const bank = type === "sentence" ? SENTENCE_BANK[hskLevel] : PRONUNCIATION_BANK[hskLevel];
@@ -44,6 +45,7 @@ export function DrillView({ type, hskLevel, onBack, onChangeHSK, mode, onChangeM
       const score = m ? Math.min(parseInt(m[1]), 100) : 70;
       setFeedback({ text: reply.replace(/SCORE:\s*\d+\s*/i, "").trim(), score });
       setScores(p => [...p, score]);
+      saveRecord(buildRecord({ module: "造句练习", scenario: q.word, score, hskLevel, problems: score < 70 ? ["语序错误", "词汇使用不当"] : score < 85 ? ["表达可更自然"] : [], suggestion: reply.replace(/SCORE:\s*\d+\s*/i, "").trim().slice(0, 80) }));
     } catch {
       setFeedback({ text: "网络稍有波动，请点击 'Next question' 尝试下一题哦~", score: 0 });
     }
@@ -79,6 +81,25 @@ export function DrillView({ type, hskLevel, onBack, onChangeHSK, mode, onChangeM
 
       // Build feedback from iFlytek multi-dimension scores
       const overall = result.overall ?? 0;
+
+      // Extract problems from per-word analysis
+      const wordProblems = (result.words || [])
+        .filter(w => w.readType > 0)
+        .map(w => w.readType === 1 ? `"${w.word}"增读` : w.readType === 2 ? `"${w.word}"漏读` : `"${w.word}"发音偏差`);
+      const dimProblems = [];
+      if (result.tone < 70) dimProblems.push("声调不稳定");
+      if (result.fluency < 70) dimProblems.push("流利度不足");
+      if (result.integrity < 70) dimProblems.push("完整度不足");
+      if (result.pronunciation < 70) dimProblems.push("发音不够清晰");
+      if (result.warning?.some(w => w.code === 1004)) dimProblems.push("环境噪音");
+
+      saveRecord(buildRecord({
+        module: "发音测评", scenario: q.sentence, score: overall, hskLevel,
+        dimensions: { pronunciation: result.pronunciation, tone: result.tone, fluency: result.fluency, completeness: result.integrity },
+        problems: [...dimProblems, ...wordProblems].slice(0, 4),
+        suggestion: overall >= 80 ? "发音较好，继续保持。" : overall >= 60 ? "建议重点练习发音和声调，多跟读模仿。" : "建议在安静环境下反复跟读，从简单句子开始练习。",
+      }));
+
       setFeedback({
         type: "iflytek",
         overall,

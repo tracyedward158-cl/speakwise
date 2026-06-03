@@ -1,11 +1,46 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useApp } from "../context/AppContext.jsx";
 import { TopBar } from "../components/TopBar.jsx";
 import { HSK_PROMPT } from "../data/constants.js";
+import { SCENARIOS } from "../data/scenarios.js";
 import { useSpeech } from "../hooks/useSpeech.js";
 import { renderChatBubble } from "../utils/helpers.jsx";
 import { callAI } from "../utils/api.js";
+import { buildFreeModule, buildWritingChat } from "../utils/moduleBuilders.js";
 
-export function ChatView({ module, hskLevel, onBack, onChangeHSK, showVoice = true, mode, onChangeMode }) {
+export function ChatView() {
+  const navigate = useNavigate();
+  const params = useParams();
+  const { hsk: hskLevel, setHsk: onChangeHSK, viewMode: mode, setViewMode: onChangeMode } = useApp();
+
+  // Reconstruct module from URL params
+  const module = useMemo(() => {
+    if (params.sceneId) {
+      const scene = SCENARIOS.find(s => s.id === params.sceneId);
+      if (!scene) return buildFreeModule(hskLevel);
+      return {
+        ...scene,
+        system: `SCENARIO: ${scene.role}\nStay in character, 2-3 sentences, correct gently. No markdown.`,
+        greeting: scene.greeting[hskLevel] || scene.greeting["4-6"]
+      };
+    }
+    if (params.mode) {
+      return buildWritingChat(params.mode, hskLevel);
+    }
+    return buildFreeModule(hskLevel);
+  }, [params.sceneId, params.mode, hskLevel]);
+
+  // Writing chats have no voice; free chat and scenes do
+  const showVoice = !params.mode;
+
+  // Determine back target based on route hierarchy
+  const onBack = useMemo(() => {
+    if (params.sceneId) return () => navigate("/oral/scenes");
+    if (params.mode) return () => navigate("/written");
+    return () => navigate("/oral");  // free chat
+  }, [params.sceneId, params.mode, navigate]);
+
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);

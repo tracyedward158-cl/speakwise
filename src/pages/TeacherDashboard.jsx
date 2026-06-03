@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { TopBar } from "../components/TopBar.jsx";
 import { PageWrap } from "../components/PageWrap.jsx";
 import {
@@ -21,7 +22,8 @@ const MODULE_COLORS = {
   "文化文游": "#9B59B6", "造句练习": "#E8A838",
 };
 
-export function TeacherDashboard({ onBack }) {
+export function TeacherDashboard() {
+  const navigate = useNavigate();
   const [refreshKey, setRefreshKey] = useState(0);
   const records = useMemo(() => getAllRecords(), [refreshKey]);
   const overview = useMemo(() => getClassOverview(records), [records]);
@@ -31,7 +33,7 @@ export function TeacherDashboard({ onBack }) {
 
   return (
     <div style={{ minHeight: "100vh", background: "#FAFAF7", fontFamily: "'Noto Sans SC', sans-serif" }}>
-      <TopBar title="教师支持端" subtitle="学情概览" onBack={onBack} />
+      <TopBar title="教师支持端" subtitle="学情概览" onBack={() => navigate("/main")} />
       <PageWrap maxWidth={860}>
         <div style={{ padding: "32px 0 80px" }}>
 

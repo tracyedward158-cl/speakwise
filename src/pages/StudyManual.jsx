@@ -1,12 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useApp } from "../context/AppContext.jsx";
 import { TopBar } from "../components/TopBar.jsx";
 import { PageWrap } from "../components/PageWrap.jsx";
 import { MANUAL_DATA } from "../data/studyManual.js";
 import { HSK_LEVELS } from "../data/constants.js";
 
-export function StudyManual({ hskLevel, onChangeHSK, onBack }) {
+export function StudyManual() {
   const [tab, setTab] = useState("vocab");
   const [openCard, setOpenCard] = useState(null);
+  const navigate = useNavigate();
+  const { hsk: hskLevel, setHsk: onChangeHSK } = useApp();
   const tabs = [
     { id: "vocab", label: "重点词汇", icon: "📚" },
     { id: "grammar", label: "核心语法", icon: "⚙️" },
@@ -17,7 +21,7 @@ export function StudyManual({ hskLevel, onChangeHSK, onBack }) {
 
   return (
     <div style={{ minHeight: "100vh", background: "#FAFAF7", fontFamily: "'Noto Sans SC',sans-serif" }}>
-      <TopBar title="学习手册" subtitle="Study Manual" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} />
+      <TopBar title="学习手册" subtitle="Study Manual" onBack={() => navigate("/main")} hskLevel={hskLevel} onChangeHSK={onChangeHSK} />
       <PageWrap maxWidth={800}>
         <div style={{ padding: "32px 0 80px" }}>
           <div style={{ background: "#fff", borderRadius: 20, padding: "24px 28px", marginBottom: 32, border: "1px solid #f0efe8", display: "flex", gap: 20, alignItems: "center", boxShadow: "0 4px 12px rgba(0,0,0,0.02)" }}>

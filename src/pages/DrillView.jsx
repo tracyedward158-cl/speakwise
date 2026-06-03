@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useApp } from "../context/AppContext.jsx";
 import { TopBar } from "../components/TopBar.jsx";
 import { PageWrap } from "../components/PageWrap.jsx";
 import { SENTENCE_BANK, PRONUNCIATION_BANK } from "../data/drills.js";
@@ -9,7 +11,12 @@ import { callAI, evaluatePronunciation } from "../utils/api.js";
 import { createAudioRecorder } from "../utils/audioRecorder.js";
 import { buildRecord, saveRecord } from "../utils/recordStore.js";
 
-export function DrillView({ type, hskLevel, onBack, onChangeHSK, mode, onChangeMode }) {
+export function DrillView() {
+  const navigate = useNavigate();
+  const params = useParams();
+  const { hsk: hskLevel, setHsk: onChangeHSK, viewMode: mode, setViewMode: onChangeMode } = useApp();
+  const type = params.type; // "sentence" or "pronunciation"
+
   const bank = type === "sentence" ? SENTENCE_BANK[hskLevel] : PRONUNCIATION_BANK[hskLevel];
   const [idx, setIdx] = useState(0);
   const [input, setInput] = useState("");
@@ -28,6 +35,12 @@ export function DrillView({ type, hskLevel, onBack, onChangeHSK, mode, onChangeM
   // Audio recorder for pronunciation mode (iFlytek API)
   const recorderRef = useRef(null);
   const [recording, setRecording] = useState(false);
+
+  // Derive back target from parent path
+  const location = useLocation();
+  const onBack = useCallback(() => {
+    navigate(location.pathname.startsWith("/written/") ? "/written" : "/oral");
+  }, [location.pathname, navigate]);
 
   useEffect(() => { if (feedback && fbRef.current) fbRef.current.scrollIntoView({ behavior: "smooth" }); }, [feedback]);
 

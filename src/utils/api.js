@@ -2,9 +2,7 @@
 // 生产环境：前端静态页面托管 → 直连 SCF
 // 本地开发：Vite proxy /api → localhost:3000 (server.js)
 const AI_SCF_URL = "https://1421249792-bj1fnrrvy7.ap-nanjing.tencentscf.com/";
-const EVAL_SCF_URL = import.meta.env.DEV
-  ? "/api/evaluate"
-  : "https://your-evaluate-scf.ap-nanjing.tencentscf.com/"; // 部署后替换
+const EVAL_SCF_URL = "https://1421249792-bsap200z1z.ap-nanjing.tencentscf.com"; 
 
 export async function callAI(system, messages, maxTokens = 600, retries = 2) {
   for (let i = 0; i <= retries; i++) {

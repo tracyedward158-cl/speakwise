@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { TopBar } from "../components/TopBar.jsx";
 import { PageWrap } from "../components/PageWrap.jsx";
 import { MenuItem } from "../components/MenuItem.jsx";
@@ -9,11 +10,13 @@ const CHAPTERS = [
   { id: "ch3", title: "完璧归赵", titleEn: "第三章", icon: "📜", color: "#9B59B6", bg: "#F5F0FA", desc: "随蔺相如携和氏璧入秦，智斗秦王，护璧归赵。" },
 ];
 
-export function CultureMenu({ onBack, onSelect }) {
+export function CultureMenu() {
   const [hovered, setHovered] = useState(null);
+  const navigate = useNavigate();
+
   return (
     <div style={{ minHeight: "100vh", background: "#FAFAF7", fontFamily: "'Noto Sans SC', sans-serif" }}>
-      <TopBar title="文化文游" subtitle="Cultural Stories" onBack={onBack} />
+      <TopBar title="文化文游" subtitle="Cultural Stories" onBack={() => navigate("/main")} />
       <PageWrap maxWidth={580}>
         <div style={{ padding: "40px 0" }}>
           <div style={{ textAlign: "center", marginBottom: 32 }}>
@@ -24,7 +27,7 @@ export function CultureMenu({ onBack, onSelect }) {
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {CHAPTERS.map(ch => (
-              <MenuItem key={ch.id} item={ch} onClick={() => onSelect(ch.id)} hovered={hovered} onHover={setHovered} />
+              <MenuItem key={ch.id} item={ch} onClick={() => navigate("/culture/" + ch.id)} hovered={hovered} onHover={setHovered} />
             ))}
           </div>
         </div>

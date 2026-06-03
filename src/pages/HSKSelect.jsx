@@ -1,10 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useApp } from "../context/AppContext.jsx";
 import { PageWrap } from "../components/PageWrap.jsx";
 import { MenuItem } from "../components/MenuItem.jsx";
 import { HSK_LEVELS } from "../data/constants.js";
 
-export function HSKSelect({ onSelect }) {
+export function HSKSelect() {
   const [hovered, setHovered] = useState(null);
+  const navigate = useNavigate();
+  const { setHsk } = useApp();
+
   return (
     <PageWrap maxWidth={580}>
       <div style={{ padding: "60px 0", textAlign: 'center' }}>
@@ -23,7 +28,7 @@ export function HSKSelect({ onSelect }) {
                 bg: l.color + "15",
                 desc: l.desc
               }}
-              onClick={() => onSelect(l.id)}
+              onClick={() => { setHsk(l.id); navigate("/main"); }}
               hovered={hovered}
               onHover={setHovered}
             />

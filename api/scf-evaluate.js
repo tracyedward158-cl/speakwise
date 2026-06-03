@@ -6,6 +6,7 @@
 'use strict';
 const crypto = require('crypto');
 const fs = require('fs');
+const WebSocket = require('ws');
 
 // ── Load lamejs (self-contained bundle, avoids CJS sub-module global issues) ──
 const lamejs = (() => {

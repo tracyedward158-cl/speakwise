@@ -3,12 +3,12 @@
 export const IMG = {
   battle:  "/images/c2-battle.png",
   hut:     "/images/c2-hut.png",
-  badend:  "https://cdn.jsdelivr.net/gh/oxguy/chaotic/images/blood-hall.jpg",
-  victory: "https://cdn.jsdelivr.net/gh/oxguy/chaotic/images/yue-victory.jpg",
+  badend:  "",
+  victory: "",
   fuchai:  "/images/c2-fuchai.png",
   goujian: "/images/c2-goujian.png",
-  you:     "https://cdn.jsdelivr.net/gh/oxguy/chaotic/images/player-gu.png",
-  guard:   "https://cdn.jsdelivr.net/gh/oxguy/chaotic/images/wu-guard.png",
+  you:     "",
+  guard:   "",
 };
 
 export const META = {

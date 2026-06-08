@@ -17,7 +17,7 @@ export function SceneList() {
       <PageWrap maxWidth={860}>
         <div style={{ padding: "40px 0" }}>
           <div className="menu-grid">
-            {SCENARIOS.map(s => <MenuItem key={s.id} item={s} onClick={() => navigate("/oral/scenes/" + s.id)} hovered={hovered} onHover={setHovered} />)}
+            {SCENARIOS.map(s => <MenuItem key={s.id} item={s} onClick={() => navigate("/oral/scene/" + s.id)} hovered={hovered} onHover={setHovered} />)}
           </div>
         </div>
       </PageWrap>

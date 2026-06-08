@@ -3,11 +3,11 @@
 export const IMG = {
   hunt:   "/images/c1-hunt.png",
   advise: "/images/c1-advise.png",
-  badend: "https://cdn.jsdelivr.net/gh/oxguy/chaotic/images/blood-hall.jpg",
-  wuju:   "/images/c1-wuju.png",
-  king:   "/images/c1-king.png",
-  guard:  "https://cdn.jsdelivr.net/gh/oxguy/chaotic/images/guard.png",
-  you:    "https://cdn.jsdelivr.net/gh/oxguy/chaotic/images/player-gu.png",
+  badend: "",
+  wuju:   "",
+  king:   "",
+  guard:  "",
+  you:    "",
 };
 
 export const META = {

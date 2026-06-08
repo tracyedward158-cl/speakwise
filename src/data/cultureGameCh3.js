@@ -7,14 +7,14 @@ export const META = {
 };
 
 export const IMG = {
-  zhaofu:   "https://cdn.jsdelivr.net/gh/oxguy/chaotic/images/zhao-palace.jpg",
+  zhaofu:   "",
   palace:   "/images/秦王蔺相如对峙图.png",
-  badend:   "https://cdn.jsdelivr.net/gh/oxguy/chaotic/images/qin-prison.jpg",
-  victory:  "https://cdn.jsdelivr.net/gh/oxguy/chaotic/images/zhao-victory.jpg",
+  badend:   "",
+  victory:  "",
   miaoxian: "/images/缪贤立绘.png",
   linxiang:"/images/蔺相如立绘.png",
-  you:      "https://cdn.jsdelivr.net/gh/oxguy/chaotic/images/player-gu.png",
-  guard:    "https://cdn.jsdelivr.net/gh/oxguy/chaotic/images/qin-guard.png",
+  you:      "",
+  guard:    "",
 };
 
 export const SCRIPT = [

@@ -217,33 +217,36 @@ const server = createServer(async (req, res) => {
     }
   }
 
-  // ── POST /api/chat ──
+  // ── POST /api/chat (DeepSeek) ──
   if (pathname === '/api/chat' && req.method === 'POST') {
     try {
       const body = await readBody(req);
-      const { system, messages, max_tokens = 600 } = JSON.parse(body);
-      const API_URL = process.env.API_URL || 'https://xh.v1api.cc/v1/chat/completions';
-      const API_KEY = process.env.API_KEY;
+      const { system, messages } = JSON.parse(body);
+      const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY;
 
-      if (!API_KEY) {
-        return json(res, 500, { error: 'API_KEY not configured in .env.local' });
+      if (!DEEPSEEK_KEY) {
+        return json(res, 500, { error: 'DEEPSEEK_API_KEY not configured in .env.local' });
+      }
+      if (!messages || messages.length === 0) {
+        return json(res, 400, { error: '没有收到对话内容哦' });
       }
 
-      const response = await fetch(API_URL, {
+      const messagesForAI = [
+        { role: 'system', content: system || '你现在是 SpeakWise 琢音平台的一名专业 AI 中文口语教练。请配合来华留学生的水平进行真实场景对话。回复必须自然、简短，并严格遵循 HSK 分级词汇标准。' },
+        ...messages,
+      ];
+
+      const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` },
-        body: JSON.stringify({
-          model: process.env.MODEL || 'gpt-5',
-          max_tokens,
-          messages: [{ role: 'system', content: system || '' }, ...messages],
-        }),
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${DEEPSEEK_KEY}` },
+        body: JSON.stringify({ model: 'deepseek-chat', messages: messagesForAI }),
       });
       const data = await response.json();
       const reply = data.choices?.[0]?.message?.content || '';
       return json(res, 200, { reply });
     } catch (e) {
       console.error('/api/chat error:', e);
-      return json(res, 500, { error: e.message });
+      return json(res, 500, { error: '云端请求大模型失败，请稍后再试' });
     }
   }
 

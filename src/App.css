@@ -43,151 +43,230 @@ body { font-family: 'Noto Sans SC', sans-serif; }
   text-decoration: underline;
 }
 
-/* ── CultureGame responsive ── */
+/* ── CultureGame: visual-novel layout ── */
 .culture-game-root {
   height: 100vh;
   height: 100dvh;
-}
-
-.culture-scene-area {
-  flex: 1;
   position: relative;
   overflow: hidden;
+  background: #111;
+  font-family: 'Noto Sans SC', sans-serif;
 }
 
-.culture-bg-img {
+/* Scene: fills game root (ref #scene) */
+.culture-scene-area {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center top;
+}
+
+/* Background: CSS bg like ref HTML, contain = full image visible, #111 backdrop */
+.culture-scene-bg {
+  position: absolute;
+  inset: 0;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #111;
   animation: su 0.6s both;
 }
 
-.culture-scene-fallback {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.culture-scene-fallback div {
-  text-align: center;
-  color: rgba(255,255,255,0.35);
-  font-size: 18px;
-  letter-spacing: 4px;
-  padding: 0 16px;
-}
-
+/* Character: always in DOM like ref #chara, centered bottom */
 .culture-char-wrap {
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 65%;
+  bottom: 150px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: fit-content;
+  max-width: 100%;
   z-index: 5;
   pointer-events: none;
   animation: su 0.5s both;
 }
 
 .culture-char-wrap img {
-  height: 100%;
+  display: block;
+  max-height: 35dvh;
+  max-width: 400px;
   width: auto;
-  max-width: 380px;
+  height: auto;
   object-fit: contain;
 }
+/* Tap area covers scene (under dialog) */
+.culture-tap-area {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  -webkit-tap-highlight-color: transparent;
+}
 
+/* ── Top bar ── */
+.culture-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  background: rgba(0,0,0,0.55);
+  z-index: 15;
+}
+
+.culture-back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  border-radius: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Dialog box: semi-transparent, floats at bottom ── */
 .culture-dialog-box {
-  background: linear-gradient(0deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.72) 100%);
-  padding: 20px 24px 28px;
-  min-height: 170px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  padding: 16px 20px 22px;
+  min-height: 140px;
   z-index: 10;
-  border-top: 1px solid rgba(255,255,255,0.08);
 }
 
 .culture-dialog-name {
   font-size: 17px;
   font-weight: 700;
   color: #f4d03f;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   animation: su 0.3s both;
 }
 
 .culture-dialog-text {
   font-size: 16px;
-  line-height: 1.75;
+  line-height: 1.7;
   color: rgba(255,255,255,0.92);
   animation: su 0.35s both;
 }
 
-.culture-choice-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 20;
-  background: rgba(0,0,0,0.55);
+/* ── Choices: inside dialog, below text ── */
+.culture-choices {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
   animation: su 0.3s both;
 }
 
-.culture-choice-wrap {
-  width: 100%;
-  max-width: 420px;
-  padding: 0 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.culture-choices button {
+  flex: 1;
+  background: #f4d03f;
+  color: #111;
+  border: none;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.culture-choice-hint {
+.culture-choices button:hover {
+  background: #ffe066;
+}
+
+/* ── Ending screens (bad/victory) ── */
+.culture-ending {
   text-align: center;
-  font-size: 13px;
-  color: rgba(255,255,255,0.5);
-  margin-bottom: 4px;
+  padding-top: 6px;
+  animation: su 0.4s both;
 }
 
-.culture-choice-btn {
-  width: 100%;
-  padding: 16px 20px;
-  border-radius: 14px;
-  border: 1px solid rgba(244,208,63,0.35);
-  background: rgba(244,208,63,0.12);
-  color: #f4d03f;
+.culture-ending-msg {
   font-size: 15px;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 12px;
+}
+
+.culture-ending-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f4d03f;
+  margin-bottom: 10px;
+}
+
+.culture-restart-btn {
+  padding: 10px 28px;
+  border-radius: 8px;
+  border: none;
+  background: #f4d03f;
+  color: #111;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.culture-ending-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.culture-end-outline {
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: 1px solid rgba(244,208,63,0.4);
+  background: transparent;
+  color: #f4d03f;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  text-align: left;
-  transition: all 0.2s;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.culture-end-solid {
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: none;
+  background: #f4d03f;
+  color: #111;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
   -webkit-tap-highlight-color: transparent;
 }
 
 .culture-tap-hint {
   text-align: right;
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: 12px;
   color: rgba(255,255,255,0.25);
 }
 
 /* ── Mobile: CultureGame ── */
 @media (max-width: 480px) {
-  .culture-scene-fallback div {
-    font-size: 15px;
-    letter-spacing: 2px;
-  }
-
   .culture-char-wrap {
-    height: 55%;
+    bottom: 130px;
   }
 
   .culture-char-wrap img {
-    max-width: 100vw;
+    max-height: 30dvh;
+    max-width: 90vw;
   }
 
   .culture-dialog-box {
-    padding: 14px 16px 20px;
-    min-height: 140px;
+    padding: 12px 16px 18px;
+    min-height: 120px;
   }
 
   .culture-dialog-name {
@@ -196,21 +275,22 @@ body { font-family: 'Noto Sans SC', sans-serif; }
 
   .culture-dialog-text {
     font-size: 14px;
-    line-height: 1.65;
+    line-height: 1.6;
   }
 
-  .culture-choice-wrap {
-    padding: 0 16px;
-    gap: 10px;
+  .culture-choices {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
   }
 
-  .culture-choice-btn {
-    padding: 14px 16px;
+  .culture-choices button {
+    padding: 12px 14px;
     font-size: 14px;
-    border-radius: 12px;
   }
 
-  .culture-choice-hint {
-    font-size: 12px;
+  .culture-topbar {
+    height: 38px;
+    padding: 0 10px;
   }
 }

@@ -24,7 +24,8 @@ export function MainMenu({ onOpenAbout }) {
           <div onClick={onOpenAbout} className="footer-link">关于 SpeakWise SRTP 项目</div>
           <div style={{ textAlign: "center", marginTop: 8, fontSize: 13, color: "#aaa" }}>受国家级/江苏省大学生创新训练计划支持</div>
           <div style={{ textAlign: "center", marginTop: 2, fontSize: 11, color: "#bbb", fontStyle: "italic" }}>National Undergraduate Training Programs for Innovation</div>
-          <div onClick={() => navigate("/teacher")} style={{ textAlign: "center", marginTop: 24, fontSize: 13, color: "#bbb", cursor: "pointer" }}>教师支持端 · 学情概览</div>
+          <div onClick={() => navigate("/student/records")} style={{ textAlign: "center", marginTop: 24, fontSize: 13, color: "#bbb", cursor: "pointer" }}>我的练习记录 · 学习档案</div>
+          <div onClick={() => navigate("/teacher")} style={{ textAlign: "center", marginTop: 8, fontSize: 13, color: "#bbb", cursor: "pointer" }}>教师支持端 · 学情概览</div>
         </div>
       </PageWrap>
     </div>

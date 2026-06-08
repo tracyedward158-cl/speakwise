@@ -12,6 +12,7 @@ import { StudyManual } from "./pages/StudyManual.jsx";
 import { CultureMenu } from "./pages/CultureMenu.jsx";
 import { CultureGame } from "./pages/CultureGame.jsx";
 import { TeacherDashboard } from "./pages/TeacherDashboard.jsx";
+import { StudentRecords } from "./pages/StudentRecords.jsx";
 import { ChatView } from "./pages/ChatView.jsx";
 import { DrillView } from "./pages/DrillView.jsx";
 
@@ -45,18 +46,18 @@ export default function App() {
             {/* Oral section */}
             <Route path="/oral" element={<OralMenu />} />
             <Route path="/oral/scenes" element={<SceneList />} />
-            <Route path="/oral/scenes/:sceneId" element={<ChatView />} />
-            <Route path="/oral/chat/free" element={<ChatView />} />
+            <Route path="/oral/scene/:sceneId" element={<ChatView />} />
+            <Route path="/oral/free" element={<ChatView />} />
             <Route path="/oral/drill/:type" element={<DrillView />} />
             {/* Written section */}
             <Route path="/written" element={<WrittenMenu />} />
             <Route path="/written/drill/:type" element={<DrillView />} />
-            <Route path="/written/chat/paragraph" element={<ChatView />} />
-            <Route path="/written/chat/essay" element={<ChatView />} />
+            <Route path="/written/chat/:mode" element={<ChatView />} />
             {/* Other sections */}
             <Route path="/manual" element={<StudyManual />} />
             <Route path="/culture" element={<CultureMenu />} />
             <Route path="/culture/:chapterId" element={<CultureGame />} />
+            <Route path="/student/records" element={<StudentRecords />} />
             <Route path="/teacher" element={<TeacherDashboard />} />
             <Route path="*" element={<Navigate to="/main" replace />} />
           </>

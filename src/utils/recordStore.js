@@ -2,6 +2,8 @@
 
 const STORAGE_KEY = "speakwise_practice_records";
 const STUDENT_KEY = "speakwise_student_id";
+const NICKNAME_KEY = "speakwise_nickname";
+const HSK_KEY = "speakwise_hsk";
 
 // ── Student identity (anonymous demo) ──
 export function getStudentId() {
@@ -145,4 +147,134 @@ export function getTeachingSuggestions(problems) {
     if (!suggestions[0].includes("量词")) suggestions.unshift(SUGGESTION_TEMPLATES[0]);
   }
   return suggestions;
+}
+
+// ═══════════════════════════════════════
+// 方案一：学生个人练习记录
+// ═══════════════════════════════════════
+
+export function getStudentRecords(studentId) {
+  return getAllRecords().filter(r => r.studentId === studentId);
+}
+
+export function getStudentStats(studentId) {
+  const records = getStudentRecords(studentId);
+  const scores = records.map(r => r.score).filter(s => s > 0);
+  const total = records.length;
+  if (total === 0) return { total, average: 0, best: 0, recentDays: 0, modules: [], firstDate: null };
+
+  const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+  const best = Math.max(...scores);
+  const modules = [...new Set(records.map(r => r.module))];
+  const firstDate = records.reduce((e, r) => r.createdAt < e ? r.createdAt : e, records[0].createdAt);
+  const daysSinceFirst = Math.max(1, Math.ceil((Date.now() - new Date(firstDate).getTime()) / 86400000));
+  const recentCutoff = new Date(Date.now() - 7 * 86400000).toISOString();
+  const recentDays = new Set(
+    records.filter(r => r.createdAt >= recentCutoff).map(r => r.createdAt.slice(0, 10))
+  ).size;
+
+  return { total, average: avg, best, recentDays, modules, daysSinceFirst };
+}
+
+// ═══════════════════════════════════════
+// 方案二：弱项维度持续追踪
+// ═══════════════════════════════════════
+
+const DIM_LABELS = { pronunciation: "发音", tone: "声调", fluency: "流利度", completeness: "完整度" };
+
+export function getWeakDimensions(studentId, threshold = 70, minOccurrences = 2) {
+  const records = getStudentRecords(studentId).filter(r => r.dimensions);
+  const dimHistory = {};
+
+  for (const r of records) {
+    for (const [dim, label] of Object.entries(DIM_LABELS)) {
+      const val = r.dimensions[dim];
+      if (val == null) continue;
+      if (!dimHistory[dim]) dimHistory[dim] = { label, scores: [], dates: [] };
+      dimHistory[dim].scores.push(val);
+      dimHistory[dim].dates.push(r.createdAt);
+    }
+  }
+
+  return Object.entries(dimHistory)
+    .filter(([, d]) => d.scores.length >= minOccurrences)
+    .map(([dim, d]) => {
+      const avg = Math.round(d.scores.reduce((a, b) => a + b, 0) / d.scores.length);
+      const latest = d.scores[d.scores.length - 1];
+      const worst = Math.min(...d.scores);
+      // trend: compare first half vs second half
+      const mid = Math.floor(d.scores.length / 2);
+      const firstHalfAvg = d.scores.slice(0, mid).reduce((a, b) => a + b, 0) / mid;
+      const secondHalfAvg = d.scores.slice(mid).reduce((a, b) => a + b, 0) / (d.scores.length - mid);
+      const trend = secondHalfAvg - firstHalfAvg > 3 ? "↑ 上升" : firstHalfAvg - secondHalfAvg > 3 ? "↓ 下降" : "→ 持平";
+      const isWeak = avg < threshold;
+      return { dim, label: d.label, avg, latest, worst, trend, occurrences: d.scores.length, isWeak };
+    })
+    .sort((a, b) => a.avg - b.avg);
+}
+
+// ═══════════════════════════════════════
+// 方案四：学生身份可视化
+// ═══════════════════════════════════════
+
+export function getStudentProfile() {
+  return {
+    id: getStudentId(),
+    nickname: localStorage.getItem(NICKNAME_KEY) || "",
+    hsk: localStorage.getItem(HSK_KEY) || "未知",
+  };
+}
+
+export function setStudentNickname(name) {
+  localStorage.setItem(NICKNAME_KEY, name.trim().slice(0, 12));
+}
+
+export function setStudentHsk(level) {
+  localStorage.setItem(HSK_KEY, level);
+}
+
+// ═══════════════════════════════════════
+// 方案三：基于弱项的练习推荐
+// ═══════════════════════════════════════
+
+const RECOMMENDATION_RULES = [
+  {
+    dim: "tone",
+    label: "声调练习",
+    suggest: "你的声调得分偏低，建议多跟读包含第三声和轻声的句子。",
+    action: { type: "drill", module: "pronunciation", keyword: "pronunciation" },
+  },
+  {
+    dim: "fluency",
+    label: "流利度训练",
+    suggest: "流利度需要加强，建议选择较长句子进行跟读练习，减少停顿。",
+    action: { type: "drill", module: "pronunciation", keyword: "pronunciation" },
+  },
+  {
+    dim: "pronunciation",
+    label: "发音精准度",
+    suggest: "发音不够清晰，建议重点练习声母 zh/ch/sh 和韵母 ang/eng/ing。",
+    action: { type: "drill", module: "pronunciation", keyword: "pronunciation" },
+  },
+  {
+    dim: "completeness",
+    label: "完整度训练",
+    suggest: "完整度不足，可能存在漏读，建议先听标准发音再跟读，注意每个字都要读全。",
+    action: { type: "drill", module: "pronunciation", keyword: "pronunciation" },
+  },
+];
+
+export function getRecommendedExercises(studentId) {
+  const weaks = getWeakDimensions(studentId, 70, 1).filter(w => w.isWeak);
+  if (weaks.length === 0) {
+    return [{
+      label: "自由巩固",
+      suggest: "你的各项指标表现良好！建议自由选择文化文游或场景对话巩固综合能力。",
+      action: { type: "navigate", target: "/culture" },
+    }];
+  }
+  return weaks.slice(0, 3).map(w => {
+    const rule = RECOMMENDATION_RULES.find(r => r.dim === w.dim) || RECOMMENDATION_RULES[0];
+    return { ...rule, weakDetail: `${w.label}: 平均 ${w.avg} 分 (${w.trend})` };
+  });
 }

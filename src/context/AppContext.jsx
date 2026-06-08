@@ -8,7 +8,9 @@ export function AppProvider({ children }) {
   const [viewMode, setViewMode] = useState("HPE");
 
   useEffect(() => {
+    const savedHsk = localStorage.getItem("hsk");
     const savedMode = localStorage.getItem("viewMode");
+    if (savedHsk) setHsk(savedHsk);
     if (savedMode) setViewMode(savedMode);
     setIsMounted(true);
   }, []);

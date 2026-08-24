@@ -1,8 +1,10 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { TopBar } from "../components/TopBar.jsx";
 import { PageWrap } from "../components/PageWrap.jsx";
 import { useApp } from "../context/AppContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import { recordApi } from "../utils/api.js";
 import {
   getStudentProfile, setStudentNickname,
   getStudentStats, getStudentRecords,
@@ -19,38 +21,79 @@ const DIM_LABELS = { pronunciation: "发音", tone: "声调", fluency: "流利�
 export function StudentRecords() {
   const navigate = useNavigate();
   const { hsk } = useApp();
-  const [profile, setProfile] = useState(() => getStudentProfile());
+  const { user, patchMe } = useAuth();
+  const isGuest = !user;
+
+  // 登录用户：资料来自云端账号；游客：本地匿名资料
+  const [profile, setProfile] = useState(() =>
+    user
+      ? { id: user.id, nickname: user.nickname || user.username, hsk: user.hsk }
+      : getStudentProfile()
+  );
   const [editing, setEditing] = useState(false);
   const inputRef = useRef(null);
   const [filterModule, setFilterModule] = useState("全部");
   const [filterScore, setFilterScore] = useState("全部");
+  const [cloudRecords, setCloudRecords] = useState(null); // null = 加载中
+
+  // 登录用户：云端资料变化时同步 profile（昵称编辑、HSK 切换）
+  useEffect(() => {
+    if (user) {
+      setProfile({ id: user.id, nickname: user.nickname || user.username, hsk: user.hsk });
+    }
+  }, [user?.id, user?.nickname, user?.hsk]);
+
+  // 登录用户：从云端拉取练习记录
+  useEffect(() => {
+    if (isGuest) return;
+    let cancelled = false;
+    recordApi.mine()
+      .then(({ records }) => { if (!cancelled) setCloudRecords(records); })
+      .catch(err => {
+        console.warn("[StudentRecords] 云端记录获取失败:", err.message);
+        if (!cancelled) setCloudRecords([]);
+      });
+    return () => { cancelled = true; };
+  }, [isGuest, user?.id]);
+
+  const allRecords = useMemo(
+    () => (isGuest ? getStudentRecords(profile.id) : (cloudRecords || [])),
+    [isGuest, profile.id, cloudRecords]
+  );
 
   const records = useMemo(() => {
-    let rs = getStudentRecords(profile.id);
+    let rs = allRecords;
     if (filterModule !== "全部") rs = rs.filter(r => r.module === filterModule);
     if (filterScore === "≥80") rs = rs.filter(r => r.score >= 80);
     if (filterScore === "60-79") rs = rs.filter(r => r.score >= 60 && r.score < 80);
     if (filterScore === "<60") rs = rs.filter(r => r.score > 0 && r.score < 60);
     return rs;
-  }, [profile.id, filterModule, filterScore]);
+  }, [allRecords, filterModule, filterScore]);
 
-  const stats = useMemo(() => getStudentStats(profile.id), [profile.id]);
-  const weakDims = useMemo(() => getWeakDimensions(profile.id), [profile.id]);
-  const recommendations = useMemo(() => getRecommendedExercises(profile.id), [profile.id]);
+  const stats = useMemo(() => getStudentStats(allRecords), [allRecords]);
+  const weakDims = useMemo(() => getWeakDimensions(allRecords), [allRecords]);
+  const recommendations = useMemo(() => getRecommendedExercises(allRecords), [allRecords]);
   const weakOnly = weakDims.filter(w => w.isWeak);
 
-  const handleSaveNickname = () => {
-    const name = inputRef.current?.value.trim() || profile.id;
-    setStudentNickname(name);
+  const handleSaveNickname = async () => {
+    const name = inputRef.current?.value.trim() || profile.nickname || String(profile.id);
+    if (isGuest) {
+      setStudentNickname(name);
+    } else {
+      try {
+        await patchMe({ nickname: name });
+      } catch (err) {
+        console.warn("[StudentRecords] 昵称保存失败:", err.message);
+      }
+    }
     setProfile(p => ({ ...p, nickname: name }));
     setEditing(false);
   };
 
   const displayName = profile.nickname || profile.id;
   const moduleList = useMemo(() => {
-    const all = getStudentRecords(profile.id);
-    return ["全部", ...new Set(all.map(r => r.module))];
-  }, [profile.id]);
+    return ["全部", ...new Set(allRecords.map(r => r.module))];
+  }, [allRecords]);
 
   return (
     <div style={{ minHeight: "100vh", background: "#FAFAF7", fontFamily: "'Noto Sans SC', sans-serif" }}>
@@ -70,7 +113,7 @@ export function StudentRecords() {
               display: "flex", alignItems: "center", justifyContent: "center",
               fontSize: 22, color: "#fff", fontWeight: 700, flexShrink: 0,
             }}>
-              {displayName[0]}
+              {String(displayName)[0]}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               {editing ? (
@@ -98,7 +141,8 @@ export function StudentRecords() {
                 </div>
               )}
               <div style={{ fontSize: 12, color: "#aaa", marginTop: 2 }}>
-                HSK {hsk || "未设置"} · 累计练习 {stats.daysSinceFirst || 0} 天
+                {isGuest ? "游客模式" : (user.role === "teacher" ? "教师" : "学生")}
+                {" · "}HSK {profile.hsk || hsk || "未设置"} · 累计练习 {stats.daysSinceFirst || 0} 天
               </div>
             </div>
           </div>
@@ -177,7 +221,12 @@ export function StudentRecords() {
 
           {/* ── 练习记录列表 ── */}
           <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
-            {records.length === 0 && (
+            {cloudRecords === null && !isGuest && (
+              <div style={{ textAlign: "center", padding: 32, color: "#bbb", fontSize: 14 }}>
+                加载中…
+              </div>
+            )}
+            {records.length === 0 && cloudRecords !== null && (
               <div style={{ textAlign: "center", padding: 32, color: "#bbb", fontSize: 14 }}>
                 暂无记录。完成一次练习后这里会出现数据。
               </div>

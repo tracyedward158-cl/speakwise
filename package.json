@@ -10,12 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "express": "^4.22.2",
+    "jsonwebtoken": "^9.0.3",
     "lamejs": "^1.2.1",
+    "mysql2": "^3.23.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.16.0",
-    "swiper": "^12.1.4"
+    "swiper": "^12.1.4",
+    "ws": "^8.21.3"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",

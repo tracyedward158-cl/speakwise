@@ -1,9 +1,11 @@
-import { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useMemo, useEffect } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
 import { TopBar } from "../components/TopBar.jsx";
 import { PageWrap } from "../components/PageWrap.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import { authApi, recordApi } from "../utils/api.js";
 import {
-  getAllRecords, getClassOverview, getModulePerformance,
+  MOCK_RECORDS, getAllRecords, getClassOverview, getModulePerformance,
   getCommonProblems, getTeachingSuggestions, clearRecords,
 } from "../utils/recordStore.js";
 
@@ -24,8 +26,46 @@ const MODULE_COLORS = {
 
 export function TeacherDashboard() {
   const navigate = useNavigate();
+  const { user, guest } = useAuth();
+  const isTeacher = user?.role === "teacher";
+
+  // 学生登录访问教师端 → 重定向主菜单（路由层已拦截，组件层兜底）
+  if (user && !isTeacher) return <Navigate to="/main" replace />;
+
   const [refreshKey, setRefreshKey] = useState(0);
-  const records = useMemo(() => getAllRecords(), [refreshKey]);
+
+  // 教师：班级信息（班级码 + 成员）+ 本班记录；游客：本地 mock 演示
+  const [classInfo, setClassInfo] = useState(null);
+  const [cloudRecords, setCloudRecords] = useState(null); // null = 加载中
+
+  useEffect(() => {
+    if (!isTeacher) return;
+    let cancelled = false;
+    Promise.all([authApi.me(), recordApi.classRecords()])
+      .then(([{ class: cls }, { records }]) => {
+        if (cancelled) return;
+        setClassInfo(cls);
+        setCloudRecords(records);
+      })
+      .catch(err => {
+        console.warn("[TeacherDashboard] 班级数据获取失败:", err.message);
+        if (!cancelled) setCloudRecords([]);
+      });
+    return () => { cancelled = true; };
+  }, [isTeacher, refreshKey]);
+
+  // 游客路径：本地真实记录 + mock（原有行为）
+  const guestRecords = useMemo(() => getAllRecords(), [refreshKey]);
+  const isDemo = !isTeacher || (cloudRecords !== null && cloudRecords.length === 0);
+  const records = useMemo(() => {
+    if (isTeacher) {
+      // 加载中显示空数据；本班暂无记录时展示演示数据
+      if (cloudRecords === null) return [];
+      return cloudRecords.length > 0 ? cloudRecords : MOCK_RECORDS;
+    }
+    return guestRecords;
+  }, [isTeacher, cloudRecords, guestRecords]);
+
   const overview = useMemo(() => getClassOverview(records), [records]);
   const modules = useMemo(() => getModulePerformance(records), [records]);
   const problems = useMemo(() => getCommonProblems(records), [records]);
@@ -37,9 +77,30 @@ export function TeacherDashboard() {
       <PageWrap maxWidth={860}>
         <div style={{ padding: "32px 0 80px" }}>
 
+          {/* ── 班级信息条（教师）── */}
+          {isTeacher && (
+            <div style={{
+              background: "#F5F0FA", borderRadius: 14, border: "1px solid #e8dcf2",
+              padding: "14px 20px", marginBottom: 24, display: "flex", alignItems: "center", gap: 12,
+            }}>
+              <span style={{ fontSize: 22 }}>🏫</span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#7B4FA3" }}>
+                  我的班级 · 班级码 <span style={{ letterSpacing: 2, fontSize: 16 }}>{classInfo?.code || "———"}</span>
+                </div>
+                <div style={{ fontSize: 12, color: "#a888c4", marginTop: 2 }}>
+                  学生凭此码注册即可加入班级 · 当前 {classInfo?.members?.length ?? 0} 名学生
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* ── 1. 班级概览 ── */}
           <div style={{ marginBottom: 32 }}>
-            <div style={{ fontSize: 15, fontWeight: 600, color: "#888", marginBottom: 12 }}>班级概览</div>
+            <div style={{ fontSize: 15, fontWeight: 600, color: "#888", marginBottom: 12 }}>
+              班级概览
+              {isDemo && <span style={{ fontSize: 11, color: "#bbb", marginLeft: 8 }}>（演示数据）</span>}
+            </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
               <StatCard label="参与学生" value={overview.studentCount} sub="人" color="#4A90D9" />
               <StatCard label="练习总次数" value={overview.totalExercises} sub="次" color="#E8A838" />
@@ -105,7 +166,9 @@ export function TeacherDashboard() {
                     padding: "10px 0", borderBottom: i < Math.min(records.length, 10) - 1 ? "1px solid #f7f6f1" : "none",
                     display: "flex", alignItems: "center", gap: 10,
                   }}>
-                    <div style={{ width: 30, fontSize: 11, fontWeight: 600, color: MODULE_COLORS[r.module] || "#888", flexShrink: 0 }}>{r.studentId}</div>
+                    <div style={{ width: 34, fontSize: 11, fontWeight: 600, color: MODULE_COLORS[r.module] || "#888", flexShrink: 0 }}>
+                      {r.nickname || r.studentId}
+                    </div>
                     <div style={{ fontSize: 12, color: "#666", flex: 1, minWidth: 0 }}>
                       <div style={{ fontWeight: 500 }}>{r.scenario || r.module}</div>
                       <div style={{ fontSize: 10, color: "#bbb" }}>{r.module} · {new Date(r.createdAt).toLocaleDateString("zh-CN")}</div>
@@ -143,7 +206,9 @@ export function TeacherDashboard() {
 
           {/* ── Footer ── */}
           <div style={{ textAlign: "center", marginTop: 40, fontSize: 12, color: "#ccc" }}>
-            当前为学情支持原型 · 基于学生练习记录生成 · <span onClick={() => { clearRecords(); setRefreshKey(k => k + 1); }} style={{ cursor: "pointer", textDecoration: "underline" }}>重置记录</span>
+            {isTeacher
+              ? <>数据来自本班学生云端练习记录 · 学生加入班级后自动更新</>
+              : <>当前为学情支持原型 · 基于学生练习记录生成 · <span onClick={() => { clearRecords(); setRefreshKey(k => k + 1); }} style={{ cursor: "pointer", textDecoration: "underline" }}>重置记录</span></>}
           </div>
         </div>
       </PageWrap>

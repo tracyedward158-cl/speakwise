@@ -23,7 +23,7 @@ const app = express();
 app.use(express.json({ limit: '15mb' })); // large audio payloads
 
 // ──────────────────────────────────────────────────────────────────────────
-// CORS
+// CORS — 必须在所有路由之前注册，否则响应不带 CORS 头，浏览器拦截
 // ──────────────────────────────────────────────────────────────────────────
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -32,6 +32,14 @@ app.use((req, res, next) => {
   if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
 });
+
+// ──────────────────────────────────────────────────────────────────────────
+// User system — auth & practice records (TDSQL-C MySQL)
+// ──────────────────────────────────────────────────────────────────────────
+const { router: authRouter } = require('./server/auth.cjs');
+const { router: recordsRouter } = require('./server/records.cjs');
+app.use('/api/auth', authRouter);
+app.use('/api/records', recordsRouter);
 
 // ──────────────────────────────────────────────────────────────────────────
 // Load .env.local (local dev only — SCF provides real env vars)
@@ -299,4 +307,6 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`  GET  /api/health   — health check`);
   console.log(`  POST /api/chat     — AI chat (DeepSeek)`);
   console.log(`  POST /api/evaluate — pronunciation eval (iFlytek)`);
+  console.log(`  POST /api/auth/register|login — user system`);
+  console.log(`  GET  /api/records/mine|class   — practice records`);
 });

@@ -6,7 +6,9 @@ import { HSK_PROMPT } from "../data/constants.js";
 import { SCENARIOS } from "../data/scenarios.js";
 import { useSpeech } from "../hooks/useSpeech.js";
 import { renderChatBubble } from "../utils/helpers.jsx";
-import { callAI } from "../utils/api.js";
+import { callAI, getToken, recordApi } from "../utils/api.js";
+import { getAllRecords } from "../utils/recordStore.js";
+import { recommendTopics } from "../utils/topicRecommender.js";
 import { buildFreeModule, buildWritingChat } from "../utils/moduleBuilders.js";
 
 export function ChatView() {
@@ -46,6 +48,44 @@ export function ChatView() {
   const [loading, setLoading] = useState(false);
   const endRef = useRef(null);
   const { listening, speaking, startListening, stopListening, speak, stopSpeaking } = useSpeech();
+
+  // ── 话题推荐引擎（仅自由对话模式）──
+  const isFreeChat = !params.sceneId && !params.mode;
+  const [topicRecs, setTopicRecs] = useState([]);
+  const topicExcluded = useRef([]);       // 已展示过的话题（换一批不重复）
+  const practicedRef = useRef([]);        // 历史练过的场景标题
+
+  useEffect(() => {
+    if (!isFreeChat) return;
+    let cancelled = false;
+    const load = async () => {
+      let practiced = [];
+      if (getToken()) {
+        try {
+          practiced = (await recordApi.mine()).records.map(r => r.scenario).filter(Boolean);
+        } catch (e) {
+          console.warn("[topics] 云端记录获取失败，按无历史推荐:", e.message);
+        }
+      } else {
+        practiced = getAllRecords().map(r => r.scenario).filter(Boolean);
+      }
+      if (cancelled) return;
+      practicedRef.current = practiced;
+      setTopicRecs(recommendTopics({ hsk: hskLevel, practicedScenarios: practiced }));
+    };
+    load();
+    return () => { cancelled = true; };
+  }, [isFreeChat, hskLevel]);
+
+  const refreshTopics = () => {
+    const recs = recommendTopics({
+      hsk: hskLevel,
+      practicedScenarios: practicedRef.current,
+      excludeIds: topicExcluded.current,
+    });
+    topicExcluded.current = [...topicExcluded.current, ...recs.map(t => t.id)];
+    setTopicRecs(recs);
+  };
 
   useEffect(() => {
     const g = typeof module.greeting === "object" ? module.greeting[hskLevel] || module.greeting["4-6"] : module.greeting;
@@ -102,6 +142,42 @@ export function ChatView() {
               </div>
             );
           })}
+          {/* ── 话题推荐（自由对话，尚未开始对话时显示）── */}
+          {isFreeChat && messages.length === 1 && topicRecs.length > 0 && (
+            <div style={{ margin: "20px 0 8px", animation: "su 0.3s both" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#555" }}>💡 不知道聊什么？试试这些话题</div>
+                <button onClick={refreshTopics} style={{
+                  background: "none", border: "1px solid #e0dcd0", borderRadius: 14, cursor: "pointer",
+                  padding: "4px 12px", fontSize: 12, color: "#888", fontFamily: "inherit",
+                }}>
+                  🔄 换一批
+                </button>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {topicRecs.map(t => (
+                  <button key={t.id} onClick={() => send(t.title)}
+                    style={{
+                      display: "flex", alignItems: "center", gap: 12, textAlign: "left",
+                      background: "#fff", borderRadius: 14, border: "1px solid #f0efe8",
+                      padding: "14px 18px", cursor: "pointer", fontFamily: "inherit",
+                      transition: "all 0.2s", boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = module.color + "80"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = "#f0efe8"; e.currentTarget.style.transform = "none"; }}
+                  >
+                    <span style={{ fontSize: 24, flexShrink: 0 }}>{t.emoji}</span>
+                    <span style={{ flex: 1, fontSize: 15, color: "#333", fontWeight: 500 }}>{t.title}</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="2" style={{ flexShrink: 0 }}><polyline points="9 18 15 12 9 6" /></svg>
+                  </button>
+                ))}
+              </div>
+              <div style={{ fontSize: 11, color: "#bbb", marginTop: 10, textAlign: "center" }}>
+                基于你的 HSK 等级和练习历史推荐 · 点击即可开始对话
+              </div>
+            </div>
+          )}
+
           {loading && (
             <div style={{ display: "flex", gap: 6, alignItems: "center", padding: "8px 0", animation: "su 0.3s both" }}>
               <div style={{ width: 32, height: 32, borderRadius: "50%", background: module.bg || "#f0f0f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>{module.icon}</div>

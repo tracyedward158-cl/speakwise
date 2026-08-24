@@ -1,9 +1,13 @@
-// ── Practice record storage — localStorage-based, no backend needed ──
+// ── Practice record storage ──
+// 登录用户：云端 TDSQL-C（经 /api/records），失败静默降级到本地
+// 游客：localStorage（演示/离线兜底）
+import { getToken, recordApi } from "./api.js";
 
 const STORAGE_KEY = "speakwise_practice_records";
 const STUDENT_KEY = "speakwise_student_id";
 const NICKNAME_KEY = "speakwise_nickname";
 const HSK_KEY = "speakwise_hsk";
+const MIGRATED_KEY = "speakwise_migrated";
 
 // ── Student identity (anonymous demo) ──
 export function getStudentId() {
@@ -29,9 +33,34 @@ export function getRecords() {
 }
 
 export function saveRecord(record) {
+  if (getToken()) {
+    // 登录用户：优先存云端；失败静默降级到本地，保证练习数据不丢
+    recordApi.save(record).catch(err => {
+      console.warn("[recordStore] 云端保存失败，已降级到本地:", err.message);
+      saveRecordLocal(record);
+    });
+  } else {
+    saveRecordLocal(record);
+  }
+}
+
+function saveRecordLocal(record) {
   const records = getRecords();
   records.push(record);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+}
+
+// ── 首次登录：本地遗留记录批量迁移到云端（服务端按 legacy_id 幂等去重）──
+export async function migrateLocalRecords() {
+  if (!getToken()) return;
+  if (localStorage.getItem(MIGRATED_KEY)) return;
+  const local = getRecords();
+  if (local.length) {
+    const { inserted } = await recordApi.migrate(local);
+    console.log(`[recordStore] 迁移完成，云端新增 ${inserted} 条记录`);
+  }
+  localStorage.setItem(MIGRATED_KEY, "true");
+  clearRecords();
 }
 
 export function clearRecords() {
@@ -157,8 +186,7 @@ export function getStudentRecords(studentId) {
   return getAllRecords().filter(r => r.studentId === studentId);
 }
 
-export function getStudentStats(studentId) {
-  const records = getStudentRecords(studentId);
+export function getStudentStats(records) {
   const scores = records.map(r => r.score).filter(s => s > 0);
   const total = records.length;
   if (total === 0) return { total, average: 0, best: 0, recentDays: 0, modules: [], firstDate: null };
@@ -182,8 +210,8 @@ export function getStudentStats(studentId) {
 
 const DIM_LABELS = { pronunciation: "发音", tone: "声调", fluency: "流利度", completeness: "完整度" };
 
-export function getWeakDimensions(studentId, threshold = 70, minOccurrences = 2) {
-  const records = getStudentRecords(studentId).filter(r => r.dimensions);
+export function getWeakDimensions(records, threshold = 70, minOccurrences = 2) {
+  records = records.filter(r => r.dimensions);
   const dimHistory = {};
 
   for (const r of records) {
@@ -264,8 +292,8 @@ const RECOMMENDATION_RULES = [
   },
 ];
 
-export function getRecommendedExercises(studentId) {
-  const weaks = getWeakDimensions(studentId, 70, 1).filter(w => w.isWeak);
+export function getRecommendedExercises(records) {
+  const weaks = getWeakDimensions(records, 70, 1).filter(w => w.isWeak);
   if (weaks.length === 0) {
     return [{
       label: "自由巩固",

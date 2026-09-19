@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS records (
   dimensions JSON DEFAULT NULL,         -- {pronunciation,tone,fluency,completeness}
   problems JSON DEFAULT NULL,           -- ["量词搭配不稳定", ...]
   suggestion TEXT,
+  messages JSON DEFAULT NULL,           -- 完整对话记录 [{sender,content,at,channel}]，仅对话类模块
   hsk_level VARCHAR(4) DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY uq_user_legacy (user_id, legacy_id),   -- 迁移幂等去重
@@ -54,3 +55,51 @@ CREATE TABLE IF NOT EXISTS records (
   KEY idx_module (module),
   FOREIGN KEY (user_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- ⚠️ CREATE TABLE IF NOT EXISTS 不会给已存在的表加列。若 records 表已建，
+--    需执行文件末尾「幂等 ALTER」一节，否则所有 POST /api/records 会因缺列报 500。
+
+-- ── tasks: 教师发布的口语任务（按模块 + 可选场景统计完成次数）──
+CREATE TABLE IF NOT EXISTS tasks (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  class_id INT UNSIGNED NOT NULL,
+  title VARCHAR(64) NOT NULL,
+  module VARCHAR(20) NOT NULL,
+  scenario VARCHAR(128) NOT NULL DEFAULT '',   -- 空 = 该模块不限场景
+  target_count INT NOT NULL DEFAULT 3,
+  start_at DATETIME NOT NULL,
+  end_at DATETIME NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  KEY idx_class_end (class_id, end_at),
+  FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ═══════════════════════════════════════════════════════════════════
+-- 幂等 ALTER —— 给已存在的库补列
+-- ═══════════════════════════════════════════════════════════════════
+-- 上面的 CREATE TABLE IF NOT EXISTS 只对新建库生效；MySQL 8.0 也没有
+-- ADD COLUMN IF NOT EXISTS。下面这段可反复执行，已存在时输出 skipped。
+--
+-- ⚠️ 部署顺序：必须先跑这段（或裸 ALTER），再发布带 messages 列的后端。
+--    反过来会让所有 POST /api/records 抛 ER_BAD_FIELD_ERROR，而前端
+--    saveRecord 会静默降级到 localStorage —— 用户以为存到云端了，实际没有。
+--
+-- 若 TDSQL-C 控制台限制 PREPARE/多语句，直接执行：
+--   ALTER TABLE records ADD COLUMN messages JSON DEFAULT NULL;
+-- 重跑报 ER_DUP_FIELDNAME (1060) Duplicate column name 'messages' 即代表列已存在。
+
+SET @ddl := (
+  SELECT IF(COUNT(*) = 0,
+    'ALTER TABLE records ADD COLUMN messages JSON DEFAULT NULL COMMENT ''对话记录 [{sender,content,at,channel}]''',
+    'SELECT ''skipped: records.messages already exists'' AS result')
+  FROM INFORMATION_SCHEMA.COLUMNS
+  WHERE TABLE_SCHEMA = 'speakwise'   -- 与本文件顶部 CREATE DATABASE 一致；库名不同请改这里
+    AND TABLE_NAME   = 'records'
+    AND COLUMN_NAME  = 'messages'
+);
+PREPARE stmt FROM @ddl;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+-- 验证：
+--   SHOW COLUMNS FROM records LIKE 'messages';                    -- 应返回 1 行
+--   SELECT COUNT(*) FROM records WHERE messages IS NOT NULL;      -- 升级后应为 0

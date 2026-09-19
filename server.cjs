@@ -27,19 +27,21 @@ app.use(express.json({ limit: '15mb' })); // large audio payloads
 // ──────────────────────────────────────────────────────────────────────────
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
 });
 
 // ──────────────────────────────────────────────────────────────────────────
-// User system — auth & practice records (TDSQL-C MySQL)
+// User system — auth, practice records, teacher tasks (TDSQL-C MySQL)
 // ──────────────────────────────────────────────────────────────────────────
 const { router: authRouter } = require('./server/auth.cjs');
 const { router: recordsRouter } = require('./server/records.cjs');
+const { router: tasksRouter } = require('./server/tasks.cjs');
 app.use('/api/auth', authRouter);
 app.use('/api/records', recordsRouter);
+app.use('/api/tasks', tasksRouter);
 
 // ──────────────────────────────────────────────────────────────────────────
 // Load .env.local (local dev only — SCF provides real env vars)
@@ -292,6 +294,16 @@ app.post('/api/evaluate', async (req, res) => {
 // 404 catch-all
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });
+});
+
+// 错误处理（必须 4 个参数，且注册在最后）
+// 没有它时 body-parser 超限会走 Express 默认处理器返回 HTML，前端只显示「请求失败 (413)」
+app.use((err, req, res, next) => {
+  if (err.type === 'entity.too.large') {
+    return res.status(413).json({ error: '提交的数据过大，请缩短对话后重试' });
+  }
+  console.error('[server] unhandled error:', err.message);
+  return res.status(500).json({ error: '服务器内部错误，请稍后再试' });
 });
 
 // ──────────────────────────────────────────────────────────────────────────

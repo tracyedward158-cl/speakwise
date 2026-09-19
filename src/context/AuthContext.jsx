@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { authApi, getToken, setToken } from "../utils/api.js";
-import { migrateLocalRecords } from "../utils/recordStore.js";
+import { migrateLocalRecords, setOwnerId } from "../utils/recordStore.js";
 
 const GUEST_KEY = "speakwise_guest";
 
@@ -15,8 +15,8 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (getToken()) {
       authApi.me()
-        .then(({ user: u, class: c }) => setUser({ ...u, class: c }))
-        .catch(() => { setToken(null); setUser(null); })
+        .then(({ user: u, class: c }) => { setUser({ ...u, class: c }); setOwnerId(u.id); })
+        .catch(() => { setToken(null); setUser(null); setOwnerId(null); })
         .finally(() => setLoading(false));
     } else {
       setLoading(false);
@@ -29,6 +29,7 @@ export function AuthProvider({ children }) {
     setGuest(false);
     localStorage.removeItem(GUEST_KEY);
     setUser(data.user);
+    setOwnerId(data.user.id);   // 记录归属切到账号 id，与云端 user_id 口径一致
     migrateLocalRecords().catch(err => console.warn("[migrate] 本地记录迁移失败:", err.message));
   }, []);
 
@@ -49,6 +50,7 @@ export function AuthProvider({ children }) {
     setUser(null);
     setGuest(true);
     localStorage.setItem(GUEST_KEY, "true");
+    setOwnerId(null);   // 退回本地匿名编号
   }, []);
 
   const logout = useCallback(() => {
@@ -56,6 +58,7 @@ export function AuthProvider({ children }) {
     setUser(null);
     setGuest(false);
     localStorage.removeItem(GUEST_KEY);
+    setOwnerId(null);
   }, []);
 
   const patchMe = useCallback(async (payload) => {

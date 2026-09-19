@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
-import { authApi } from "../utils/api.js";
+import { authApi, taskApi } from "../utils/api.js";
 import { TopBar } from "../components/TopBar.jsx";
 import { PageWrap } from "../components/PageWrap.jsx";
 import { MenuItem } from "../components/MenuItem.jsx";
@@ -144,12 +144,50 @@ function StudentHome({ onOpenAbout }) {
     navigate("/login");
   };
 
+  // ── 我的任务：教师发布的练习任务（仅登录学生）──
+  const [myTasks, setMyTasks] = useState(null);
+  useEffect(() => {
+    if (!user || user.role !== "student") return;
+    let cancelled = false;
+    taskApi.mine()
+      .then(({ tasks }) => { if (!cancelled) setMyTasks(tasks); })
+      .catch(err => {
+        console.warn("[MainMenu] 任务获取失败:", err.message);
+        if (!cancelled) setMyTasks([]);
+      });
+    return () => { cancelled = true; };
+  }, [user?.id]);
+
   return (
     <div style={{ minHeight: "100vh", background: "#FAFAF7" }}>
       <TopBar title="SpeakWise 主菜单" hskLevel={hskLevel} onChangeHSK={onChangeHSK} onBack={null} />
       <PageWrap maxWidth={580}>
         <div style={{ padding: "40px 0" }}>
           <UserBar onLogout={handleLogout} />
+
+          {/* ── 我的任务：任务进度卡 ── */}
+          {user && user.role === "student" && myTasks && myTasks.length > 0 && (
+            <div style={{ marginBottom: 16 }}>
+              <div style={{
+                background: "linear-gradient(135deg, #7B4FA3, #9B59B6)", borderRadius: 16,
+                padding: "16px 20px", color: "#fff", display: "flex", flexDirection: "column", gap: 10,
+              }}>
+                <div style={{ fontSize: 13, fontWeight: 700 }}>
+                  🎯 我的任务
+                  <span style={{ fontSize: 11, opacity: 0.8, fontWeight: 400, marginLeft: 6 }}>老师发布的练习任务 · 完成自动更新</span>
+                </div>
+                {myTasks.slice(0, 3).map(t => (
+                  <div key={t.id} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 12 }}>
+                    <span style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{t.title}</span>
+                    <div style={{ width: 110, height: 6, background: "rgba(255,255,255,0.25)", borderRadius: 3, overflow: "hidden" }}>
+                      <div style={{ width: `${Math.min((t.count / t.targetCount) * 100, 100)}%`, height: "100%", background: "#fff", borderRadius: 3, transition: "width 0.4s" }} />
+                    </div>
+                    <span style={{ minWidth: 46, textAlign: "right", fontWeight: 700 }}>{t.done ? "✅ " : ""}{t.count}/{t.targetCount}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <MenuItem item={{ id: "oral", title: "口语训练", titleEn: "Speaking", icon: "🗣️", color: "#4A90D9", bg: "#EEF4FB", desc: "场景模拟与发音评测" }} onClick={() => navigate("/oral")} hovered={hovered} onHover={setHovered} />

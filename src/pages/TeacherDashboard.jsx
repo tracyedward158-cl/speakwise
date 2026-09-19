@@ -15,6 +15,83 @@ import {
   getCommonProblems, getTeachingSuggestions, clearRecords, clearDrafts,
 } from "../utils/recordStore.js";
 
+/** 只精确到日的日期（加入时间 / 最近练习）。joinedAt 走的是 MySQL TIMESTAMP ——
+ *  写入、会话时区、mysql2 进程时区各解释一次，精确到分钟反而会显示成错误的时间。 */
+function formatDay(v) {
+  if (!v) return "—";
+  const d = new Date(v);
+  return isNaN(d.getTime()) ? "—" : d.toLocaleDateString("zh-CN");
+}
+
+/**
+ * 班级学生名单。纯展示组件（数据由 TeacherDashboard 从 /me + /records/class 里备好），
+ * 单独抽出来是为了能脱离 useEffect 直接渲染验证 —— 名单只读不写，没有内部状态。
+ *   members: [{ id, nickname, hsk, joinedAt }]
+ *   stats:   Map<studentId, { count, lastAt }>，缺项 = 该生还没有练习记录
+ */
+export function ClassRoster({ members = [], stats, classCode, truncated = false }) {
+  return (
+    <div style={{ marginBottom: 32 }}>
+      <div style={{ fontSize: 15, fontWeight: 600, color: "#888", marginBottom: 12 }}>
+        班级学生
+        <span style={{ fontSize: 11, color: "#bbb", marginLeft: 8, fontWeight: 400 }}>
+          共 {members.length} 人 · 练习次数随学生提交自动更新
+        </span>
+      </div>
+      <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f0efe8", padding: "4px 20px" }}>
+        {members.length === 0 ? (
+          <div style={{ fontSize: 13, color: "#bbb", textAlign: "center", padding: "26px 0", lineHeight: 1.9 }}>
+            还没有学生加入班级。<br />
+            把班级码 <span style={{ fontFamily: "monospace", fontWeight: 700, color: "#7B4FA3", letterSpacing: 2, fontSize: 15 }}>
+              {classCode || "———"}
+            </span> 发给学生，注册时填入即可加入。
+          </div>
+        ) : members.map((m, i) => {
+          const st = stats?.get(m.id);
+          return (
+            <div key={m.id} style={{
+              display: "flex", alignItems: "center", gap: 12, padding: "12px 0",
+              borderBottom: i < members.length - 1 ? "1px solid #f7f6f1" : "none",
+            }}>
+              <div style={{
+                width: 34, height: 34, borderRadius: "50%", flexShrink: 0,
+                background: "linear-gradient(135deg, #4A90D9, #7B4FA3)", color: "#fff",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 14, fontWeight: 700,
+              }}>
+                {String(m.nickname || "?")[0]}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: "#333" }}>
+                  {m.nickname || `学生${m.id}`}
+                </div>
+                <div style={{ fontSize: 11, color: "#aaa", marginTop: 2 }}>
+                  {m.hsk ? `HSK ${m.hsk} · ` : ""}加入于 {formatDay(m.joinedAt)}
+                </div>
+              </div>
+              <div style={{ textAlign: "right", flexShrink: 0 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: st ? "#2DAA6E" : "#ccc" }}>
+                  {st ? st.count : 0} 次
+                </div>
+                <div style={{ fontSize: 10, color: "#bbb" }}>
+                  {st?.lastAt ? `最近 ${formatDay(st.lastAt)}` : "暂无练习"}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {/* 次数是按 /records/class 的返回算的，服务端有条数上限 —— 触顶就得说明，
+          否则「3 次」会被当成精确总数 */}
+      {truncated && (
+        <div style={{ fontSize: 11, color: "#bbb", marginTop: 6 }}>
+          练习次数基于最近 {EXPORT_LIMIT} 条班级记录统计，更早的记录未计入
+        </div>
+      )}
+    </div>
+  );
+}
+
 function StatCard({ label, value, sub, color }) {
   return (
     <div style={{ background: "#fff", borderRadius: 14, border: "1px solid #f0efe8", padding: "18px 20px", textAlign: "center" }}>
@@ -120,6 +197,21 @@ export function TeacherDashboard() {
     return guestRecords;
   }, [isTeacher, cloudRecords, guestRecords]);
 
+  // ── 班级学生名单：成员来自 /me，练习次数来自本班记录，两者都已加载，不用再请求 ──
+  const members = classInfo?.members || [];
+  const studentStats = useMemo(() => {
+    const m = new Map();
+    // 必须用 cloudRecords（真实数据）而不是 records —— 本班暂无记录时后者会回退成
+    // MOCK_RECORDS，演示学生会混进名单统计
+    for (const r of (cloudRecords || [])) {
+      const s = m.get(r.studentId) || { count: 0, lastAt: null };
+      s.count += 1;
+      if (!s.lastAt || r.createdAt > s.lastAt) s.lastAt = r.createdAt;
+      m.set(r.studentId, s);
+    }
+    return m;
+  }, [cloudRecords]);
+
   const overview = useMemo(() => getClassOverview(records), [records]);
   const modules = useMemo(() => getModulePerformance(records), [records]);
   const problems = useMemo(() => getCommonProblems(records), [records]);
@@ -183,6 +275,16 @@ export function TeacherDashboard() {
                 </div>
               </div>
             </div>
+          )}
+
+          {/* ── 班级学生名单（教师）── */}
+          {isTeacher && (
+            <ClassRoster
+              members={members}
+              stats={studentStats}
+              classCode={classInfo?.code}
+              truncated={(cloudRecords?.length ?? 0) >= EXPORT_LIMIT}
+            />
           )}
 
           {/* ── 1. 班级概览 ── */}

@@ -97,6 +97,19 @@ async function getClassForStudent(studentId) {
   };
 }
 
+// 班级查询失败时降级为 null，不阻断登录 / 会话恢复：
+// 否则一次偶发的查询报错会让前端清 token 把用户踢回登录页
+async function getClassSafe(userId, role) {
+  try {
+    return role === 'teacher'
+      ? await getClassForTeacher(userId)
+      : await getClassForStudent(userId);
+  } catch (e) {
+    console.warn('班级信息获取失败:', e.message);
+    return null;
+  }
+}
+
 // ── 中间件 ──
 
 function requireAuth(req, res, next) {
@@ -172,7 +185,13 @@ router.post('/register', async (req, res) => {
     }
 
     const user = { id: userId, username, nickname: nickname || username, role, hsk: null, created_at: new Date() };
-    return res.json({ token: signToken(user), user: toClientUser(user) });
+    // 带上班级信息（教师=新建的班，学生=已加入的班），前端存进 user.class，
+    // 主菜单即可直接显示班级码，不必再发一次 /me
+    return res.json({
+      token: signToken(user),
+      user: toClientUser(user),
+      class: await getClassSafe(userId, role),
+    });
   } catch (e) {
     console.error('/api/auth/register error:', e.message);
     return res.status(500).json({ error: e.message || '注册失败' });
@@ -192,7 +211,11 @@ router.post('/login', async (req, res) => {
     const ok = await bcrypt.compare(String(password), users[0].password_hash);
     if (!ok) return res.status(401).json({ error: '用户名或密码错误' });
 
-    return res.json({ token: signToken(users[0]), user: toClientUser(users[0]) });
+    return res.json({
+      token: signToken(users[0]),
+      user: toClientUser(users[0]),
+      class: await getClassSafe(users[0].id, users[0].role),
+    });
   } catch (e) {
     console.error('/api/auth/login error:', e.message);
     return res.status(500).json({ error: e.message || '登录失败' });
@@ -204,10 +227,10 @@ router.get('/me', requireAuth, async (req, res) => {
   try {
     const users = await query('SELECT * FROM users WHERE id = ?', [req.user.id]);
     if (!users.length) return res.status(401).json({ error: '账号不存在' });
-    const classInfo = req.user.role === 'teacher'
-      ? await getClassForTeacher(req.user.id)
-      : await getClassForStudent(req.user.id);
-    return res.json({ user: toClientUser(users[0]), class: classInfo });
+    return res.json({
+      user: toClientUser(users[0]),
+      class: await getClassSafe(req.user.id, req.user.role),
+    });
   } catch (e) {
     console.error('/api/auth/me error:', e.message);
     return res.status(500).json({ error: e.message || '获取用户信息失败' });
@@ -283,6 +306,25 @@ router.post('/class/join', requireAuth, async (req, res) => {
   } catch (e) {
     console.error('/api/auth/class/join error:', e.message);
     return res.status(500).json({ error: e.message || '加入班级失败' });
+  }
+});
+
+// POST /api/auth/class/leave — 学生退出当前班级
+// 只删 class_members 关系：练习记录保留在个人档案，只是不再计入该班学情
+router.post('/class/leave', requireAuth, async (req, res) => {
+  try {
+    if (req.user.role !== 'student') {
+      return res.status(403).json({ error: '仅学生可退出班级' });
+    }
+    const rows = await query('SELECT class_id FROM class_members WHERE student_id = ? LIMIT 1', [req.user.id]);
+    if (!rows.length) {
+      return res.status(400).json({ error: '你当前未加入任何班级' });
+    }
+    await query('DELETE FROM class_members WHERE student_id = ?', [req.user.id]);
+    return res.json({ class: null });
+  } catch (e) {
+    console.error('/api/auth/class/leave error:', e.message);
+    return res.status(500).json({ error: e.message || '退出班级失败' });
   }
 });
 

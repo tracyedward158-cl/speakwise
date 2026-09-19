@@ -92,6 +92,7 @@ export const authApi = {
   patchMe: (payload) => apiFetch("/api/auth/me", { method: "PATCH", body: JSON.stringify(payload) }),
   changePassword: (payload) => apiFetch("/api/auth/change-password", { method: "POST", body: JSON.stringify(payload) }),
   joinClass: (code) => apiFetch("/api/auth/class/join", { method: "POST", body: JSON.stringify({ code }) }),
+  leaveClass: () => apiFetch("/api/auth/class/leave", { method: "POST" }),
 };
 
 // ── 练习记录 ──

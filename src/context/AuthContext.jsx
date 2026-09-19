@@ -28,7 +28,14 @@ export function AuthProvider({ children }) {
     setToken(data.token);
     setGuest(false);
     localStorage.removeItem(GUEST_KEY);
-    setUser(data.user);
+    // 新后端在登录/注册响应里直接带 class；旧后端不带（JSON 里就是 undefined）。
+    // 前端静态托管和 SCF 是分开部署的，两边版本错开是常态，缺了这一步用户会看到
+    // 「还没加入班级」，而且只有整页刷新才会走 /me 恢复。所以缺了就补一次 /me。
+    let cls = data.class;
+    if (cls === undefined) {
+      cls = await authApi.me().then(r => r.class ?? null).catch(() => null);
+    }
+    setUser({ ...data.user, class: cls ?? null });
     setOwnerId(data.user.id);   // 记录归属切到账号 id，与云端 user_id 口径一致
     migrateLocalRecords().catch(err => console.warn("[migrate] 本地记录迁移失败:", err.message));
   }, []);
@@ -73,9 +80,14 @@ export function AuthProvider({ children }) {
     return c;
   }, []);
 
+  const leaveClass = useCallback(async () => {
+    await authApi.leaveClass();
+    setUser(prev => (prev ? { ...prev, class: null } : prev));
+  }, []);
+
   return (
     <AuthContext.Provider
-      value={{ user, guest, loading, login, register, enterGuest, logout, patchMe, joinClass }}
+      value={{ user, guest, loading, login, register, enterGuest, logout, patchMe, joinClass, leaveClass }}
     >
       {children}
     </AuthContext.Provider>

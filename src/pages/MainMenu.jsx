@@ -11,6 +11,8 @@ function UserBar({ onLogout }) {
   const { user, guest } = useAuth();
   const navigate = useNavigate();
   const { hsk: hskLevel } = useApp();
+  // 教师端首页已有大号班级码卡片，这里只给学生显示
+  const cls = user?.role === "student" ? user.class : null;
   return (
     <div style={{
       background: "#fff", borderRadius: 14, border: "1px solid #f0efe8",
@@ -25,7 +27,7 @@ function UserBar({ onLogout }) {
         {user ? (user.nickname || user.username)[0] : "🙂"}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
           <span style={{ fontSize: 15, fontWeight: 700, color: "#1a1a1a" }}>
             {user ? (user.nickname || user.username) : "游客模式"}
           </span>
@@ -36,6 +38,16 @@ function UserBar({ onLogout }) {
               color: user.role === "teacher" ? "#9B59B6" : "#4A90D9",
             }}>
               {user.role === "teacher" ? "教师" : "学生"}
+            </span>
+          )}
+          {cls?.code && (
+            <span
+              title="我的班级码 · 在用户中心可换班或退出"
+              style={{
+                fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 10,
+                background: "#F7F9FC", color: "#4A90D9", fontFamily: "monospace", letterSpacing: 1,
+              }}>
+              班级码 {cls.code}
             </span>
           )}
         </div>

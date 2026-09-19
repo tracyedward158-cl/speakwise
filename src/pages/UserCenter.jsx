@@ -29,7 +29,7 @@ function Msg({ msg }) {
 
 export function UserCenter() {
   const navigate = useNavigate();
-  const { user, guest, patchMe } = useAuth();
+  const { user, guest, patchMe, joinClass, leaveClass } = useAuth();
 
   // ── 昵称表单 ──
   const [nickname, setNickname] = useState(user?.nickname || "");
@@ -42,6 +42,12 @@ export function UserCenter() {
   const [confirmPwd, setConfirmPwd] = useState("");
   const [pwdMsg, setPwdMsg] = useState(null);
   const [pwdBusy, setPwdBusy] = useState(false);
+
+  // ── 班级表单 ──
+  const [classCode, setClassCode] = useState("");
+  const [classMsg, setClassMsg] = useState(null);
+  const [classBusy, setClassBusy] = useState(false);
+  const [confirmLeave, setConfirmLeave] = useState(false);  // 退出班级二次确认（退出后需老师再给码才能回来）
 
   // 游客无账号能力
   if (!user || guest) {
@@ -65,6 +71,45 @@ export function UserCenter() {
       </div>
     );
   }
+
+  const cls = user.class || null;
+  const isStudent = user.role !== "teacher";
+
+  const handleJoinClass = async () => {
+    const code = classCode.trim().toUpperCase();
+    if (!code) { setClassMsg({ type: "err", text: "请输入班级码" }); return; }
+    if (code === cls?.code) { setClassMsg({ type: "err", text: "你已经在这个班级里了" }); return; }
+    setClassBusy(true);
+    setClassMsg(null);
+    setConfirmLeave(false);
+    try {
+      // 一人一班：服务端会先移除旧班级关系
+      const joined = await joinClass(code);
+      setClassCode("");
+      setClassMsg({
+        type: "ok",
+        text: joined?.teacherNickname ? `已加入 ${joined.teacherNickname} 老师的班级` : "已加入班级",
+      });
+    } catch (e) {
+      setClassMsg({ type: "err", text: e.message || "加入班级失败" });
+    } finally {
+      setClassBusy(false);
+    }
+  };
+
+  const handleLeaveClass = async () => {
+    setClassBusy(true);
+    setClassMsg(null);
+    try {
+      await leaveClass();
+      setConfirmLeave(false);
+      setClassMsg({ type: "ok", text: "已退出班级，练习记录仍保留在「我的练习记录」中" });
+    } catch (e) {
+      setClassMsg({ type: "err", text: e.message || "退出班级失败" });
+    } finally {
+      setClassBusy(false);
+    }
+  };
 
   const handleSaveNickname = async () => {
     const name = nickname.trim();
@@ -138,6 +183,96 @@ export function UserCenter() {
               </div>
             </div>
           </div>
+
+          {/* ── 我的班级（仅学生）── */}
+          {isStudent && (
+            <div style={{
+              background: "#fff", borderRadius: 18, border: "1px solid #f0efe8",
+              padding: "22px 24px", marginBottom: 20,
+            }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: "#333", marginBottom: 14 }}>我的班级</div>
+
+              {cls ? (
+                <div style={{
+                  background: "#F7F9FC", border: "1px solid #e6eefa", borderRadius: 12,
+                  padding: "14px 16px", marginBottom: 16,
+                }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
+                    <span style={{ fontSize: 13, color: "#888" }}>班级码</span>
+                    <span style={{
+                      fontSize: 20, fontWeight: 800, letterSpacing: 3,
+                      fontFamily: "monospace", color: "#4A90D9",
+                    }}>
+                      {cls.code}
+                    </span>
+                    {cls.name && <span style={{ fontSize: 13, color: "#666" }}>· {cls.name}</span>}
+                  </div>
+                  <div style={{ fontSize: 13, color: "#666", marginTop: 8 }}>
+                    任课老师：
+                    <span style={{ fontWeight: 700, color: "#333" }}>
+                      {cls.teacherNickname || "未设置昵称"}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div style={{
+                  fontSize: 13, color: "#999", background: "#f8f8f5", borderRadius: 12,
+                  padding: "14px 16px", marginBottom: 16,
+                }}>
+                  你还没有加入班级。向老师索取 6 位班级码，在下方输入即可加入。
+                </div>
+              )}
+
+              <div style={labelStyle}>{cls ? "加入新班级（将替换当前班级）" : "班级码"}</div>
+              <div style={{ display: "flex", gap: 10 }}>
+                <input style={{ ...inputStyle, textTransform: "uppercase", letterSpacing: 2 }}
+                  value={classCode} maxLength={6} placeholder="例如 AB3CD5"
+                  disabled={classBusy}
+                  onChange={e => setClassCode(e.target.value.toUpperCase())}
+                  onKeyDown={e => e.key === "Enter" && handleJoinClass()} />
+                <button onClick={handleJoinClass} disabled={classBusy}
+                  style={{
+                    flexShrink: 0, padding: "0 20px", borderRadius: 10, border: "none", cursor: "pointer",
+                    background: classBusy ? "#a9c6e8" : "#4A90D9", color: "#fff", fontSize: 14, fontWeight: 600, fontFamily: "inherit",
+                  }}>
+                  {classBusy ? "处理中…" : cls ? "换班" : "加入"}
+                </button>
+              </div>
+
+              {cls && (confirmLeave ? (
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 14, flexWrap: "wrap" }}>
+                  <span style={{ fontSize: 12, color: "#D4413A", flex: "1 1 200px", minWidth: 0 }}>
+                    退出后练习记录仍保留，但不再计入该班学情。
+                  </span>
+                  <button onClick={handleLeaveClass} disabled={classBusy}
+                    style={{
+                      flexShrink: 0, padding: "7px 16px", borderRadius: 10, border: "none", cursor: "pointer",
+                      background: classBusy ? "#e8a9a5" : "#D4413A", color: "#fff", fontSize: 13, fontWeight: 600, fontFamily: "inherit",
+                    }}>
+                    确认退出
+                  </button>
+                  <button onClick={() => setConfirmLeave(false)} disabled={classBusy}
+                    style={{
+                      flexShrink: 0, padding: "7px 16px", borderRadius: 10, cursor: "pointer",
+                      background: "none", border: "1px solid #e0dcd0", color: "#888", fontSize: 13, fontFamily: "inherit",
+                    }}>
+                    取消
+                  </button>
+                </div>
+              ) : (
+                <button onClick={() => { setConfirmLeave(true); setClassMsg(null); }}
+                  style={{
+                    marginTop: 14, padding: "7px 16px", borderRadius: 10, cursor: "pointer",
+                    background: "none", border: "1px solid #f0c9c6", color: "#D4413A",
+                    fontSize: 13, fontFamily: "inherit",
+                  }}>
+                  退出当前班级
+                </button>
+              ))}
+
+              <Msg msg={classMsg} />
+            </div>
+          )}
 
           {/* ── 修改昵称 ── */}
           <div style={{

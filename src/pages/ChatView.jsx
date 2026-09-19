@@ -86,6 +86,11 @@ export function ChatView() {
   // ── 会话快照 / 草稿 / 提交 ──────────────────────────────────────
   // draftId 在每次新会话开始时重新生成，作为记录的 legacy_id：
   // 「离开时提交」与「下次进入补交」共享它，服务端唯一键去重。
+  //
+  // ⚠️ 它同时是**会话起始时刻**（下面那个重置 effect 里与开场白同一 tick 生成），
+  //    下游用 legacyId 反推开场白时间来计算「首轮回复间隔」（见
+  //    utils/conversationMetrics.js）。所以提交时 buildRecord 必须带上它；
+  //    漏传会让 buildRecord 兜底成提交时刻，首轮间隔静默变成整段会话的时长。
   const draftIdRef = useRef(Date.now());
 
   // messages 的 ref 副本。提交要读最新值：点返回时可能还有一条 AI 回复在飞，

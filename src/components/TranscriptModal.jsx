@@ -4,10 +4,73 @@
 import { ChatTranscript } from "./ChatTranscript.jsx";
 import { moduleMeta } from "../data/moduleMeta.js";
 import { formatRecordDate } from "../utils/transcript.js";
+import { computeRecordMetrics, LONG_GAP_SEC } from "../utils/conversationMetrics.js";
+
+// ── 过程指标条（认知深度操作化）──
+// 四个 chip，不引图表库 —— 项目里唯一的图是手写 SVG 的 AbilityRadar。
+function Chip({ label, value, unit, sub, color, bg }) {
+  return (
+    <div style={{ background: bg, borderRadius: 12, padding: "8px 14px", minWidth: 86 }}>
+      <div style={{ fontSize: 10, color: "#aaa", marginBottom: 2 }}>{label}</div>
+      <div style={{ fontSize: 18, fontWeight: 700, color, lineHeight: 1.15 }}>
+        {value}
+        {unit && <span style={{ fontSize: 10, fontWeight: 400, marginLeft: 2 }}>{unit}</span>}
+      </div>
+      {sub && <div style={{ fontSize: 10, color: "#bbb", marginTop: 2 }}>{sub}</div>}
+    </div>
+  );
+}
+
+function MetricsStrip({ m }) {
+  // 空值渲染成「—」而不是 0：avgGapSec 为 null（一个间隔都测不到）与为 0
+  // （学生秒回）是两回事，在单条对话的视图里必须看得出来。
+  const dash = "—";
+  const pct = m.voiceRatio != null ? Math.round(m.voiceRatio * 100) : null;
+
+  // 只在有异常时出现。常驻一行「0 条截断 · 0 次时钟回拨」会训练读者忽略这一行，
+  // 而它恰恰是数据可用性的信号。
+  // （首轮间隔的起点不同源这件事记在导出的 sessionStartUsed 字段里，不在这里显示：
+  //   它在真实对话上几乎总为真，放进来就成了上面那种常驻噪音。）
+  const notes = [];
+  if (m.truncated) notes.push("对话已截断，轮次可能偏低");
+  if (m.unknownChannelTurns) notes.push(`${m.unknownChannelTurns} 轮通道未知（未计入语音比例）`);
+  if (m.longGapCount) notes.push(`${m.longGapCount} 次长间隔（>${Math.round(LONG_GAP_SEC / 60)} 分钟）`);
+  if (m.gapRewindCount) notes.push(`${m.gapRewindCount} 次时钟回拨已丢弃`);
+
+  return (
+    <div style={{ marginBottom: 18 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+        <Chip label="对话轮次" value={m.turns} unit="轮" color="#7B4FA3" bg="#F5F0FA"
+          sub={`共 ${m.messageTotal} 条消息`} />
+        <Chip label="学生平均字数" value={m.avgChars} unit="字" color="#4A90D9" bg="#EEF4FB"
+          sub={`共 ${m.charsTotal} 字`} />
+        <Chip label="平均回复间隔" value={m.avgGapSec ?? dash} unit={m.avgGapSec != null ? "秒" : ""}
+          color="#2DAA6E" bg="#EDFAF3"
+          sub={m.medianGapSec != null ? `中位 ${m.medianGapSec} 秒 · ${m.gapCount} 次` : "无可用间隔"} />
+        <Chip label="语音输入占比" value={pct ?? dash} unit={pct != null ? "%" : ""}
+          color="#E8A838" bg="#FFF8ED"
+          sub={pct != null ? `${m.voiceTurns}/${m.voiceTurns + m.textTurns} 轮` : "通道全未知"} />
+      </div>
+      {notes.length > 0 && (
+        <div style={{ fontSize: 10, color: "#bbb", marginTop: 8, lineHeight: 1.6 }}>
+          {notes.join(" · ")}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function TranscriptModal({ record, messages, loading, error, onRetry, onClose, onExport }) {
   if (!record) return null;
   const meta = moduleMeta(record.module);
+
+  // ⚠️ 刻意不用 useMemo：本函数第一行就是 `if (!record) return null`，在任何 hook
+  //    之前，加 hook 得先把它挪到早返回上面才合法（而这个组件目前一个 hook 都没有，
+  //    为一次微秒级的纯计算破坏那条规则不划算）。messages 来自详情接口或缓存，
+  //    其余字段来自列表行，所以按 messages 覆盖合并。
+  const metrics = !loading && !error && messages
+    ? computeRecordMetrics({ ...record, messages })
+    : null;
 
   return (
     <div
@@ -67,6 +130,11 @@ export function TranscriptModal({ record, messages, loading, error, onRetry, onC
 
         {/* 对话内容 */}
         <div style={{ flex: 1, overflowY: "auto", padding: "20px 22px" }}>
+          {/* 放在滚动区内而不是钉在标题栏：标题栏已有场景/模块/时间/分数三行，
+              720px 宽的弹窗再塞一行会把对话本身挤掉。指标只是「这段对话有多长」
+              的摘要，回看时不需要一直盯着。 */}
+          {metrics?.available && <MetricsStrip m={metrics} />}
+
           <ChatTranscript
             messages={messages}
             loading={loading}

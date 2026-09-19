@@ -5,6 +5,11 @@
 // 流利度/完整度）—— 那恰恰是语音测评的主要因变量。JSON 原样保留记录结构，
 // 分析脚本按字段取值即可，不做有损转换。
 //
+// 除 records 原始数据外，导出包还带两个过程指标块（metricsSummary 给人看、
+// metricsByRecord 给脚本读），口径见 src/utils/conversationMetrics.js。
+// 它们与 records 平行存放，records 本身一个字段都没动 —— 只读 records 的
+// 分析脚本完全不受影响，所以 EXPORT_VERSION 不需要升。
+//
 // 为什么前端生成而不是服务端加导出接口：整包 JSON 恰好是 SCF 响应上限要
 // 消灭的那类大响应。逐条详情接口 GET /records/:id 已经存在，复用它即可。
 //
@@ -12,6 +17,7 @@
 //    带上 JWT 等于把账号凭证一起交出去。
 import { getToken, recordApi } from "./api.js";
 import { readDrafts, getStudentId, getOwnerId, getStudentProfile } from "./recordStore.js";
+import { computeRecordMetrics, summarizeMetrics, metricsParams, METRICS_VERSION } from "./conversationMetrics.js";
 
 export const EXPORT_FORMAT = "speakwise-records";
 export const EXPORT_VERSION = 1;
@@ -89,6 +95,16 @@ function localSnapshot() {
 export function buildExportPayload(records, { scope = "记录", label = "", extra, includeClient = true } = {}) {
   const list = records || [];
   const transcriptCount = list.filter(r => (r.messages?.length ?? r.messageCount ?? 0) > 0).length;
+
+  // ── 对话过程指标（认知深度操作化，口径见 conversationMetrics.js）──
+  // 只对已带 messages 的记录可算：列表接口不返回 messages，导出前 hydrateRecords
+  // 已逐条补齐；补不到的那几条会进 coverage.notHydrated，绝不静默当成 0 轮 ——
+  // 「平均 3.2 轮」这种结论必须能回答「基于多少条对话」。
+  //
+  // 刻意不把这些派生字段塞进 records：records 是原始数据，分析脚本会逐条遍历它，
+  // 混入派生量会让「原样保留记录结构」这条原则失效。所以平行放在两个顶层键里。
+  const perRecord = list.map(record => ({ record, metrics: computeRecordMetrics(record) }));
+
   return {
     format: EXPORT_FORMAT,
     version: EXPORT_VERSION,
@@ -97,6 +113,25 @@ export function buildExportPayload(records, { scope = "记录", label = "", extr
     label,
     recordCount: list.length,
     transcriptCount,
+    // 给人看的那一块，紧挨 recordCount/transcriptCount —— 打开文件前十行就知道
+    // 这份数据里有多少条对话、平均多少轮、口径是什么。
+    metricsSummary: {
+      metricsVersion: METRICS_VERSION,
+      params: metricsParams(),
+      ...summarizeMetrics(perRecord.map(x => x.metrics)),
+    },
+    // 给脚本读的那一块。用数组而不是以 id 为键的对象：演示数据的 1001 与云端自增
+    // id 会撞键，数组还保留与 records 相同的顺序，join 很简单。
+    metricsByRecord: perRecord
+      .filter(x => x.metrics.available)
+      .map(({ record, metrics }) => ({
+        id: record.id,
+        legacyId: record.legacyId ?? null,
+        studentId: record.studentId,
+        nickname: record.nickname ?? null,
+        module: record.module,
+        ...metrics,
+      })),
     ...(includeClient ? { client: localSnapshot() } : null),
     ...extra,
     records: list,

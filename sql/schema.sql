@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS records (
   problems JSON DEFAULT NULL,           -- ["量词搭配不稳定", ...]
   suggestion TEXT,
   messages JSON DEFAULT NULL,           -- 完整对话记录 [{sender,content,at,channel}]，仅对话类模块
+  source VARCHAR(8) NOT NULL DEFAULT '', -- 发音测评题目来源 'train'|'testA'|'testB'|'custom'，其余模块留空
   hsk_level VARCHAR(4) DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY uq_user_legacy (user_id, legacy_id),   -- 迁移幂等去重
@@ -103,3 +104,24 @@ DEALLOCATE PREPARE stmt;
 -- 验证：
 --   SHOW COLUMNS FROM records LIKE 'messages';                    -- 应返回 1 行
 --   SELECT COUNT(*) FROM records WHERE messages IS NOT NULL;      -- 升级后应为 0
+
+-- ── records.source：区分发音测评的题目来源（train/testA/testB/custom）──
+-- 测试模式的成绩与日常练习在 module/scenario 上完全一样，导出时无法分辨前后测数据。
+-- ⚠️ 同样必须先跑这段再发布带 source 列的后端，否则所有 POST /api/records 报
+--    ER_BAD_FIELD_ERROR，前端 saveRecord 会静默降级到 localStorage。
+SET @ddl := (
+  SELECT IF(COUNT(*) = 0,
+    'ALTER TABLE records ADD COLUMN source VARCHAR(8) NOT NULL DEFAULT '''' COMMENT ''发音测评题目来源 train/testA/testB/custom''',
+    'SELECT ''skipped: records.source already exists'' AS result')
+  FROM INFORMATION_SCHEMA.COLUMNS
+  WHERE TABLE_SCHEMA = 'speakwise'
+    AND TABLE_NAME   = 'records'
+    AND COLUMN_NAME  = 'source'
+);
+PREPARE stmt FROM @ddl;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+-- 验证：
+--   SHOW COLUMNS FROM records LIKE 'source';                      -- 应返回 1 行
+--   SELECT source, COUNT(*) FROM records GROUP BY source;

@@ -135,7 +135,9 @@ export function clearDrafts() {
 // messages: 仅对话类模块（场景对话/自由对话/写作辅导）有，其余为 null
 // id:       可由调用方指定。对话类传草稿的 draftId，使「离开时提交」与
 //           「下次进入补交」共享同一个 legacy_id，服务端唯一键去重
-export function buildRecord({ module, scenario, score, dimensions, problems, suggestion, hskLevel, messages, id }) {
+// source:   发音测评的题目来源（train/testA/testB/custom），其余模块留空。
+//           测试成绩与日常练习在记录里本无法区分，科研导出要靠它分辨前后测数据。
+export function buildRecord({ module, scenario, score, dimensions, problems, suggestion, hskLevel, messages, id, source }) {
   return {
     id: id ?? Date.now(),
     studentId: getOwnerId(),
@@ -147,6 +149,7 @@ export function buildRecord({ module, scenario, score, dimensions, problems, sug
     problems: problems || [],
     suggestion: suggestion || "",
     messages: messages || null,
+    source: source || "",
     createdAt: new Date().toISOString(),
   };
 }

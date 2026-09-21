@@ -29,8 +29,15 @@ const MAX_TRANSCRIPT_BYTES = 48 * 1024;
 // ── 列表投影：显式列名，刻意排除 messages ──
 const LIST_COLUMNS = `
   id, legacy_id, user_id, module, scenario, score, dimensions, problems,
-  suggestion, hsk_level, created_at,
+  suggestion, hsk_level, source, created_at,
   JSON_LENGTH(messages) AS message_count`;
+
+// 发音测评的题目来源。测试成绩与日常练习在 module/scenario 上完全一样，
+// 科研导出要靠这一列分辨前后测数据，所以非法值一律归一化为空而不是报错。
+const ALLOWED_SOURCES = ['train', 'testA', 'testB', 'custom'];
+function sanitizeSource(v) {
+  return ALLOWED_SOURCES.includes(v) ? v : '';
+}
 
 function toClientRecord(r) {
   return {
@@ -45,6 +52,7 @@ function toClientRecord(r) {
     dimensions: r.dimensions,
     problems: r.problems,
     suggestion: r.suggestion,
+    source: r.source || '',
     messageCount: r.message_count ?? 0,
     createdAt: r.created_at instanceof Date ? r.created_at.toISOString() : r.created_at,
   };
@@ -122,8 +130,8 @@ router.post('/', requireAuth, async (req, res) => {
     const rows = await query(
       `INSERT INTO records
        (user_id, legacy_id, module, scenario, score, dimensions, problems, suggestion,
-        hsk_level, created_at, messages)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(?, NOW()), ?)`,
+        hsk_level, created_at, messages, source)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(?, NOW()), ?, ?)`,
       [
         req.user.id,
         b.id ?? null,
@@ -136,6 +144,7 @@ router.post('/', requireAuth, async (req, res) => {
         b.hskLevel || null,
         createdAt,
         toJson(sanitizeMessages(b.messages)),
+        sanitizeSource(b.source),
       ]
     );
     return res.json({ id: rows.insertId });
@@ -177,7 +186,7 @@ router.post('/migrate', requireAuth, async (req, res) => {
         // ×3：中文 UTF-8 三字节/字，按字符数估会低估
         bytes += messagesJson ? messagesJson.length * 3 : 0;
 
-        values.push('(?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(?, NOW()), ?)');
+        values.push('(?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(?, NOW()), ?, ?)');
         params.push(
           req.user.id,
           Number(r.id),
@@ -189,14 +198,15 @@ router.post('/migrate', requireAuth, async (req, res) => {
           r.suggestion || '',
           r.hskLevel || null,
           createdAt,
-          messagesJson
+          messagesJson,
+          sanitizeSource(r.source)
         );
       }
 
       const result = await query(
         `INSERT IGNORE INTO records
          (user_id, legacy_id, module, scenario, score, dimensions, problems, suggestion,
-          hsk_level, created_at, messages)
+          hsk_level, created_at, messages, source)
          VALUES ${values.join(', ')}`,
         params
       );
@@ -231,7 +241,7 @@ router.get('/class', requireAuth, requireTeacher, async (req, res) => {
 
     const rows = await query(
       `SELECT r.id, r.legacy_id, r.user_id, r.module, r.scenario, r.score,
-              r.dimensions, r.problems, r.suggestion, r.hsk_level, r.created_at,
+              r.dimensions, r.problems, r.suggestion, r.hsk_level, r.source, r.created_at,
               JSON_LENGTH(r.messages) AS message_count,
               u.nickname AS student_nickname
        FROM records r

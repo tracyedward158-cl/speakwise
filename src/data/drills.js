@@ -97,6 +97,11 @@ export const SENTENCE_BANK = {
   ]
 };
 
+// ⚠️ 已被新题库取代，保留作备份，代码里不再引用。
+// 现在的发音测评题库是 src/data/pronunciationBank.json（552 条：字/词/句 × train/testA/testB，
+// 带难点标签），访问逻辑见 src/utils/pronunciationBank.js。
+// 核对过：下面这 89 条句子在新题库里全部存在，切换没有丢内容。
+// 上面的 SENTENCE_BANK 是造句练习（写作模块）在用的，与本次改动无关，不要一起删。
 export const PRONUNCIATION_BANK = {
   "1-3": [
     { sentence: "你好吗？", pinyin: "Nǐ hǎo ma?", translation: "How are you?" },

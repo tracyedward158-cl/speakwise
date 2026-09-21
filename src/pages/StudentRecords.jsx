@@ -384,7 +384,7 @@ export function StudentRecords() {
                   padding: "16px 20px", cursor: "pointer",
                 }} onClick={() => {
                   if (rec.action.type === "navigate") navigate(rec.action.target);
-                  else if (rec.action.type === "drill") navigate("/oral/drill/pronunciation");
+                  else if (rec.action.type === "drill") navigate("/oral/pronunciation/daily");
                 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                     <span style={{ fontSize: 14, fontWeight: 600, color: "#D4413A" }}>{rec.label}</span>

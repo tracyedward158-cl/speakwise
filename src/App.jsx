@@ -9,6 +9,10 @@ import { UserCenter } from "./pages/UserCenter.jsx";
 import { HSKSelect } from "./pages/HSKSelect.jsx";
 import { MainMenu } from "./pages/MainMenu.jsx";
 import { OralMenu } from "./pages/OralMenu.jsx";
+import { PronunciationMenu } from "./pages/PronunciationMenu.jsx";
+import { PronunciationDaily } from "./pages/PronunciationDaily.jsx";
+import { PronunciationBank } from "./pages/PronunciationBank.jsx";
+import { PronunciationTest } from "./pages/PronunciationTest.jsx";
 import { SceneList } from "./pages/SceneList.jsx";
 import { WrittenMenu } from "./pages/WrittenMenu.jsx";
 import { StudyManual } from "./pages/StudyManual.jsx";
@@ -59,6 +63,16 @@ function AppRoutes({ onOpenAbout }) {
           <Route path="/oral/scenes" element={<SceneList />} />
           <Route path="/oral/scene/:sceneId" element={<ChatView />} />
           <Route path="/oral/free" element={<ChatView />} />
+          {/* 发音测评：先选模式（日常/题库/测试/自定义），再进具体 drill。
+              自定义练习与日常/测试/单题练习都走 /oral/drill/:type 动态段，
+              分别由 type=custom 和 type=practice 接住（practice 的题目由 URL 查询参数决定） */}
+          <Route path="/oral/pronunciation" element={<PronunciationMenu />} />
+          <Route path="/oral/pronunciation/daily" element={<PronunciationDaily />} />
+          <Route path="/oral/pronunciation/bank" element={<PronunciationBank />} />
+          <Route path="/oral/pronunciation/test" element={<PronunciationTest />} />
+          {/* 旧链接兼容：/oral/drill/pronunciation 曾是日常练习。静态段优先级高于
+              :type，所以这条会先匹配，不会落到 DrillView 的造句分支 */}
+          <Route path="/oral/drill/pronunciation" element={<Navigate to="/oral/pronunciation" replace />} />
           <Route path="/oral/drill/:type" element={<DrillView />} />
           {/* Written section */}
           <Route path="/written" element={<WrittenMenu />} />

@@ -9,7 +9,7 @@ import { HSK_PROMPT } from "../data/constants.js";
 import { clean, renderExampleText } from "../utils/helpers.jsx";
 import { callAI } from "../utils/api.js";
 import { buildRecord, saveRecord } from "../utils/recordStore.js";
-import { buildCustomBank, buildPracticeSession, nextRoundParams } from "../utils/pronunciationBank.js";
+import { buildCustomBank, buildPracticeSession, enrichCustomBank, nextRoundParams } from "../utils/pronunciationBank.js";
 
 // ── 自定义练习：学生自己输入的文本 ──
 const MAX_CUSTOM_CHARS = 500;   // 输入上限：够读一小段课文，又不至于一次录几分钟音
@@ -38,6 +38,11 @@ export function DrillView() {
   // customBank 是断句结果；customBank === null 表示还停在输入页。
   const [customText, setCustomText] = useState("");
   const [customBank, setCustomBank] = useState(null);
+
+  // 开始前的 AI 补全（拼音/英文/粒度）：断句是同步的、补全要等网络，
+  // 所以「开始测评」是个异步动作，用这两个状态撑住等待期和失败重试。
+  const [enriching, setEnriching] = useState(false);
+  const [enrichError, setEnrichError] = useState(null);
 
   const bank = isPractice
     ? (session?.items || [])
@@ -112,6 +117,33 @@ export function DrillView() {
   const scoreColor = (s) => s >= 80 ? "#2DAA6E" : s >= 60 ? "#E8A838" : s > 0 ? "#D4413A" : "#ccc";
   const scoreBg = (s) => s >= 80 ? "#EDFAF3" : s >= 60 ? "#FFF8ED" : s > 0 ? "#FDF0EF" : "#f5f5f5";
 
+  // ── 自定义练习：开始前先让 AI 补齐拼音/英文/粒度 ──
+  // 缓存进 customBank 而不是评测时现取：录音-评测本来就有等待，
+  // 再插一次网络请求会把「录音→出分」的节奏打断，而开始按钮上的等待是学生预期内的。
+  const beginDrill = useCallback((items) => {
+    setCustomBank(items);
+    setIdx(0); setFeedback(null); setScores([]); setDone(false);
+  }, []);
+
+  const startCustomDrill = useCallback(async (items) => {
+    setEnriching(true);
+    setEnrichError(null);
+    try {
+      const { bank: enriched, enriched: n } = await enrichCustomBank(items, callAI);
+      // 一条都没补上说明 AI 没按格式回（而不是个别句子缺失），
+      // 直接放行会让学生对着没有拼音的界面练，不如让他选重试还是照常开始
+      if (n === 0) {
+        setEnrichError("AI 没能生成拼音和英文，可以重试，或直接开始练习。");
+        return;
+      }
+      beginDrill(enriched);
+    } catch (e) {
+      setEnrichError(e?.message || "生成拼音和英文失败，请重试。");
+    } finally {
+      setEnriching(false);
+    }
+  }, [beginDrill]);
+
   // ── Custom mode: 输入文本（还没开始测评）──
   if (isCustom && !customBank) {
     const preview = buildCustomBank(customText);
@@ -128,6 +160,8 @@ export function DrillView() {
               <textarea
                 value={customText}
                 autoFocus
+                // 生成期间锁住：练习用的是点击那一刻的文本，中途改了会和界面对不上
+                disabled={enriching}
                 onChange={e => setCustomText(e.target.value.slice(0, MAX_CUSTOM_CHARS))}
                 placeholder="输入或粘贴你想练习的文本，比如课文段落、演讲稿、常用句子…"
                 rows={6}
@@ -154,18 +188,42 @@ export function DrillView() {
               </div>
             )}
 
+            {/* 补全失败不拦路：重试还是照常开始由学生决定，别让人卡在输入页 */}
+            {enrichError && (
+              <div style={{ background: "#FFF8ED", borderRadius: 12, border: "1px solid #E8A83840", padding: "12px 16px", marginBottom: 12, fontSize: 13, color: "#B07A20", lineHeight: 1.7 }}>
+                {enrichError}
+              </div>
+            )}
+
             <button
-              onClick={() => { setCustomBank(preview); setIdx(0); setFeedback(null); setScores([]); setDone(false); }}
-              disabled={preview.length === 0}
+              onClick={() => startCustomDrill(preview)}
+              disabled={preview.length === 0 || enriching}
               style={{
                 width: "100%", padding: 16, borderRadius: 12, border: "none", fontFamily: "inherit",
-                background: preview.length ? color : "#e8e6de", color: preview.length ? "#fff" : "#aaa",
-                fontSize: 16, fontWeight: 600, cursor: preview.length ? "pointer" : "default",
+                background: preview.length && !enriching ? color : "#e8e6de",
+                color: preview.length && !enriching ? "#fff" : "#aaa",
+                fontSize: 16, fontWeight: 600,
+                cursor: preview.length && !enriching ? "pointer" : "default",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
               }}>
-              开始测评 →
+              {enriching && (
+                <span style={{ display: "inline-flex", gap: 4 }}>
+                  {[0, 1, 2].map(j => <span key={j} style={{ width: 6, height: 6, borderRadius: "50%", background: "#aaa", animation: `dp 1.2s ${j * 0.2}s infinite` }} />)}
+                </span>
+              )}
+              {enriching ? "正在生成拼音和英文…" : "开始测评 →"}
             </button>
+
+            {enrichError && (
+              <button
+                onClick={() => beginDrill(preview)}
+                style={{ width: "100%", marginTop: 10, padding: 14, borderRadius: 12, border: `1.5px solid ${color}`, background: "transparent", color, fontSize: 15, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>
+                跳过，直接开始练习
+              </button>
+            )}
+
             <div style={{ fontSize: 12, color: "#bbb", textAlign: "center", marginTop: 10, lineHeight: 1.7 }}>
-              开始后逐句录音评测，全部读完给出总评
+              {enriching ? "正在为每一句生成拼音、英文和粒度，请稍候" : "开始后逐句录音评测，全部读完给出总评"}
             </div>
           </div>
         </PageWrap>

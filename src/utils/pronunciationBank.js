@@ -271,6 +271,176 @@ export function buildCustomBank(text) {
     .map(t => ({ text: t.slice(0, MAX_SENTENCE_CHARS), unit: "句" }));
 }
 
+// ── 自定义练习：AI 补全拼音 / 英文 / 粒度 ──
+// 题库的 pinyin/english/unit 是人工标注的，自定义文本没有，只能现生成。
+// 三个函数都保持零依赖（AI 调用由调用方注入），理由同文件头：
+// 本机没有浏览器自动化，只有纯函数能在 harness 里直接断言。
+
+/** 断句后的自定义题粒度只可能是这三种（题库里的「段」不会出现） */
+export const CUSTOM_UNITS = ["字", "词", "句"];
+
+/** 一批最多几句。deepseek-chat 单次输出上限 4096 token，
+ *  一句的 JSON（原文+拼音+英文）约 60~100 token，20 句留足余量。 */
+export const ENRICH_BATCH_SIZE = 20;
+
+/** 给整批 20 句留的余量：拼音和英文都可能比原文长得多 */
+const ENRICH_MAX_TOKENS = 4000;
+
+const MAX_PINYIN = 300;
+const MAX_ENGLISH = 300;
+
+export const ENRICH_SYSTEM = `你是中文教材的注音与翻译编辑。用户给出一组已编号的句子，逐句输出四样东西：
+text —— 原样抄回该句，一个字都不能改（这是唯一的对齐依据）
+pinyin —— 带声调符号的汉语拼音（ā á ǎ à，ü 写作 ü），按词连写，轻声不标调
+english —— 自然、地道的英文翻译
+unit —— 该行的粒度，只能是 "字"、"词"、"句" 三者之一
+
+unit 判定（输入已去掉句末标点，只看剩下多少内容）：
+"字" —— 整行只有 1 个汉字。例：好、水、谢
+"词" —— 整行只有 1 个词，拆开就不成话。例：苹果、对不起、努力
+"句" —— 其余全部情况：短语、句子、含逗号等内部标点、或由多个词组成。例：我很好、今天天气不错、你叫什么名字
+
+判定 unit 时宁可选 "句" 也不要选 "词"：选成词会让系统按单字模式评测，
+丢掉流利度和完整度（对「我很好」谈流利度是有意义的，对「苹果」不是）。
+
+硬性要求：
+1. 输出条数必须与输入条数完全相等，一一对应，不许合并、拆分、省略、补全。
+2. text 必须与输入逐字相同。
+3. 拼音用带调符号，不要用数字标调（写 Nǐ hǎo，不要写 Ni3 hao3）。
+4. 只输出 JSON，不要解释、不要 markdown 代码块、不要任何多余文字。
+
+输出格式：
+{"items":[{"i":1,"text":"你好吗","pinyin":"Nǐ hǎo ma","english":"How are you?","unit":"句"}]}`;
+
+/** 从可能带 markdown 代码块或前后废话的回复里抠出 JSON 对象/数组 */
+function parseLooseJson(reply) {
+  const s = String(reply || "").trim();
+  const fenced = s.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  const body = (fenced ? fenced[1] : s).trim();
+
+  // 先按对象解析（约定格式），失败再试裸数组（模型偶尔会省掉外层包装）
+  const objStart = body.indexOf("{");
+  const objEnd = body.lastIndexOf("}");
+  if (objStart >= 0 && objEnd > objStart) {
+    try { return JSON.parse(body.slice(objStart, objEnd + 1)); } catch { /* 落到数组分支 */ }
+  }
+  const arrStart = body.indexOf("[");
+  const arrEnd = body.lastIndexOf("]");
+  if (arrStart >= 0 && arrEnd > arrStart) {
+    try { return JSON.parse(body.slice(arrStart, arrEnd + 1)); } catch { /* 交给调用方 */ }
+  }
+  return null;
+}
+
+/** 比较原文是否逐字相同。空白差异不算差异——模型偶尔会在标点后补一个空格 */
+const sameText = (a, b) => {
+  const x = String(a ?? "").replace(/\s+/g, "");
+  return x !== "" && x === String(b ?? "").replace(/\s+/g, "");
+};
+
+/** 模型有没有回填 text。没回填时只剩 i 可对齐，不该因此判整批失败 */
+const hasText = (e) => typeof e?.text === "string" && e.text.trim() !== "";
+
+const clipField = (v, max) => String(v ?? "").replace(/\s+/g, " ").trim().slice(0, max);
+
+/**
+ * 解析 AI 返回的补全结果，按 text 逐条对齐。
+ *
+ * 对齐是这里唯一的难点：条数或顺序一旦错位，A 句的拼音就会挂到 B 句上。
+ * 错位的拼音比缺失的拼音危害大得多——学生看不出来，还会照着念错。所以：
+ *   1. 先按 i（1-based）对位；回填了 text 就要求逐字相同才算数，
+ *      没回填 text 时只认 i（此时 i 是仅剩的对齐依据，总比整批作废强）；
+ *   2. 顺序被打乱时退回按 text 全局唯一匹配；
+ *   3. 仍然对不上的**留空**，绝不按位置硬塞。
+ * 条数不等不算错误：能对上的照常回填、对不上的留空，比整批丢弃有用。
+ * 返回的数组长度恒等于 items.length；一条都没对上时返回 null，交给调用方决定重试。
+ */
+export function parseEnrichReply(reply, items) {
+  const list = Array.isArray(items) ? items : [];
+  if (!list.length) return null;
+
+  const parsed = parseLooseJson(reply);
+  const arr = Array.isArray(parsed) ? parsed : parsed?.items;
+  if (!Array.isArray(arr) || arr.length === 0) return null;
+
+  const out = list.map(() => null);
+  const used = arr.map(() => false);
+
+  arr.forEach((e, j) => {
+    const k = Number(e?.i) - 1;
+    if (Number.isInteger(k) && k >= 0 && k < list.length
+      && !used[j] && out[k] === null && (!hasText(e) || sameText(e?.text, list[k].text))) {
+      used[j] = true;
+      out[k] = e;
+    }
+  });
+
+  list.forEach((it, k) => {
+    if (out[k]) return;
+    const j = arr.findIndex((e, jj) => !used[jj] && sameText(e?.text, it.text));
+    if (j >= 0) { used[j] = true; out[k] = arr[j]; }
+  });
+
+  // 一条都没对上：不是"部分缺失"，是模型没按格式回，让调用方重试而不是静默降级
+  if (out.every(e => e === null)) return null;
+
+  // 回填时只取这三个字段，**不展开模型返回的原始对象**：
+  // 它里面的 text 是模型抄回来的，和原文可能有空白差异，展开会把它盖到原文上。
+  return out.map((e, k) => {
+    if (!e) return { ...list[k], pinyin: "", english: "", unit: list[k].unit || "句" };
+    return {
+      ...list[k],
+      pinyin: clipField(e.pinyin, MAX_PINYIN),
+      english: clipField(e.english, MAX_ENGLISH),
+      // 越界或缺失一律退回「句」——coreFor 对「句」给 sent，和补全前的行为一致
+      unit: CUSTOM_UNITS.includes(e.unit) ? e.unit : "句",
+    };
+  });
+}
+
+/**
+ * 给自定义练习的断句结果补上 pinyin / english / unit。
+ *
+ * ai 由调用方注入（正常传 callAI），本文件因此保持零依赖、可被 harness 直接调用。
+ * 分批串行而不是并发：DeepSeek 有并发限流，而且自定义文本上限 500 字，
+ * 一批 20 句最多也就几个请求，省下的时间不值得换限流风险。
+ * 单批失败不影响其他批——那一批的题目保留「句」且没有拼音英文，界面照常能练。
+ */
+export async function enrichCustomBank(items, ai, { batchSize = ENRICH_BATCH_SIZE, onProgress } = {}) {
+  const list = Array.isArray(items) ? items : [];
+  if (!list.length) return { bank: [], enriched: 0, total: 0 };
+
+  const bank = list.map(it => ({ ...it }));
+  let enriched = 0;
+
+  for (let start = 0; start < bank.length; start += batchSize) {
+    const slice = bank.slice(start, start + batchSize);
+    // i 是批内下标，回填时再加 start 换算成全局位置
+    const payload = JSON.stringify(slice.map((it, k) => ({ i: k + 1, text: it.text })));
+
+    const reply = await ai(ENRICH_SYSTEM, [{ role: "user", content: payload }], ENRICH_MAX_TOKENS, 2, true);
+    const parsed = parseEnrichReply(reply, slice);
+    if (parsed) {
+      // parseEnrichReply 返回的已经是完整的题目对象（原文 + 补全字段）
+      parsed.forEach((p, k) => {
+        if (p.pinyin || p.english) enriched += 1;
+        bank[start + k] = p;
+      });
+    } else {
+      console.warn('[enrich] 这一批没能对齐，保留原样：', start, '~', start + slice.length);
+      // 降级形状要和 parseEnrichReply 一致：拼音英文补成空串而不是缺失。
+      // 缺键的话出参里 pinyin 是 undefined，渲染上同样是假值、看不出差别，
+      // 但"补全后的每道题都有这两个键"才是个能依赖的契约。
+      for (let k = 0; k < slice.length; k++) {
+        bank[start + k] = { pinyin: "", english: "", ...bank[start + k], unit: bank[start + k].unit || "句" };
+      }
+    }
+    onProgress?.(Math.min(start + batchSize, bank.length), bank.length);
+  }
+
+  return { bank, enriched, total: bank.length };
+}
+
 /**
  * 按题目原文聚合本人的练习记录，供题库浏览显示「已练次数 / 最高分 / 历史」。
  * 记录里没有存题库 id，句子原文是唯一的关联键——题库中重复的两条会共享统计。

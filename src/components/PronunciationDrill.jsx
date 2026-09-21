@@ -121,14 +121,12 @@ export function PronunciationDrill({ bank, title, subtitle, onBack, isCustom = f
   if (done) {
     const validScores = scores.filter(s => s > 0);
     const avg = validScores.length ? Math.round(validScores.reduce((a, b) => a + b, 0) / validScores.length) : 0;
-    const emoji = avg >= 90 ? "🤩" : avg >= 80 ? "😎" : avg >= 70 ? "😊" : avg >= 60 ? "🤔" : "😅";
     return (
       <div style={{ minHeight: "100vh", background: "#FAFAF7", fontFamily: "'Noto Sans SC',sans-serif" }}>
         <TopBar title={title} subtitle="Results" onBack={onBack} hskLevel={hskLevel} onChangeHSK={onChangeHSK} mode={mode} onChangeMode={onChangeMode} />
         <PageWrap maxWidth={580}>
           <div style={{ padding: "32px 0", textAlign: "center", animation: "su 0.4s both" }}>
-            <div style={{ fontSize: 56, marginBottom: 12 }}>{emoji}</div>
-            <div style={{ fontSize: 48, fontWeight: 700, color, marginBottom: 4 }}>{avg}<span style={{ fontSize: 20, color: "#999" }}>/100</span></div>
+            <div style={{ fontSize: 48, fontWeight: 700, color, marginBottom: 4, marginTop: 12 }}>{avg}<span style={{ fontSize: 20, color: "#999" }}>/100</span></div>
             <div style={{ fontSize: 15, color: "#888", marginBottom: 28 }}>Average across {validScores.length} questions</div>
             <div style={{ background: "#fff", borderRadius: 14, border: "1px solid #f0efe8", overflow: "hidden", marginBottom: 24, textAlign: "left" }}>
               {scores.map((s, i) => (
@@ -146,8 +144,8 @@ export function PronunciationDrill({ bank, title, subtitle, onBack, isCustom = f
               </button>
             )}
             <div style={{ display: "flex", gap: 10 }}>
-              <button onClick={restart} style={{ flex: 1, padding: 16, borderRadius: 12, border: onNextRound ? "1px solid #e8e6de" : `1.5px solid ${color}`, background: "transparent", color: onNextRound ? "#888" : color, fontSize: 16, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{isCustom ? "修改文本" : "Try again"}</button>
-              <button onClick={onBack} style={{ flex: 1, padding: 16, borderRadius: 12, border: "none", background: onNextRound ? "#F5F0FA" : color, color: onNextRound ? color : "#fff", fontSize: 16, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>Back</button>
+              <button onClick={restart} style={{ flex: 1, padding: 16, borderRadius: 12, border: onNextRound ? "1px solid #e8e6de" : `1.5px solid ${color}`, background: "transparent", color: onNextRound ? "#888" : color, fontSize: 16, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{isCustom ? "修改文本" : "再练一遍"}</button>
+              <button onClick={onBack} style={{ flex: 1, padding: 16, borderRadius: 12, border: "none", background: onNextRound ? "#F5F0FA" : color, color: onNextRound ? color : "#fff", fontSize: 16, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>返回</button>
             </div>
           </div>
         </PageWrap>
@@ -194,7 +192,7 @@ export function PronunciationDrill({ bank, title, subtitle, onBack, isCustom = f
             <div style={{ display: "flex", gap: 8 }}>
               <button onClick={() => speaking ? stopSpeaking() : speak(q.text)} style={{ marginTop: 14, background: bg, border: `1px solid ${color}30`, borderRadius: 20, padding: "8px 18px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontSize: 13, color, fontFamily: "inherit" }}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill={color}><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" /></svg>
-                {speaking ? "Stop" : "Listen"}
+                {speaking ? "停止" : "播放"}
               </button>
               <button onClick={() => speak(q.text, true)} style={{ marginTop: 14, background: "#fff", border: `1px solid ${color}30`, borderRadius: 20, padding: "8px 14px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontSize: 13, color, fontFamily: "inherit" }}>慢速</button>
             </div>
@@ -274,7 +272,7 @@ export function PronunciationDrill({ bank, title, subtitle, onBack, isCustom = f
 
               <div style={{ display: "flex", gap: 10 }}>
                 <button onClick={retry} style={{ flex: 1, padding: 16, borderRadius: 12, border: `1.5px solid ${color}`, background: "transparent", color, fontSize: 16, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>再练一次</button>
-                <button onClick={next} style={{ flex: 1, padding: 16, borderRadius: 12, border: "none", background: color, color: "#fff", fontSize: 16, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{idx + 1 >= total ? "See results →" : "Next question →"}</button>
+                <button onClick={next} style={{ flex: 1, padding: 16, borderRadius: 12, border: "none", background: color, color: "#fff", fontSize: 16, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{idx + 1 >= total ? "看结果 →" : "下一题 →"}</button>
               </div>
             </div>
           )}
@@ -285,7 +283,7 @@ export function PronunciationDrill({ bank, title, subtitle, onBack, isCustom = f
               <div style={{ background: "#FDF0EF", borderRadius: 16, border: "1.5px solid #D4413A40", padding: 22, marginBottom: 14, animation: "su 0.3s both", textAlign: "center" }}>
                 <div style={{ fontSize: 15, color: "#D4413A", marginBottom: 12 }}>{feedback.text}</div>
               </div>
-              <button onClick={next} style={{ width: "100%", padding: 16, borderRadius: 12, border: "none", background: color, color: "#fff", fontSize: 16, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{idx + 1 >= total ? "See results →" : "Next question →"}</button>
+              <button onClick={next} style={{ width: "100%", padding: 16, borderRadius: 12, border: "none", background: color, color: "#fff", fontSize: 16, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{idx + 1 >= total ? "看结果 →" : "下一题 →"}</button>
             </div>
           )}
 

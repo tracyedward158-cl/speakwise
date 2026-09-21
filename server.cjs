@@ -212,7 +212,10 @@ app.get('/api/health', (req, res) => {
 // POST /api/chat — AI conversation proxy (DeepSeek)
 app.post('/api/chat', async (req, res) => {
   try {
-    const { system, messages, max_tokens = 600 } = req.body;
+    // json=true 走 DeepSeek 的 JSON 输出模式：发音测评要用它一次拿回整批
+    // 「拼音+英文+粒度」，纯文本模式偶尔会裹 markdown 代码块或加一句解释。
+    // 注意该模式要求提示词里出现 "json" 字样，否则 DeepSeek 直接返回 400。
+    const { system, messages, max_tokens = 600, json = false } = req.body;
     const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY;
 
     if (!DEEPSEEK_KEY) {
@@ -230,7 +233,12 @@ app.post('/api/chat', async (req, res) => {
     const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${DEEPSEEK_KEY}` },
-      body: JSON.stringify({ model: 'deepseek-chat', messages: messagesForAI, max_tokens }),
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: messagesForAI,
+        max_tokens,
+        ...(json ? { response_format: { type: 'json_object' } } : {}),
+      }),
     });
     const data = await response.json();
     const reply = data.choices?.[0]?.message?.content || '';

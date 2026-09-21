@@ -59,12 +59,13 @@ export async function apiFetch(path, { timeout = 20000, ...options } = {}) {
 
 // ── AI 能力 ──
 // AI 生成慢（尤其会话评分），显式放宽到 60s，否则会被 apiFetch 的默认超时切断
-export async function callAI(system, messages, maxTokens = 600, retries = 2) {
+// json=true 时服务端会开 DeepSeek 的 JSON 输出模式（提示词里必须出现 "json" 字样）
+export async function callAI(system, messages, maxTokens = 600, retries = 2, json = false) {
   for (let i = 0; i <= retries; i++) {
     try {
       const data = await apiFetch("/api/chat", {
         method: "POST",
-        body: JSON.stringify({ system, messages, max_tokens: maxTokens }),
+        body: JSON.stringify({ system, messages, max_tokens: maxTokens, json }),
         timeout: 60000,
       });
       if (!data.reply || data.reply.trim() === "") throw new Error("Empty reply");

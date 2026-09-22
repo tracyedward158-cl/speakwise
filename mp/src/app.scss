@@ -1,0 +1,70 @@
+// 全局样式。对应 Web 版的 src/App.css。
+//
+// 三处必须改的地方：
+//
+// 1. 去掉 Google Fonts 的 @import。小程序 WXSS 不能引远程字体；而且那份
+//    Noto Sans SC 在 iOS/Android 上本来就会被系统字体覆盖。改用系统字体栈，
+//    微信端 PingFang SC / 安卓端系统中文，观感反而更接近原生。
+//
+// 2. 去掉 `*` 选择器。WXSS 不支持通配选择器，只能用具体标签或 page。
+//
+// 3. 去掉 @media。WXSS 没有媒体查询，而小程序本来就只在手机宽度下运行 ——
+//    Web 版 `max-width: 480px` 那条分支正是手机上生效的那条，直接取它即可。
+
+// ── 三个全局 keyframes ──
+// 注意：这三个动画被约 20 处内联 style 的 animation 属性按名字引用
+// （ChatView / DrillView / PronunciationDrill / ChatBubble / TranscriptModal / StudyManual）。
+// 名字改一个字母，对应动画就会静默失效 —— 不会报错，只是不动。
+// Web 版把它们放在 App.css，这边必须整体照搬。
+@keyframes su {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.12); }
+  50% { box-shadow: 0 0 0 12px rgba(0, 0, 0, 0); }
+}
+
+@keyframes dp {
+  0%, 80%, 100% { opacity: .3; transform: scale(.8); }
+  40% { opacity: 1; transform: scale(1.1); }
+}
+
+page {
+  box-sizing: border-box;
+  background: #FAFAF7;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  color: #1a1a1a;
+}
+
+view, text, image, button, input, textarea, scroll-view, navigator {
+  box-sizing: border-box;
+}
+
+// 菜单网格。Web 版有 @media(max-width:480px) 切成 1 列 —— 手机宽度下就是这条，
+// 所以直接固化成一列。
+.menu-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-link {
+  text-align: center;
+  margin-top: 48px;
+  font-size: 13px;
+  color: #aaa;
+}
+
+// WXSS 没有 :hover，按压态用 hover-class 表达（见 components/MenuItem.jsx）
+.footer-link-active {
+  color: #666;
+  text-decoration: underline;
+}
+
+// 内联 style 表达不了「长按/按压」这类伪类，凡是需要按压反馈的都落到这里
+.press-dim {
+  opacity: 0.7;
+}

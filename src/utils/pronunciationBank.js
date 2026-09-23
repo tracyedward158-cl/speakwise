@@ -37,13 +37,24 @@ export const ALL_TAGS = (() => {
 })();
 
 /**
- * 讯飞评测类型：word=字 / sent=句子 / para=段落。
- * 单字、词用 sent 评测会拿到失真的完整度与流利度（对一个字谈流利度没有意义），
- * 且 word 模式不返回 fluency/integrity/rhythm/speed —— 见 extractFeedback。
+ * 讯飞评测类型：word=单词 / sent=句子 / para=段落。
+ *
+ * ⚠️ word 模式**只接受 1 个词**。讯飞超限时的报错原文：
+ *      Exceed the maximum word limit: (1 for word; 400 for sentence; 1000 for paragraph)!
+ *    汉字按字计数，所以「措施」这种两字词在 word 模式下就是 2 个词，直接超限失败。
+ *    题库里 193 个「词」条目**没有一个是单字**（2 字 155 个、3 字 16 个、4 字 22 个），
+ *    因此「词」粒度必须走 sent —— 否则 100% 必失败，而且失败在**服务端返回之后**，
+ *    界面上的表现是「点了一直没有结果」。
+ *
+ *    代价：「词」现在也会拿到 fluency/integrity/rhythm/speed，对一个两字词谈流利度
+ *    语义上偏弱。但 sent 是讯飞唯一收得下两字词的模式，两害相权取其轻。
+ *    （当初把「词」也划给 word，本意是避开这几项失真的维度，但那样等于完全跑不通。）
+ *
+ * 只有单字走 word —— 那才是它真正适用的场景。
  */
 export function coreFor(unit) {
-  // 只在明确是字/词时才切 word：没有 unit 的题目（历史数据、异常输入）保持原来的 sent 行为
-  return (unit === "字" || unit === "词") ? "word" : "sent";
+  // 没有 unit 的题目（历史数据、异常输入）保持原来的 sent 行为
+  return unit === "字" ? "word" : "sent";
 }
 
 export function filterBank({ level, unit, tag, set = "train" } = {}) {

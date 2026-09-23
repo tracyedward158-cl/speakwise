@@ -92,8 +92,38 @@ ok('随机模式下一轮换 seed', nrRand.seed !== '1', JSON.stringify(nrRand))
 
 // ══════════════ 2. 评测响应解析 ══════════════
 eq('coreFor 字→word', coreFor('字'), 'word')
-eq('coreFor 词→word', coreFor('词'), 'word')
 eq('coreFor 句→sent', coreFor('句'), 'sent')
+// 「词」必须是 sent：讯飞 word 模式只收 1 个词（汉字按字计数）。
+// 这条曾经是 coreFor 的真 bug ——「词」被划给 word，而题库里 193 个词条目
+// 没有一个是单字，于是「词」粒度 100% 失败，且失败在服务端返回之后，
+// 界面上只表现为「点了一直没有结果」，极难定位。
+eq('coreFor 词→sent', coreFor('词'), 'sent')
+
+// para 模式**不返回逐字评分**（实测 words 为空数组），而逐字评分是发音测评的核心
+// 教学反馈 —— 跟读页那一整块「逐字评分 + 增读/漏读/错读」直接不渲染，而且是静默的。
+// 所以 coreFor 永远不该返回 'para'。这条断言防的是「好心优化」：
+// 看到文本长了就想换成段落模式，结果悄悄丢掉最有价值的反馈。
+{
+  const units = ['字', '词', '句', undefined, null, '']
+  const bad = units.filter((u) => coreFor(u) === 'para')
+  eq('coreFor 不返回 para（para 没有逐字评分）', bad.length, 0)
+}
+
+// 数据驱动的回归：题库里每一条题，走 coreFor 选出的模式都不能超词数上限。
+// 比单测 coreFor 更强 —— 它同时盯住「映射」和「题库数据」两边，任一边变坏都会红。
+const WORD_LIMITS = { word: 1, sent: 400, para: 1000 }
+const overLimit = PRON_BANK.filter((it) => {
+  const limit = WORD_LIMITS[coreFor(it.unit)]
+  return limit != null && it.text.length > limit
+})
+ok(
+  '题库里没有超出所选评测模式词数上限的题',
+  overLimit.length === 0,
+  overLimit.length
+    ? overLimit.length + ' 条超限，例：' +
+      overLimit.slice(0, 3).map((i) => i.unit + '「' + i.text + '」→ ' + coreFor(i.unit)).join('、')
+    : ''
+)
 
 const iseSample = {
   refText: '你好',

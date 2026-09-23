@@ -20,7 +20,7 @@ export function ChatTranscript({ messages, loading, error, onRetry, moduleName }
   if (loading) {
     return (
       <View style={{ padding: '40px 0', textAlign: 'center' }}>
-        <Text style={{ color: '#bbb', fontSize: 13 }}>正在加载对话…</Text>
+        <Text style={{ color: '#bbb', fontSize: 12 }}>正在加载对话…</Text>
       </View>
     )
   }
@@ -29,7 +29,7 @@ export function ChatTranscript({ messages, loading, error, onRetry, moduleName }
     return (
       <View style={{ padding: '40px 0', textAlign: 'center' }}>
         <View style={{ marginBottom: 12 }}>
-          <Text style={{ color: '#D4413A', fontSize: 13 }}>{error}</Text>
+          <Text style={{ color: '#D4413A', fontSize: 12 }}>{error}</Text>
         </View>
         {onRetry && (
           <View
@@ -51,7 +51,7 @@ export function ChatTranscript({ messages, loading, error, onRetry, moduleName }
   if (!messages || messages.length === 0) {
     return (
       <View style={{ padding: '40px 0', textAlign: 'center' }}>
-        <Text style={{ color: '#bbb', fontSize: 13 }}>这条记录没有对话内容</Text>
+        <Text style={{ color: '#bbb', fontSize: 12 }}>这条记录没有对话内容</Text>
       </View>
     )
   }

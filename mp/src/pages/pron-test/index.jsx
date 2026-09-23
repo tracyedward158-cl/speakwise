@@ -27,10 +27,10 @@ export default function PronunciationTest() {
     [hskLevel]
   )
 
-  if (!ready) return <View style={{ minHeight: '100vh', background: '#FAFAF7' }} />
+  if (!ready) return <View style={{ background: '#FAFAF7' }} />
 
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar
         title="测试模式"
         subtitle="Test Mode"
@@ -42,7 +42,7 @@ export default function PronunciationTest() {
       />
       <PageWrap>
         <View style={{ padding: '24px 0 40px' }}>
-          <Text style={{ fontSize: 13, color: '#bbb', display: 'block', marginBottom: 14 }}>选择试卷</Text>
+          <Text style={{ fontSize: 12, color: '#bbb', display: 'block', marginBottom: 14 }}>选择试卷</Text>
 
           <View style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 22 }}>
             {PLANS.map((p) => {
@@ -61,9 +61,9 @@ export default function PronunciationTest() {
                   }}
                 >
                   <View style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
-                    <Text style={{ fontSize: 26 }}>{p.icon}</Text>
+                    <Text style={{ fontSize: 22 }}>{p.icon}</Text>
                     <View style={{ flex: 1 }}>
-                      <Text style={{ fontSize: 17, fontWeight: 700, color: '#1a1a1a', display: 'block' }}>
+                      <Text style={{ fontSize: 15, fontWeight: 700, color: '#1a1a1a', display: 'block' }}>
                         {p.label}
                       </Text>
                       <Text style={{ fontSize: 12, color: '#aaa', display: 'block', marginTop: 2 }}>
@@ -71,7 +71,7 @@ export default function PronunciationTest() {
                       </Text>
                     </View>
                     <View style={{ textAlign: 'right' }}>
-                      <Text style={{ fontSize: 22, fontWeight: 700, color: COLOR, display: 'block' }}>
+                      <Text style={{ fontSize: 18, fontWeight: 700, color: COLOR, display: 'block' }}>
                         {total}
                       </Text>
                       <Text style={{ fontSize: 11, color: '#bbb' }}>题</Text>

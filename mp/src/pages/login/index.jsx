@@ -2,20 +2,22 @@ import { useState } from 'react'
 import { View, Text, Input } from '@tarojs/components'
 import { useAuth } from '../../context/AuthContext'
 import { ROUTES, replace } from '../../platform/nav'
+import { fieldProps } from '../../components/formStyles'
+import { useNavMetrics } from '../../hooks/useNavMetrics'
 
-const inputStyle = {
-  width: '100%',
-  padding: '12px 16px',
-  borderRadius: 10,
-  border: '1px solid #e0dcd0',
-  fontSize: 15,
-  background: '#fff'
-}
+// 尺寸走 class（见 app.scss 的 .sw-field）：原生 <input> 会无视内联的
+// height 和 padding，只认边框/圆角/宽度，结果文字被裁掉下半截。
+// 原因详见 components/formStyles.js。四个框完全一样，抽成一个常量。
+const inputProps = fieldProps()
 
-const labelStyle = { fontSize: 13, color: '#888', marginBottom: 6, fontWeight: 600 }
+const labelStyle = { fontSize: 12, color: '#888', marginBottom: 6, fontWeight: 600 }
 
 export default function Login() {
   const { login, register, enterGuest } = useAuth()
+  // 用运行时量到的真实高度，而不是 100vh —— 首帧 WebView 还不知道自己多高，
+  // 100vh 会先给一个错的值再纠正，而原生输入框的位置是按第一版（错的）布局算的，
+  // 之后不会自己跟上（表现就是「要交互一下文字才显示全」）。
+  const nav = useNavMetrics()
 
   const [tab, setTab] = useState('login') // login | register
   const [username, setUsername] = useState('')
@@ -60,7 +62,7 @@ export default function Login() {
   return (
     <View
       style={{
-        minHeight: '100vh',
+        height: nav.screenHeight,
         background: '#FAFAF7',
         display: 'flex',
         alignItems: 'center',
@@ -80,10 +82,10 @@ export default function Login() {
       >
         {/* ── 品牌 ── */}
         <View style={{ textAlign: 'center', marginBottom: 24 }}>
-          <Text style={{ fontSize: 40, display: 'block' }}>🐼</Text>
+          <Text style={{ fontSize: 34, display: 'block' }}>🐼</Text>
           <Text
             style={{
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: 700,
               color: '#D4413A',
               display: 'block',
@@ -117,7 +119,7 @@ export default function Login() {
                 boxShadow: tab === t.id ? '0 2px 6px rgba(0,0,0,0.06)' : 'none'
               }}
             >
-              <Text style={{ fontSize: 14, fontWeight: 600, color: tab === t.id ? '#D4413A' : '#888' }}>
+              <Text style={{ fontSize: 13, fontWeight: 600, color: tab === t.id ? '#D4413A' : '#888' }}>
                 {t.label}
               </Text>
             </View>
@@ -129,8 +131,8 @@ export default function Login() {
           {tab === 'register' && (
             <View>
               <Text style={{ ...labelStyle, display: 'block' }}>昵称（可选）</Text>
-              <Input
-                style={inputStyle}
+              <Input alwaysEmbed
+                {...inputProps}
                 value={nickname}
                 maxlength={24}
                 placeholder="怎么称呼你？"
@@ -141,8 +143,8 @@ export default function Login() {
 
           <View>
             <Text style={{ ...labelStyle, display: 'block' }}>用户名</Text>
-            <Input
-              style={inputStyle}
+            <Input alwaysEmbed
+              {...inputProps}
               value={username}
               placeholder={tab === 'login' ? '请输入用户名' : '3-32 位字母、数字或下划线'}
               onInput={(e) => setUsername(e.detail.value)}
@@ -151,8 +153,8 @@ export default function Login() {
 
           <View>
             <Text style={{ ...labelStyle, display: 'block' }}>密码</Text>
-            <Input
-              style={inputStyle}
+            <Input alwaysEmbed
+              {...inputProps}
               password
               value={password}
               placeholder={tab === 'login' ? '请输入密码' : '至少 6 位'}
@@ -183,7 +185,7 @@ export default function Login() {
                       }}
                     >
                       <Text
-                        style={{ fontSize: 14, fontWeight: 600, color: role === r.id ? '#D4413A' : '#888' }}
+                        style={{ fontSize: 13, fontWeight: 600, color: role === r.id ? '#D4413A' : '#888' }}
                       >
                         {r.label}
                       </Text>
@@ -195,8 +197,8 @@ export default function Login() {
               {role === 'student' && (
                 <View>
                   <Text style={{ ...labelStyle, display: 'block' }}>班级码（可选，教师提供）</Text>
-                  <Input
-                    style={inputStyle}
+                  <Input alwaysEmbed
+                    {...inputProps}
                     value={classCode}
                     maxlength={6}
                     placeholder="例如 AB3CD5"
@@ -224,7 +226,7 @@ export default function Login() {
                 padding: '10px 14px'
               }}
             >
-              <Text style={{ fontSize: 13, color: '#D4413A' }}>{error}</Text>
+              <Text style={{ fontSize: 12, color: '#D4413A' }}>{error}</Text>
             </View>
           ) : null}
 
@@ -239,7 +241,7 @@ export default function Login() {
               justifyContent: 'center'
             }}
           >
-            <Text style={{ color: '#fff', fontSize: 16, fontWeight: 700 }}>
+            <Text style={{ color: '#fff', fontSize: 15, fontWeight: 700 }}>
               {busy ? '请稍候…' : tab === 'login' ? '登录' : '注册并开始'}
             </Text>
           </View>
@@ -250,7 +252,7 @@ export default function Login() {
           onClick={handleGuest}
           style={{ marginTop: 16, display: 'flex', justifyContent: 'center' }}
         >
-          <Text style={{ color: '#bbb', fontSize: 13, textDecoration: 'underline' }}>
+          <Text style={{ color: '#bbb', fontSize: 12, textDecoration: 'underline' }}>
             先逛逛 · 游客体验（数据仅保存在本机）
           </Text>
         </View>

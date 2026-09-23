@@ -13,7 +13,7 @@ function Chip({ label, value, unit, sub, color, bg }) {
   return (
     <View style={{ background: bg, borderRadius: 12, padding: '8px 14px', minWidth: 86 }}>
       <Text style={{ fontSize: 10, color: '#aaa', display: 'block', marginBottom: 2 }}>{label}</Text>
-      <Text style={{ fontSize: 18, fontWeight: 700, color, lineHeight: 1.15 }}>
+      <Text style={{ fontSize: 16, fontWeight: 700, color, lineHeight: 1.15 }}>
         {value}
         {unit ? <Text style={{ fontSize: 10, fontWeight: 400, marginLeft: 2 }}>{unit}</Text> : null}
       </Text>
@@ -144,11 +144,11 @@ export function TranscriptModal({ record, messages, loading, error, onRetry, onC
               justifyContent: 'center'
             }}
           >
-            <Text style={{ fontSize: 18 }}>{meta.icon}</Text>
+            <Text style={{ fontSize: 16 }}>{meta.icon}</Text>
           </View>
 
           <View style={{ flex: 1, minWidth: 0 }}>
-            <Text style={{ fontSize: 15, fontWeight: 700, color: '#333', display: 'block' }}>
+            <Text style={{ fontSize: 14, fontWeight: 700, color: '#333', display: 'block' }}>
               {record.scenario || record.module}
               {record.nickname ? ` · ${record.nickname}` : ''}
             </Text>
@@ -175,7 +175,7 @@ export function TranscriptModal({ record, messages, loading, error, onRetry, onC
           )}
 
           <View onClick={onClose} style={{ padding: '0 4px', flexShrink: 0 }}>
-            <Text style={{ fontSize: 20, color: '#bbb', lineHeight: 1 }}>×</Text>
+            <Text style={{ fontSize: 17, color: '#bbb', lineHeight: 1 }}>×</Text>
           </View>
         </View>
 
@@ -206,7 +206,7 @@ export function TranscriptModal({ record, messages, loading, error, onRetry, onC
           {record.suggestion ? (
             <View style={{ marginTop: 14 }}>
               <Text style={{ fontSize: 11, color: '#bbb', display: 'block', marginBottom: 6 }}>教学建议</Text>
-              <Text style={{ fontSize: 13, color: '#666', lineHeight: 1.7 }}>{record.suggestion}</Text>
+              <Text style={{ fontSize: 12, color: '#666', lineHeight: 1.7 }}>{record.suggestion}</Text>
             </View>
           ) : null}
         </ScrollView>

@@ -45,14 +45,14 @@ function UserBar({ onLogout }) {
           justifyContent: 'center'
         }}
       >
-        <Text style={{ fontSize: 17, color: '#fff', fontWeight: 700 }}>
+        <Text style={{ fontSize: 15, color: '#fff', fontWeight: 700 }}>
           {user ? (user.nickname || user.username)[0] : '🙂'}
         </Text>
       </View>
 
       <View style={{ flex: 1, minWidth: 0 }}>
         <View style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-          <Text style={{ fontSize: 15, fontWeight: 700, color: '#1a1a1a' }}>
+          <Text style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a' }}>
             {user ? user.nickname || user.username : '游客模式'}
           </Text>
           {user && (
@@ -98,20 +98,35 @@ function UserBar({ onLogout }) {
         <>
           <View
             onClick={() => go(ROUTES.userCenter)}
-            style={{ border: '1px solid #e0dcd0', borderRadius: 8, padding: '6px 12px' }}
+            style={{
+              flexShrink: 0,
+              border: '1px solid #e0dcd0',
+              borderRadius: 8,
+              padding: '6px 12px'
+            }}
           >
-            <Text style={{ fontSize: 12, color: '#888' }}>👤 用户中心</Text>
+            <Text style={{ fontSize: 12, color: '#888', whiteSpace: 'nowrap' }}>👤 用户中心</Text>
           </View>
           <View
             onClick={onLogout}
-            style={{ border: '1px solid #e0dcd0', borderRadius: 8, padding: '6px 12px' }}
+            style={{
+              flexShrink: 0,
+              border: '1px solid #e0dcd0',
+              borderRadius: 8,
+              padding: '6px 12px'
+            }}
           >
-            <Text style={{ fontSize: 12, color: '#888' }}>退出登录</Text>
+            <Text style={{ fontSize: 12, color: '#888', whiteSpace: 'nowrap' }}>退出登录</Text>
           </View>
         </>
       ) : (
-        <View onClick={() => go(ROUTES.login)} style={{ background: '#D4413A', borderRadius: 8, padding: '6px 14px' }}>
-          <Text style={{ fontSize: 12, color: '#fff', fontWeight: 600 }}>登录 / 注册</Text>
+        <View
+          onClick={() => go(ROUTES.login)}
+          style={{ flexShrink: 0, background: '#D4413A', borderRadius: 8, padding: '6px 14px' }}
+        >
+          <Text style={{ fontSize: 12, color: '#fff', fontWeight: 600, whiteSpace: 'nowrap' }}>
+            登录 / 注册
+          </Text>
         </View>
       )}
     </View>
@@ -143,7 +158,7 @@ function TeacherHome({ onOpenAbout }) {
   }
 
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar title="SpeakWise 教师端" subtitle="班级管理" onBack={null} />
       <PageWrap>
         <View style={{ padding: '40px 0' }}>
@@ -157,12 +172,12 @@ function TeacherHome({ onOpenAbout }) {
               marginBottom: 20
             }}
           >
-            <Text style={{ fontSize: 13, opacity: 0.85, display: 'block', marginBottom: 10 }}>
+            <Text style={{ fontSize: 12, opacity: 0.85, display: 'block', marginBottom: 10 }}>
               我的班级 · 班级码
             </Text>
             <Text
               style={{
-                fontSize: 34,
+                fontSize: 29,
                 fontWeight: 800,
                 letterSpacing: 8,
                 textAlign: 'center',
@@ -203,16 +218,16 @@ function TeacherHome({ onOpenAbout }) {
                 padding: '20px 22px'
               }}
             >
-              <Text style={{ fontSize: 13, color: '#aaa' }}>
+              <Text style={{ fontSize: 12, color: '#aaa' }}>
                 学情概览面板正在迁移中，本版本暂未开放。班级码与成员管理不受影响。
               </Text>
             </View>
           )}
 
           <View onClick={onOpenAbout} className="footer-link" style={{ marginTop: 32 }}>
-            <Text style={{ fontSize: 13, color: '#aaa' }}>关于 SpeakWise SRTP 项目</Text>
+            <Text style={{ fontSize: 12, color: '#aaa' }}>关于 SpeakWise SRTP 项目</Text>
           </View>
-          <Text style={{ textAlign: 'center', display: 'block', marginTop: 8, fontSize: 13, color: '#aaa' }}>
+          <Text style={{ textAlign: 'center', display: 'block', marginTop: 8, fontSize: 12, color: '#aaa' }}>
             受国家级/江苏省大学生创新训练计划支持
           </Text>
         </View>
@@ -252,7 +267,7 @@ function StudentHome({ onOpenAbout }) {
   }, [user?.id])
 
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar title="SpeakWise 主菜单" hskLevel={hskLevel} onChangeHSK={onChangeHSK} onBack={null} />
       <PageWrap>
         <View style={{ padding: '40px 0' }}>
@@ -271,7 +286,7 @@ function StudentHome({ onOpenAbout }) {
                   gap: 10
                 }}
               >
-                <Text style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>
+                <Text style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>
                   🎯 我的任务
                   <Text style={{ fontSize: 11, opacity: 0.8, fontWeight: 400 }}> 老师发布的练习任务 · 完成自动更新</Text>
                 </Text>
@@ -399,9 +414,9 @@ function StudentHome({ onOpenAbout }) {
           </View>
 
           <View onClick={onOpenAbout} className="footer-link">
-            <Text style={{ fontSize: 13, color: '#aaa' }}>关于 SpeakWise SRTP 项目</Text>
+            <Text style={{ fontSize: 12, color: '#aaa' }}>关于 SpeakWise SRTP 项目</Text>
           </View>
-          <Text style={{ textAlign: 'center', display: 'block', marginTop: 8, fontSize: 13, color: '#aaa' }}>
+          <Text style={{ textAlign: 'center', display: 'block', marginTop: 8, fontSize: 12, color: '#aaa' }}>
             受国家级/江苏省大学生创新训练计划支持
           </Text>
           <Text
@@ -418,7 +433,7 @@ function StudentHome({ onOpenAbout }) {
           </Text>
           {guest && FEATURES.teacher && (
             <View onClick={() => go(ROUTES.teacher)} style={{ marginTop: 24, display: 'flex', justifyContent: 'center' }}>
-              <Text style={{ fontSize: 13, color: '#bbb' }}>教师支持端 · 学情概览</Text>
+              <Text style={{ fontSize: 12, color: '#bbb' }}>教师支持端 · 学情概览</Text>
             </View>
           )}
 
@@ -450,7 +465,7 @@ export default function MainMenu() {
     setShowOnboarding(true)
   }
 
-  if (!ready) return <View style={{ minHeight: '100vh', background: '#FAFAF7' }} />
+  if (!ready) return <View style={{ background: '#FAFAF7' }} />
 
   return (
     <>

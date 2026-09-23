@@ -172,7 +172,7 @@ export function PronunciationDrill({
       ? Math.round(validScores.reduce((a, b) => a + b, 0) / validScores.length)
       : 0
     return (
-      <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+      <View style={{ background: '#FAFAF7' }}>
         <TopBar
           title={title}
           subtitle="Results"
@@ -185,12 +185,12 @@ export function PronunciationDrill({
         <PageWrap>
           <View style={{ padding: '32px 0', textAlign: 'center', animation: 'su 0.4s both' }}>
             <Text
-              style={{ fontSize: 48, fontWeight: 700, color, display: 'block', marginTop: 12 }}
+              style={{ fontSize: 40, fontWeight: 700, color, display: 'block', marginTop: 12 }}
             >
               {avg}
-              <Text style={{ fontSize: 20, color: '#999' }}>/100</Text>
+              <Text style={{ fontSize: 17, color: '#999' }}>/100</Text>
             </Text>
-            <Text style={{ fontSize: 15, color: '#888', display: 'block', marginBottom: 28 }}>
+            <Text style={{ fontSize: 14, color: '#888', display: 'block', marginBottom: 28 }}>
               Average across {validScores.length} questions
             </Text>
 
@@ -214,10 +214,10 @@ export function PronunciationDrill({
                     alignItems: 'center'
                   }}
                 >
-                  <Text style={{ fontSize: 14, color: '#666' }}>
+                  <Text style={{ fontSize: 13, color: '#666' }}>
                     Q{i + 1}. {(bank[i]?.text || '').slice(0, 15)}…
                   </Text>
-                  <Text style={{ fontSize: 15, fontWeight: 600, color: scoreColor(s) }}>
+                  <Text style={{ fontSize: 14, fontWeight: 600, color: scoreColor(s) }}>
                     {s > 0 ? s : '—'}
                   </Text>
                 </View>
@@ -230,7 +230,7 @@ export function PronunciationDrill({
               <View
                 onClick={onNextRound}
                 style={{
-                  padding: 16,
+                  padding: 13,
                   borderRadius: 12,
                   background: color,
                   display: 'flex',
@@ -238,7 +238,7 @@ export function PronunciationDrill({
                   marginBottom: 10
                 }}
               >
-                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 600 }}>下一轮 →</Text>
+                <Text style={{ color: '#fff', fontSize: 15, fontWeight: 600 }}>下一轮 →</Text>
               </View>
             )}
 
@@ -247,14 +247,14 @@ export function PronunciationDrill({
                 onClick={restart}
                 style={{
                   flex: 1,
-                  padding: 16,
+                  padding: 13,
                   borderRadius: 12,
                   border: onNextRound ? '1px solid #e8e6de' : `1.5px solid ${color}`,
                   display: 'flex',
                   justifyContent: 'center'
                 }}
               >
-                <Text style={{ fontSize: 16, fontWeight: 600, color: onNextRound ? '#888' : color }}>
+                <Text style={{ fontSize: 15, fontWeight: 600, color: onNextRound ? '#888' : color }}>
                   {isCustom ? '修改文本' : '再练一遍'}
                 </Text>
               </View>
@@ -262,14 +262,14 @@ export function PronunciationDrill({
                 onClick={onBack}
                 style={{
                   flex: 1,
-                  padding: 16,
+                  padding: 13,
                   borderRadius: 12,
                   background: onNextRound ? '#F5F0FA' : color,
                   display: 'flex',
                   justifyContent: 'center'
                 }}
               >
-                <Text style={{ fontSize: 16, fontWeight: 600, color: onNextRound ? color : '#fff' }}>
+                <Text style={{ fontSize: 15, fontWeight: 600, color: onNextRound ? color : '#fff' }}>
                   返回
                 </Text>
               </View>
@@ -282,7 +282,7 @@ export function PronunciationDrill({
 
   // ── Active drill view ──
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar
         title={title}
         subtitle={subtitle}
@@ -293,7 +293,7 @@ export function PronunciationDrill({
         onChangeMode={onChangeMode}
       />
       <PageWrap>
-        <View style={{ padding: '20px 0 140px' }}>
+        <View style={{ padding: '20px 0 130px' }}>
           {/* ── Progress bar ── */}
           <View style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
             <View style={{ flex: 1, height: 6, background: '#ebe9e1', borderRadius: 3, overflow: 'hidden' }}>
@@ -307,7 +307,7 @@ export function PronunciationDrill({
                 }}
               />
             </View>
-            <Text style={{ fontSize: 13, color: '#999', fontWeight: 600 }}>
+            <Text style={{ fontSize: 12, color: '#999', fontWeight: 600 }}>
               {idx + 1}/{total}
             </Text>
           </View>
@@ -349,7 +349,7 @@ export function PronunciationDrill({
 
             <Text
               style={{
-                fontSize: q.unit === '句' ? 26 : 40,
+                fontSize: q.unit === '句' ? 22 : 34,
                 fontWeight: 700,
                 color: '#1a1a1a',
                 display: 'block',
@@ -360,10 +360,10 @@ export function PronunciationDrill({
               {q.text}
             </Text>
             {(mode === 'HPE' || mode === 'HP') && q.pinyin ? (
-              <Text style={{ fontSize: 15, color, display: 'block', marginBottom: 4 }}>{q.pinyin}</Text>
+              <Text style={{ fontSize: 14, color, display: 'block', marginBottom: 4 }}>{q.pinyin}</Text>
             ) : null}
             {(mode === 'HPE' || mode === 'HE') && q.english ? (
-              <Text style={{ fontSize: 14, color: '#999', display: 'block' }}>{q.english}</Text>
+              <Text style={{ fontSize: 13, color: '#999', display: 'block' }}>{q.english}</Text>
             ) : null}
 
             {/* 难点标签：让「专项练习」的针对性可见 */}
@@ -400,7 +400,7 @@ export function PronunciationDrill({
                   gap: 6
                 }}
               >
-                <Text style={{ fontSize: 13, color }}>{speaking ? '⏹ 停止' : '🔊 播放'}</Text>
+                <Text style={{ fontSize: 12, color }}>{speaking ? '⏹ 停止' : '🔊 播放'}</Text>
               </View>
               <View
                 onClick={() => speak(q.text, true)}
@@ -412,7 +412,7 @@ export function PronunciationDrill({
                   padding: '8px 14px'
                 }}
               >
-                <Text style={{ fontSize: 13, color }}>慢速</Text>
+                <Text style={{ fontSize: 12, color }}>慢速</Text>
               </View>
             </View>
           </View>
@@ -431,12 +431,12 @@ export function PronunciationDrill({
                   textAlign: 'center'
                 }}
               >
-                <Text style={{ fontSize: 13, color: '#999', display: 'block', marginBottom: 8 }}>
+                <Text style={{ fontSize: 12, color: '#999', display: 'block', marginBottom: 8 }}>
                   综合评分
                 </Text>
                 <Text
                   style={{
-                    fontSize: 52,
+                    fontSize: 44,
                     fontWeight: 700,
                     color: scoreColor(feedback.overall),
                     lineHeight: 1
@@ -444,7 +444,7 @@ export function PronunciationDrill({
                 >
                   {feedback.overall}
                 </Text>
-                <Text style={{ fontSize: 14, color: '#bbb', display: 'block', marginTop: 4 }}>/ 100</Text>
+                <Text style={{ fontSize: 13, color: '#bbb', display: 'block', marginTop: 4 }}>/ 100</Text>
               </View>
 
               {/* Dimension scores —— 只渲染有值的格：word 模式（字/词）没有
@@ -455,7 +455,10 @@ export function PronunciationDrill({
                   <View
                     key={d.label}
                     style={{
-                      width: '31.5%',
+                      // 用 calc 而不是 31.5%：三列加上两个 10px 间隙是 3×31.5%+20px，
+                      // 在 375pt 屏上已经超出容器宽度，第三格会被挤到下一行；
+                      // 320pt 的小屏更明显。calc 是精确的，换屏幕也不会错。
+                      width: 'calc((100% - 20px) / 3)',
                       background: '#fff',
                       borderRadius: 12,
                       border: '1px solid #f0efe8',
@@ -469,8 +472,8 @@ export function PronunciationDrill({
                     <Text
                       style={
                         d.raw
-                          ? { fontSize: 14, fontWeight: 600, color: '#666' }
-                          : { fontSize: 22, fontWeight: 700, color: scoreColor(d.value) }
+                          ? { fontSize: 13, fontWeight: 600, color: '#666' }
+                          : { fontSize: 18, fontWeight: 700, color: scoreColor(d.value) }
                       }
                     >
                       {d.value}
@@ -490,7 +493,7 @@ export function PronunciationDrill({
                     marginBottom: 16
                   }}
                 >
-                  <Text style={{ fontSize: 13, fontWeight: 600, color: '#888', display: 'block', marginBottom: 14 }}>
+                  <Text style={{ fontSize: 12, fontWeight: 600, color: '#888', display: 'block', marginBottom: 14 }}>
                     逐字评分
                   </Text>
                   <View style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -514,11 +517,11 @@ export function PronunciationDrill({
                               border: `1px solid ${scoreColor(ws)}20`
                             }}
                           >
-                            <Text style={{ fontSize: 20, fontWeight: 700, color: '#1a1a1a' }}>{w.word}</Text>
+                            <Text style={{ fontSize: 17, fontWeight: 700, color: '#1a1a1a' }}>{w.word}</Text>
                             {(mode === 'HPE' || mode === 'HP') && w.pinyin ? (
                               <Text style={{ fontSize: 11, color: '#999' }}>{w.pinyin}</Text>
                             ) : null}
-                            <Text style={{ fontSize: 15, fontWeight: 600, color: scoreColor(ws) }}>{ws}</Text>
+                            <Text style={{ fontSize: 14, fontWeight: 600, color: scoreColor(ws) }}>{ws}</Text>
                             {readLabel ? (
                               <Text style={{ fontSize: 10, color: '#D4413A' }}>{readLabel}</Text>
                             ) : null}
@@ -550,7 +553,7 @@ export function PronunciationDrill({
                   }}
                 >
                   {feedback.warning.map((w, i) => (
-                    <Text key={i} style={{ fontSize: 13, color: '#E8A838', display: 'block' }}>
+                    <Text key={i} style={{ fontSize: 12, color: '#E8A838', display: 'block' }}>
                       {w.message === 'Audio noisy!' ? '检测到环境噪音，建议在安静环境中录音' : w.message}
                     </Text>
                   ))}
@@ -583,12 +586,12 @@ export function PronunciationDrill({
                   参考发音
                 </Text>
                 <View style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <Text style={{ fontSize: 16, color: '#1a1a1a', lineHeight: 1.7 }}>{q.text}</Text>
+                  <Text style={{ fontSize: 15, color: '#1a1a1a', lineHeight: 1.7 }}>{q.text}</Text>
                   {(mode === 'HPE' || mode === 'HP') && q.pinyin ? (
-                    <Text style={{ fontSize: 14, color: '#888' }}>{q.pinyin}</Text>
+                    <Text style={{ fontSize: 13, color: '#888' }}>{q.pinyin}</Text>
                   ) : null}
                   {(mode === 'HPE' || mode === 'HE') && q.english ? (
-                    <Text style={{ fontSize: 13, color: '#aaa' }}>{q.english}</Text>
+                    <Text style={{ fontSize: 12, color: '#aaa' }}>{q.english}</Text>
                   ) : null}
                 </View>
               </View>
@@ -598,27 +601,27 @@ export function PronunciationDrill({
                   onClick={retry}
                   style={{
                     flex: 1,
-                    padding: 16,
+                    padding: 13,
                     borderRadius: 12,
                     border: `1.5px solid ${color}`,
                     display: 'flex',
                     justifyContent: 'center'
                   }}
                 >
-                  <Text style={{ fontSize: 16, fontWeight: 600, color }}>再练一次</Text>
+                  <Text style={{ fontSize: 15, fontWeight: 600, color }}>再练一次</Text>
                 </View>
                 <View
                   onClick={next}
                   style={{
                     flex: 1,
-                    padding: 16,
+                    padding: 13,
                     borderRadius: 12,
                     background: color,
                     display: 'flex',
                     justifyContent: 'center'
                   }}
                 >
-                  <Text style={{ fontSize: 16, fontWeight: 600, color: '#fff' }}>
+                  <Text style={{ fontSize: 15, fontWeight: 600, color: '#fff' }}>
                     {idx + 1 >= total ? '看结果 →' : '下一题 →'}
                   </Text>
                 </View>
@@ -640,19 +643,19 @@ export function PronunciationDrill({
                   textAlign: 'center'
                 }}
               >
-                <Text style={{ fontSize: 15, color: '#D4413A' }}>{feedback.text}</Text>
+                <Text style={{ fontSize: 14, color: '#D4413A' }}>{feedback.text}</Text>
               </View>
               <View
                 onClick={next}
                 style={{
-                  padding: 16,
+                  padding: 13,
                   borderRadius: 12,
                   background: color,
                   display: 'flex',
                   justifyContent: 'center'
                 }}
               >
-                <Text style={{ fontSize: 16, fontWeight: 600, color: '#fff' }}>
+                <Text style={{ fontSize: 15, fontWeight: 600, color: '#fff' }}>
                   {idx + 1 >= total ? '看结果 →' : '下一题 →'}
                 </Text>
               </View>
@@ -676,7 +679,7 @@ export function PronunciationDrill({
                   />
                 ))}
               </View>
-              <Text style={{ fontSize: 13, color: '#999', marginTop: 8 }}>评测中...</Text>
+              <Text style={{ fontSize: 12, color: '#999', marginTop: 8 }}>评测中...</Text>
             </View>
           )}
         </View>
@@ -690,8 +693,8 @@ export function PronunciationDrill({
             bottom: 0,
             left: 0,
             right: 0,
-            padding: '14px 20px',
-            paddingBottom: 'calc(14px + env(safe-area-inset-bottom))',
+            padding: '12px 20px',
+            paddingBottom: 'calc(12px + env(safe-area-inset-bottom))',
             background: '#fff',
             borderTop: '1px solid #f0efe8',
             display: 'flex',
@@ -702,8 +705,8 @@ export function PronunciationDrill({
             <View
               onClick={handleMic}
               style={{
-                padding: 16,
-                borderRadius: 28,
+                padding: 13,
+                borderRadius: 24,
                 border: `2px solid ${color}`,
                 background: recording ? color : 'transparent',
                 animation: recording ? 'pulse 1.5s infinite' : 'none',
@@ -713,8 +716,8 @@ export function PronunciationDrill({
                 gap: 8
               }}
             >
-              <Text style={{ fontSize: 18 }}>{recording ? '⏹' : '🎤'}</Text>
-              <Text style={{ fontSize: 16, fontWeight: 600, color: recording ? '#fff' : color }}>
+              <Text style={{ fontSize: 16 }}>{recording ? '⏹' : '🎤'}</Text>
+              <Text style={{ fontSize: 15, fontWeight: 600, color: recording ? '#fff' : color }}>
                 {recording ? '点击停止评测' : '点击开始录音'}
               </Text>
             </View>

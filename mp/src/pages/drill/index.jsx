@@ -19,6 +19,7 @@ import {
 } from '../../core/utils/pronunciationBank'
 import { useGuard } from '../../hooks/useGuard'
 import { ROUTES, back, go, replace, stableParamsKey } from '../../platform/nav'
+import { fieldProps, areaProps } from '../../components/formStyles'
 
 // ── 自定义练习：学生自己输入的文本 ──
 const MAX_CUSTOM_CHARS = 500 // 输入上限：够读一小段课文，又不至于一次录几分钟音
@@ -220,7 +221,7 @@ export default function DrillView() {
     [beginDrill]
   )
 
-  if (!ready) return <View style={{ minHeight: '100vh', background: '#FAFAF7' }} />
+  if (!ready) return <View style={{ background: '#FAFAF7' }} />
 
   // ── Custom mode: 输入文本（还没开始测评）──
   if (isCustom && !customBank) {
@@ -229,7 +230,7 @@ export default function DrillView() {
     const canStart = preview.length > 0 && !enriching
 
     return (
-      <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+      <View style={{ background: '#FAFAF7' }}>
         <TopBar
           title={pageTitle}
           subtitle={pageSubtitle}
@@ -263,24 +264,14 @@ export default function DrillView() {
               >
                 Enter your text
               </Text>
-              <Textarea
+              <Textarea alwaysEmbed
                 value={customText}
                 // 生成期间锁住：练习用的是点击那一刻的文本，中途改了会和界面对不上
                 disabled={enriching}
                 onInput={(e) => setCustomText(String(e.detail.value).slice(0, MAX_CUSTOM_CHARS))}
                 placeholder="输入或粘贴你想练习的文本，比如课文段落、演讲稿、常用句子…"
                 maxlength={-1}
-                style={{
-                  width: '100%',
-                  height: 180,
-                  padding: '14px 16px',
-                  borderRadius: 12,
-                  border: '1px solid #e8e6de',
-                  background: '#FAFAF7',
-                  fontSize: 17,
-                  lineHeight: 1.8,
-                  color: '#1a1a1a'
-                }}
+                {...areaProps({ height: 180, color: '#1a1a1a' })}
               />
               <View
                 style={{
@@ -325,7 +316,7 @@ export default function DrillView() {
                 </Text>
                 <View style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                   {preview.slice(0, 8).map((item, i) => (
-                    <Text key={i} style={{ fontSize: 14, color: '#666', lineHeight: 1.6 }}>
+                    <Text key={i} style={{ fontSize: 13, color: '#666', lineHeight: 1.6 }}>
                       {i + 1}. {item.text}
                     </Text>
                   ))}
@@ -347,14 +338,14 @@ export default function DrillView() {
                   marginBottom: 12
                 }}
               >
-                <Text style={{ fontSize: 13, color: '#B07A20', lineHeight: 1.7 }}>{enrichError}</Text>
+                <Text style={{ fontSize: 12, color: '#B07A20', lineHeight: 1.7 }}>{enrichError}</Text>
               </View>
             )}
 
             <View
               onClick={() => canStart && startCustomDrill(preview)}
               style={{
-                padding: 16,
+                padding: 13,
                 borderRadius: 12,
                 background: canStart ? color : '#e8e6de',
                 display: 'flex',
@@ -379,7 +370,7 @@ export default function DrillView() {
                   ))}
                 </View>
               )}
-              <Text style={{ fontSize: 16, fontWeight: 600, color: canStart ? '#fff' : '#aaa' }}>
+              <Text style={{ fontSize: 15, fontWeight: 600, color: canStart ? '#fff' : '#aaa' }}>
                 {enriching ? '正在生成拼音和英文…' : '开始测评 →'}
               </Text>
             </View>
@@ -396,7 +387,7 @@ export default function DrillView() {
                   justifyContent: 'center'
                 }}
               >
-                <Text style={{ fontSize: 15, fontWeight: 600, color }}>跳过，直接开始练习</Text>
+                <Text style={{ fontSize: 14, fontWeight: 600, color }}>跳过，直接开始练习</Text>
               </View>
             )}
 
@@ -421,7 +412,7 @@ export default function DrillView() {
   // ── 练习模式选不出题（手改参数或题库变动导致）：给出明确出口，不要渲染空题崩溃 ──
   if (isPractice && bank.length === 0) {
     return (
-      <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+      <View style={{ background: '#FAFAF7' }}>
         <TopBar
           title={pageTitle}
           subtitle={pageSubtitle}
@@ -433,11 +424,11 @@ export default function DrillView() {
         />
         <PageWrap>
           <View style={{ padding: '60px 0', textAlign: 'center', animation: 'su 0.4s both' }}>
-            <Text style={{ fontSize: 40, display: 'block', marginBottom: 12 }}>🗂️</Text>
-            <Text style={{ fontSize: 16, color: '#666', display: 'block', marginBottom: 6 }}>
+            <Text style={{ fontSize: 34, display: 'block', marginBottom: 12 }}>🗂️</Text>
+            <Text style={{ fontSize: 15, color: '#666', display: 'block', marginBottom: 6 }}>
               这个组合下暂时没有题目
             </Text>
-            <Text style={{ fontSize: 13, color: '#bbb', display: 'block', marginBottom: 24, lineHeight: 1.7 }}>
+            <Text style={{ fontSize: 12, color: '#bbb', display: 'block', marginBottom: 24, lineHeight: 1.7 }}>
               换一个粒度或专项再试
             </Text>
             <View
@@ -449,7 +440,7 @@ export default function DrillView() {
                 display: 'inline-flex'
               }}
             >
-              <Text style={{ color: '#fff', fontSize: 15, fontWeight: 600 }}>返回选择</Text>
+              <Text style={{ color: '#fff', fontSize: 14, fontWeight: 600 }}>返回选择</Text>
             </View>
           </View>
         </PageWrap>
@@ -484,7 +475,7 @@ export default function DrillView() {
       : 0
     const emoji = avg >= 90 ? '🤩' : avg >= 80 ? '😎' : avg >= 70 ? '😊' : avg >= 60 ? '🤔' : '😅'
     return (
-      <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+      <View style={{ background: '#FAFAF7' }}>
         <TopBar
           title={pageTitle}
           subtitle="Results"
@@ -496,12 +487,12 @@ export default function DrillView() {
         />
         <PageWrap>
           <View style={{ padding: '32px 0', textAlign: 'center', animation: 'su 0.4s both' }}>
-            <Text style={{ fontSize: 56, display: 'block', marginBottom: 12 }}>{emoji}</Text>
-            <Text style={{ fontSize: 48, fontWeight: 700, color, display: 'block', marginBottom: 4 }}>
+            <Text style={{ fontSize: 48, display: 'block', marginBottom: 12 }}>{emoji}</Text>
+            <Text style={{ fontSize: 40, fontWeight: 700, color, display: 'block', marginBottom: 4 }}>
               {avg}
-              <Text style={{ fontSize: 20, color: '#999' }}>/100</Text>
+              <Text style={{ fontSize: 17, color: '#999' }}>/100</Text>
             </Text>
-            <Text style={{ fontSize: 15, color: '#888', display: 'block', marginBottom: 28 }}>
+            <Text style={{ fontSize: 14, color: '#888', display: 'block', marginBottom: 28 }}>
               Average across {validScores.length} questions
             </Text>
 
@@ -525,10 +516,10 @@ export default function DrillView() {
                     alignItems: 'center'
                   }}
                 >
-                  <Text style={{ fontSize: 14, color: '#666' }}>
+                  <Text style={{ fontSize: 13, color: '#666' }}>
                     Q{i + 1}. {bank[i].word}
                   </Text>
-                  <Text style={{ fontSize: 15, fontWeight: 600, color: scoreColor(s) }}>
+                  <Text style={{ fontSize: 14, fontWeight: 600, color: scoreColor(s) }}>
                     {s > 0 ? s : '—'}
                   </Text>
                 </View>
@@ -540,27 +531,27 @@ export default function DrillView() {
                 onClick={restart}
                 style={{
                   flex: 1,
-                  padding: 16,
+                  padding: 13,
                   borderRadius: 12,
                   border: `1.5px solid ${color}`,
                   display: 'flex',
                   justifyContent: 'center'
                 }}
               >
-                <Text style={{ fontSize: 16, fontWeight: 600, color }}>Try again</Text>
+                <Text style={{ fontSize: 15, fontWeight: 600, color }}>Try again</Text>
               </View>
               <View
                 onClick={onBack}
                 style={{
                   flex: 1,
-                  padding: 16,
+                  padding: 13,
                   borderRadius: 12,
                   background: color,
                   display: 'flex',
                   justifyContent: 'center'
                 }}
               >
-                <Text style={{ fontSize: 16, fontWeight: 600, color: '#fff' }}>Back</Text>
+                <Text style={{ fontSize: 15, fontWeight: 600, color: '#fff' }}>Back</Text>
               </View>
             </View>
           </View>
@@ -571,7 +562,7 @@ export default function DrillView() {
 
   // ── Active drill view ──
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar
         title={pageTitle}
         subtitle={pageSubtitle}
@@ -582,7 +573,7 @@ export default function DrillView() {
         onChangeMode={onChangeMode}
       />
       <PageWrap>
-        <View style={{ padding: '20px 0 140px' }}>
+        <View style={{ padding: '20px 0 130px' }}>
           {/* ── Progress bar ── */}
           <View style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
             <View style={{ flex: 1, height: 6, background: '#ebe9e1', borderRadius: 3, overflow: 'hidden' }}>
@@ -596,7 +587,7 @@ export default function DrillView() {
                 }}
               />
             </View>
-            <Text style={{ fontSize: 13, color: '#999', fontWeight: 600 }}>
+            <Text style={{ fontSize: 12, color: '#999', fontWeight: 600 }}>
               {idx + 1}/{total}
             </Text>
           </View>
@@ -624,16 +615,16 @@ export default function DrillView() {
             >
               Use this word to make a sentence
             </Text>
-            <Text style={{ fontSize: 30, fontWeight: 700, color: '#1a1a1a', display: 'block', marginBottom: 8 }}>
+            <Text style={{ fontSize: 26, fontWeight: 700, color: '#1a1a1a', display: 'block', marginBottom: 8 }}>
               {q.word}
             </Text>
             {(mode === 'HPE' || mode === 'HP') && q.pinyin ? (
-              <Text style={{ fontSize: 15, color, display: 'block', marginBottom: 4 }}>{q.pinyin}</Text>
+              <Text style={{ fontSize: 14, color, display: 'block', marginBottom: 4 }}>{q.pinyin}</Text>
             ) : null}
             {(mode === 'HPE' || mode === 'HE') && q.meaning ? (
-              <Text style={{ fontSize: 14, color: '#999', display: 'block' }}>{q.meaning}</Text>
+              <Text style={{ fontSize: 13, color: '#999', display: 'block' }}>{q.meaning}</Text>
             ) : null}
-            <Text style={{ fontSize: 13, color: '#bbb', fontStyle: 'italic', display: 'block', marginTop: 8 }}>
+            <Text style={{ fontSize: 12, color: '#bbb', fontStyle: 'italic', display: 'block', marginTop: 8 }}>
               Hint: {q.hint}
             </Text>
           </View>
@@ -659,7 +650,7 @@ export default function DrillView() {
                     marginBottom: 12
                   }}
                 >
-                  <Text style={{ fontSize: 14, fontWeight: 600, color: '#888' }}>AI feedback</Text>
+                  <Text style={{ fontSize: 13, fontWeight: 600, color: '#888' }}>AI feedback</Text>
                   <View
                     style={{
                       background: scoreBg(feedback.score),
@@ -668,18 +659,18 @@ export default function DrillView() {
                     }}
                   >
                     <Text
-                      style={{ fontSize: 17, fontWeight: 700, color: scoreColor(feedback.score) }}
+                      style={{ fontSize: 15, fontWeight: 700, color: scoreColor(feedback.score) }}
                     >
                       {feedback.score > 0 ? feedback.score + '/100' : 'Error'}
                     </Text>
                   </View>
                 </View>
                 {input ? (
-                  <Text style={{ fontSize: 14, color: '#888', display: 'block', marginBottom: 10 }}>
+                  <Text style={{ fontSize: 13, color: '#888', display: 'block', marginBottom: 10 }}>
                     Your answer: <Text style={{ color: '#1a1a1a' }}>{input}</Text>
                   </Text>
                 ) : null}
-                <Text style={{ fontSize: 15, color: '#444', lineHeight: 1.7 }}>{feedback.text}</Text>
+                <Text style={{ fontSize: 14, color: '#444', lineHeight: 1.7 }}>{feedback.text}</Text>
               </View>
 
               <View
@@ -709,14 +700,14 @@ export default function DrillView() {
               <View
                 onClick={next}
                 style={{
-                  padding: 16,
+                  padding: 13,
                   borderRadius: 12,
                   background: color,
                   display: 'flex',
                   justifyContent: 'center'
                 }}
               >
-                <Text style={{ fontSize: 16, fontWeight: 600, color: '#fff' }}>
+                <Text style={{ fontSize: 15, fontWeight: 600, color: '#fff' }}>
                   {idx + 1 >= total ? 'See results →' : 'Next question →'}
                 </Text>
               </View>
@@ -740,7 +731,7 @@ export default function DrillView() {
                   />
                 ))}
               </View>
-              <Text style={{ fontSize: 13, color: '#999', marginTop: 8 }}>AI grading...</Text>
+              <Text style={{ fontSize: 12, color: '#999', marginTop: 8 }}>AI grading...</Text>
             </View>
           )}
         </View>
@@ -754,8 +745,8 @@ export default function DrillView() {
             bottom: 0,
             left: 0,
             right: 0,
-            padding: '14px 20px',
-            paddingBottom: 'calc(14px + env(safe-area-inset-bottom))',
+            padding: '12px 20px',
+            paddingBottom: 'calc(12px + env(safe-area-inset-bottom))',
             background: '#fff',
             borderTop: '1px solid #f0efe8',
             display: 'flex',
@@ -763,27 +754,19 @@ export default function DrillView() {
           }}
         >
           <View style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%' }}>
-            <Input
+            <Input alwaysEmbed
               value={input}
               confirmType="send"
               onConfirm={() => submitSentence(input)}
               onInput={(e) => setInput(e.detail.value)}
               placeholder="Type your sentence..."
-              style={{
-                flex: 1,
-                padding: '14px 18px',
-                borderRadius: 24,
-                border: '1px solid #e8e6de',
-                background: '#FAFAF7',
-                fontSize: 15,
-                color: '#1a1a1a'
-              }}
+              {...fieldProps({ variant: 'round', color: '#1a1a1a', width: 'auto', flex: 1 })}
             />
             <View
               onClick={() => submitSentence(input)}
               style={{
-                width: 48,
-                height: 48,
+                width: 44,
+                height: 44,
                 borderRadius: '50%',
                 background: input.trim() ? color : '#e8e6de',
                 display: 'flex',
@@ -792,7 +775,7 @@ export default function DrillView() {
                 flexShrink: 0
               }}
             >
-              <Text style={{ fontSize: 18, color: '#fff' }}>➤</Text>
+              <Text style={{ fontSize: 16, color: '#fff' }}>➤</Text>
             </View>
           </View>
         </View>

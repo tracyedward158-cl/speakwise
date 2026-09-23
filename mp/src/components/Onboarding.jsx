@@ -97,7 +97,7 @@ export function Onboarding({ onComplete }) {
               </View>
               <Text
                 style={{
-                  fontSize: 22,
+                  fontSize: 18,
                   fontWeight: 700,
                   color: '#1a1a1a',
                   marginBottom: 10,
@@ -107,7 +107,7 @@ export function Onboarding({ onComplete }) {
               >
                 {slide.title}
               </Text>
-              <Text style={{ fontSize: 14, color: '#888', lineHeight: 1.65, textAlign: 'center', padding: '0 8px' }}>
+              <Text style={{ fontSize: 13, color: '#888', lineHeight: 1.65, textAlign: 'center', padding: '0 8px' }}>
                 {slide.desc}
               </Text>
             </View>
@@ -138,7 +138,7 @@ export function Onboarding({ onComplete }) {
           onClick={handleAction}
           style={{
             width: '100%',
-            padding: 16,
+            padding: 13,
             borderRadius: 16,
             background: isLast ? '#2DAA6E' : '#D4413A',
             display: 'flex',
@@ -148,7 +148,7 @@ export function Onboarding({ onComplete }) {
               : '0 8px 16px -3px rgba(212,65,58,0.3)'
           }}
         >
-          <Text style={{ color: '#fff', fontSize: 16, fontWeight: 600 }}>
+          <Text style={{ color: '#fff', fontSize: 15, fontWeight: 600 }}>
             {isLast ? '立即开启琢音之旅' : '下一步'}
           </Text>
         </View>

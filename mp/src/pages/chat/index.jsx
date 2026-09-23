@@ -23,9 +23,12 @@ import { toTranscript, countStudentTurns, nowIso } from '../../core/utils/transc
 import { gradeConversation } from '../../core/utils/chatGrading'
 import { useGuard } from '../../hooks/useGuard'
 import { ROUTES, back } from '../../platform/nav'
+import { fieldProps } from '../../components/formStyles'
+import { useNavMetrics } from '../../hooks/useNavMetrics'
 
 export default function ChatView() {
   const { ready } = useGuard({ studentOnly: true })
+  const nav = useNavMetrics()
   const router = useRouterParams()
   const {
     hsk: hskLevel,
@@ -300,10 +303,20 @@ export default function ChatView() {
     back(target)
   }
 
-  if (!ready) return <View style={{ height: '100vh', background: '#FAFAF7' }} />
+  if (!ready) return <View style={{ height: nav.screenHeight, background: '#FAFAF7' }} />
 
   return (
-    <View style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: '#FAFAF7' }}>
+    <View
+      style={{
+        // 用运行时量到的真实高度，而不是 100vh：首帧 WebView 还不知道自己多高，
+        // 100vh 先给一个错的值再纠正，而原生输入框（底部那条输入栏里就有）
+        // 的位置是按第一版布局算的，之后不会自己跟上。
+        height: nav.screenHeight,
+        display: 'flex',
+        flexDirection: 'column',
+        background: '#FAFAF7'
+      }}
+    >
       <TopBar
         title={module.title}
         subtitle={module.titleEn}
@@ -318,7 +331,7 @@ export default function ChatView() {
         scrollY
         scrollIntoView={anchorId}
         scrollWithAnimation
-        style={{ flex: 1, minHeight: 0, padding: '16px 20px 120px' }}
+        style={{ flex: 1, minHeight: 0, padding: '16px 20px 112px' }}
       >
         <View style={{ width: '100%' }}>
           {messages.map((msg, i) => (
@@ -349,7 +362,7 @@ export default function ChatView() {
                   marginBottom: 12
                 }}
               >
-                <Text style={{ fontSize: 14, fontWeight: 700, color: '#555' }}>
+                <Text style={{ fontSize: 13, fontWeight: 700, color: '#555' }}>
                   💡 不知道聊什么？试试这些话题
                 </Text>
                 <View
@@ -376,8 +389,8 @@ export default function ChatView() {
                       boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
                     }}
                   >
-                    <Text style={{ fontSize: 24, flexShrink: 0 }}>{t.emoji}</Text>
-                    <Text style={{ flex: 1, fontSize: 15, color: '#333', fontWeight: 500 }}>
+                    <Text style={{ fontSize: 20, flexShrink: 0 }}>{t.emoji}</Text>
+                    <Text style={{ flex: 1, fontSize: 14, color: '#333', fontWeight: 500 }}>
                       {t.title}
                     </Text>
                     {/* Web 版这里是内联 svg 右箭头 —— 同 MenuItem 处理，CSS 画 */}
@@ -430,7 +443,7 @@ export default function ChatView() {
                   justifyContent: 'center'
                 }}
               >
-                <Text style={{ fontSize: 16 }}>{module.icon}</Text>
+                <Text style={{ fontSize: 15 }}>{module.icon}</Text>
               </View>
               <View
                 style={{
@@ -468,8 +481,8 @@ export default function ChatView() {
           bottom: 0,
           left: 0,
           right: 0,
-          padding: '14px 20px',
-          paddingBottom: 'calc(14px + env(safe-area-inset-bottom))',
+          padding: '12px 20px',
+          paddingBottom: 'calc(12px + env(safe-area-inset-bottom))',
           background: '#fff',
           borderTop: '1px solid #f0efe8',
           display: 'flex',
@@ -477,30 +490,22 @@ export default function ChatView() {
         }}
       >
         <View style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%' }}>
-          <Input
+          <Input alwaysEmbed
             value={input}
             // Web 版靠 Enter / onKeyDown 提交；小程序改成键盘右下角的「发送」
             confirmType="send"
             onConfirm={() => send(input)}
             onInput={(e) => setInput(e.detail.value)}
             placeholder={showVoice ? 'Type or tap mic...' : 'Type here...'}
-            style={{
-              flex: 1,
-              padding: '14px 18px',
-              borderRadius: 24,
-              border: '1px solid #e8e6de',
-              background: '#FAFAF7',
-              fontSize: 15,
-              color: '#1a1a1a'
-            }}
+            {...fieldProps({ variant: 'round', color: '#1a1a1a', width: 'auto', flex: 1 })}
           />
 
           {showVoice && (
             <View
               onClick={handleMic}
               style={{
-                width: 48,
-                height: 48,
+                width: 44,
+                height: 44,
                 borderRadius: '50%',
                 background: listening ? module.color || '#4A90D9' : 'transparent',
                 border: `2px solid ${module.color || '#4A90D9'}`,
@@ -511,15 +516,15 @@ export default function ChatView() {
                 flexShrink: 0
               }}
             >
-              <Text style={{ fontSize: 18 }}>{listening ? '⏺' : '🎤'}</Text>
+              <Text style={{ fontSize: 16 }}>{listening ? '⏺' : '🎤'}</Text>
             </View>
           )}
 
           <View
             onClick={() => send(input)}
             style={{
-              width: 48,
-              height: 48,
+              width: 44,
+              height: 44,
               borderRadius: '50%',
               background: input.trim() ? module.color || '#4A90D9' : '#e8e6de',
               display: 'flex',
@@ -528,7 +533,7 @@ export default function ChatView() {
               flexShrink: 0
             }}
           >
-            <Text style={{ fontSize: 18, color: '#fff' }}>➤</Text>
+            <Text style={{ fontSize: 16, color: '#fff' }}>➤</Text>
           </View>
         </View>
       </View>

@@ -13,10 +13,10 @@ export default function SceneList() {
   const { ready } = useGuard({ studentOnly: true })
   const { hsk: hskLevel, setHsk: onChangeHSK, viewMode: mode, setViewMode: onChangeMode } = useApp()
 
-  if (!ready) return <View style={{ minHeight: '100vh', background: '#FAFAF7' }} />
+  if (!ready) return <View style={{ background: '#FAFAF7' }} />
 
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar
         title="选择场景"
         subtitle="Select a Scenario"

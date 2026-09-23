@@ -33,5 +33,5 @@ export default function Launch() {
     replace(ROUTES.main)
   }, [loading, isMounted, user, guest, hsk])
 
-  return <View style={{ minHeight: '100vh', background: '#FAFAF7' }} />
+  return <View style={{ background: '#FAFAF7' }} />
 }

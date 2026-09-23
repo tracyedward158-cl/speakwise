@@ -12,10 +12,10 @@ export default function OralMenu() {
   const { ready } = useGuard({ studentOnly: true })
   const { hsk: hskLevel, setHsk: onChangeHSK } = useApp()
 
-  if (!ready) return <View style={{ minHeight: '100vh', background: '#FAFAF7' }} />
+  if (!ready) return <View style={{ background: '#FAFAF7' }} />
 
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar
         title="口语训练"
         subtitle="Speaking Training"

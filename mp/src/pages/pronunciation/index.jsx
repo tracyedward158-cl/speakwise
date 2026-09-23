@@ -59,10 +59,10 @@ export default function PronunciationMenu() {
   const { ready } = useGuard({ studentOnly: true })
   const { hsk: hskLevel, setHsk: onChangeHSK, viewMode: mode, setViewMode: onChangeMode } = useApp()
 
-  if (!ready) return <View style={{ minHeight: '100vh', background: '#FAFAF7' }} />
+  if (!ready) return <View style={{ background: '#FAFAF7' }} />
 
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar
         title="发音测评"
         subtitle="Pronunciation"
@@ -74,7 +74,7 @@ export default function PronunciationMenu() {
       />
       <PageWrap>
         <View style={{ padding: '40px 0' }}>
-          <Text style={{ fontSize: 13, color: '#bbb', marginBottom: 16, display: 'block' }}>
+          <Text style={{ fontSize: 12, color: '#bbb', marginBottom: 16, display: 'block' }}>
             选择练习模式
           </Text>
           <View style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>

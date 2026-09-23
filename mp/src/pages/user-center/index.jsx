@@ -5,27 +5,25 @@ import { PageWrap } from '../../components/PageWrap'
 import { useAuth } from '../../context/AuthContext'
 import { authApi } from '../../core/utils/api'
 import { ROUTES, back, go } from '../../platform/nav'
+import { fieldProps } from '../../components/formStyles'
 
-const inputStyle = {
-  flex: 1,
-  padding: '11px 14px',
-  borderRadius: 10,
-  border: '1px solid #e0dcd0',
-  fontSize: 14,
-  background: '#fff'
-}
+// 尺寸走 class（见 app.scss 的 .sw-field）：原生 <input> 会无视内联的
+// height 和 padding，只认边框/圆角/宽度。原因详见 components/formStyles.js。
+const inputProps = fieldProps({ width: 'auto', flex: 1 })
 
-const labelStyle = { fontSize: 13, color: '#888', marginBottom: 6, fontWeight: 600 }
+const labelStyle = { fontSize: 12, color: '#888', marginBottom: 6, fontWeight: 600 }
 
+// 与输入框同行的按钮：alignSelf: stretch 让它自动撑到行高（也就是输入框的高度），
+// 比写死一个 minHeight 靠谱 —— 输入框高度变了它跟着变。
 const btn = (bg, disabled) => ({
   flexShrink: 0,
+  alignSelf: 'stretch',
   padding: '0 20px',
   borderRadius: 10,
   background: disabled ? '#e8a9a5' : bg,
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
-  minHeight: 40
+  justifyContent: 'center'
 })
 
 function Msg({ msg }) {
@@ -40,7 +38,7 @@ function Msg({ msg }) {
         border: `1px solid ${msg.type === 'ok' ? '#d3f0e1' : '#fbe3e1'}`
       }}
     >
-      <Text style={{ fontSize: 13, color: msg.type === 'ok' ? '#2DAA6E' : '#D4413A' }}>
+      <Text style={{ fontSize: 12, color: msg.type === 'ok' ? '#2DAA6E' : '#D4413A' }}>
         {msg.text}
       </Text>
     </View>
@@ -71,22 +69,22 @@ export default function UserCenter() {
   // 游客无账号能力
   if (!user || guest) {
     return (
-      <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+      <View style={{ background: '#FAFAF7' }}>
         <TopBar title="用户中心" subtitle="账号设置" onBack={() => back(ROUTES.main)} />
         <PageWrap>
           <View style={{ padding: '80px 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Text style={{ fontSize: 48, marginBottom: 16 }}>🔐</Text>
-            <Text style={{ fontSize: 17, fontWeight: 700, color: '#333', marginBottom: 8 }}>
+            <Text style={{ fontSize: 40, marginBottom: 16 }}>🔐</Text>
+            <Text style={{ fontSize: 15, fontWeight: 700, color: '#333', marginBottom: 8 }}>
               游客模式暂不支持用户中心
             </Text>
-            <Text style={{ fontSize: 13, color: '#999', marginBottom: 24 }}>
+            <Text style={{ fontSize: 12, color: '#999', marginBottom: 24 }}>
               登录账号后可修改昵称、修改密码
             </Text>
             <View
               onClick={() => go(ROUTES.login)}
               style={{ padding: '10px 32px', borderRadius: 12, background: '#D4413A' }}
             >
-              <Text style={{ color: '#fff', fontSize: 15, fontWeight: 700 }}>去登录 / 注册</Text>
+              <Text style={{ color: '#fff', fontSize: 14, fontWeight: 700 }}>去登录 / 注册</Text>
             </View>
           </View>
         </PageWrap>
@@ -196,7 +194,7 @@ export default function UserCenter() {
   const displayName = user.nickname || user.username
 
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar title="用户中心" subtitle="账号设置" onBack={() => back(ROUTES.main)} />
       <PageWrap>
         <View style={{ padding: '28px 0 80px' }}>
@@ -225,13 +223,13 @@ export default function UserCenter() {
                 justifyContent: 'center'
               }}
             >
-              <Text style={{ fontSize: 26, color: '#fff', fontWeight: 700 }}>
+              <Text style={{ fontSize: 22, color: '#fff', fontWeight: 700 }}>
                 {String(displayName)[0]}
               </Text>
             </View>
             <View style={{ flex: 1, minWidth: 0 }}>
               <View style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                <Text style={{ fontSize: 20, fontWeight: 700, color: '#1a1a1a' }}>{displayName}</Text>
+                <Text style={{ fontSize: 17, fontWeight: 700, color: '#1a1a1a' }}>{displayName}</Text>
                 <Text
                   style={{
                     fontSize: 10,
@@ -263,7 +261,7 @@ export default function UserCenter() {
                 marginBottom: 20
               }}
             >
-              <Text style={{ fontSize: 15, fontWeight: 700, color: '#333', display: 'block', marginBottom: 14 }}>
+              <Text style={{ fontSize: 14, fontWeight: 700, color: '#333', display: 'block', marginBottom: 14 }}>
                 我的班级
               </Text>
 
@@ -278,13 +276,13 @@ export default function UserCenter() {
                   }}
                 >
                   <View style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
-                    <Text style={{ fontSize: 13, color: '#888' }}>班级码</Text>
-                    <Text style={{ fontSize: 20, fontWeight: 800, letterSpacing: 3, color: '#4A90D9' }}>
+                    <Text style={{ fontSize: 12, color: '#888' }}>班级码</Text>
+                    <Text style={{ fontSize: 17, fontWeight: 800, letterSpacing: 3, color: '#4A90D9' }}>
                       {cls.code}
                     </Text>
-                    {cls.name ? <Text style={{ fontSize: 13, color: '#666' }}>· {cls.name}</Text> : null}
+                    {cls.name ? <Text style={{ fontSize: 12, color: '#666' }}>· {cls.name}</Text> : null}
                   </View>
-                  <Text style={{ fontSize: 13, color: '#666', display: 'block', marginTop: 8 }}>
+                  <Text style={{ fontSize: 12, color: '#666', display: 'block', marginTop: 8 }}>
                     任课老师：
                     <Text style={{ fontWeight: 700, color: '#333' }}>
                       {cls.teacherNickname || '未设置昵称'}
@@ -300,7 +298,7 @@ export default function UserCenter() {
                     marginBottom: 16
                   }}
                 >
-                  <Text style={{ fontSize: 13, color: '#999' }}>
+                  <Text style={{ fontSize: 12, color: '#999' }}>
                     你还没有加入班级。向老师索取 6 位班级码，在下方输入即可加入。
                   </Text>
                 </View>
@@ -310,8 +308,8 @@ export default function UserCenter() {
                 {cls ? '加入新班级（将替换当前班级）' : '班级码'}
               </Text>
               <View style={{ display: 'flex', gap: 10 }}>
-                <Input
-                  style={{ ...inputStyle, letterSpacing: 2 }}
+                <Input alwaysEmbed
+                  {...inputProps} style={{ letterSpacing: 2 }}
                   value={classCode}
                   maxlength={6}
                   disabled={classBusy}
@@ -321,7 +319,7 @@ export default function UserCenter() {
                   onInput={(e) => setClassCode(e.detail.value.toUpperCase())}
                 />
                 <View onClick={classBusy ? undefined : handleJoinClass} style={btn('#4A90D9', classBusy)}>
-                  <Text style={{ color: '#fff', fontSize: 14, fontWeight: 600 }}>
+                  <Text style={{ color: '#fff', fontSize: 13, fontWeight: 600 }}>
                     {classBusy ? '处理中…' : cls ? '换班' : '加入'}
                   </Text>
                 </View>
@@ -341,13 +339,13 @@ export default function UserCenter() {
                         background: classBusy ? '#e8a9a5' : '#D4413A'
                       }}
                     >
-                      <Text style={{ color: '#fff', fontSize: 13, fontWeight: 600 }}>确认退出</Text>
+                      <Text style={{ color: '#fff', fontSize: 12, fontWeight: 600 }}>确认退出</Text>
                     </View>
                     <View
                       onClick={() => setConfirmLeave(false)}
                       style={{ padding: '7px 16px', borderRadius: 10, border: '1px solid #e0dcd0' }}
                     >
-                      <Text style={{ color: '#888', fontSize: 13 }}>取消</Text>
+                      <Text style={{ color: '#888', fontSize: 12 }}>取消</Text>
                     </View>
                   </View>
                 ) : (
@@ -364,7 +362,7 @@ export default function UserCenter() {
                       display: 'inline-flex'
                     }}
                   >
-                    <Text style={{ color: '#D4413A', fontSize: 13 }}>退出当前班级</Text>
+                    <Text style={{ color: '#D4413A', fontSize: 12 }}>退出当前班级</Text>
                   </View>
                 ))}
 
@@ -382,13 +380,13 @@ export default function UserCenter() {
               marginBottom: 20
             }}
           >
-            <Text style={{ fontSize: 15, fontWeight: 700, color: '#333', display: 'block', marginBottom: 14 }}>
+            <Text style={{ fontSize: 14, fontWeight: 700, color: '#333', display: 'block', marginBottom: 14 }}>
               修改昵称
             </Text>
             <Text style={{ ...labelStyle, display: 'block' }}>新昵称</Text>
             <View style={{ display: 'flex', gap: 10 }}>
-              <Input
-                style={inputStyle}
+              <Input alwaysEmbed
+                {...inputProps}
                 value={nickname}
                 maxlength={24}
                 confirmType="done"
@@ -396,7 +394,7 @@ export default function UserCenter() {
                 onInput={(e) => setNickname(e.detail.value)}
               />
               <View onClick={nickBusy ? undefined : handleSaveNickname} style={btn('#D4413A', nickBusy)}>
-                <Text style={{ color: '#fff', fontSize: 14, fontWeight: 600 }}>
+                <Text style={{ color: '#fff', fontSize: 13, fontWeight: 600 }}>
                   {nickBusy ? '保存中…' : '保存'}
                 </Text>
               </View>
@@ -406,18 +404,18 @@ export default function UserCenter() {
 
           {/* ── 修改密码 ── */}
           <View style={{ background: '#fff', borderRadius: 18, border: '1px solid #f0efe8', padding: '22px 24px' }}>
-            <Text style={{ fontSize: 15, fontWeight: 700, color: '#333', display: 'block', marginBottom: 14 }}>
+            <Text style={{ fontSize: 14, fontWeight: 700, color: '#333', display: 'block', marginBottom: 14 }}>
               修改密码
             </Text>
             <View style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <View>
                 <Text style={{ ...labelStyle, display: 'block' }}>当前密码</Text>
-                <Input style={inputStyle} password value={oldPwd} onInput={(e) => setOldPwd(e.detail.value)} />
+                <Input alwaysEmbed {...inputProps} password value={oldPwd} onInput={(e) => setOldPwd(e.detail.value)} />
               </View>
               <View>
                 <Text style={{ ...labelStyle, display: 'block' }}>新密码</Text>
-                <Input
-                  style={inputStyle}
+                <Input alwaysEmbed
+                  {...inputProps}
                   password
                   value={newPwd}
                   placeholder="至少 6 位"
@@ -426,8 +424,8 @@ export default function UserCenter() {
               </View>
               <View>
                 <Text style={{ ...labelStyle, display: 'block' }}>确认新密码</Text>
-                <Input
-                  style={inputStyle}
+                <Input alwaysEmbed
+                  {...inputProps}
                   password
                   value={confirmPwd}
                   confirmType="done"
@@ -447,7 +445,7 @@ export default function UserCenter() {
                 justifyContent: 'center'
               }}
             >
-              <Text style={{ color: '#fff', fontSize: 14, fontWeight: 600 }}>
+              <Text style={{ color: '#fff', fontSize: 13, fontWeight: 600 }}>
                 {pwdBusy ? '提交中…' : '确认修改密码'}
               </Text>
             </View>

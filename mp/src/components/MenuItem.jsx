@@ -20,7 +20,7 @@ export function MenuItem({ item, onClick, hovered, onHover, badge }) {
       style={{
         background: '#fff',
         borderRadius: 18,
-        padding: '26px 24px',
+        padding: '22px 20px',
         border: `1px solid ${on ? item.color + '60' : '#f0efe8'}`,
         transition: 'all 0.3s',
         transform: on ? 'translateY(-3px)' : 'none',
@@ -33,14 +33,14 @@ export function MenuItem({ item, onClick, hovered, onHover, badge }) {
       <View style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
         <View
           style={{
-            width: 56,
-            height: 56,
+            width: 52,
+            height: 52,
             borderRadius: 16,
             background: item.bg,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: 28,
+            fontSize: 24,
             flexShrink: 0,
             transition: 'transform 0.2s',
             transform: on ? 'scale(1.06)' : 'none'
@@ -50,7 +50,7 @@ export function MenuItem({ item, onClick, hovered, onHover, badge }) {
         </View>
         <View style={{ flex: 1, minWidth: 0 }}>
           <View style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-            <Text style={{ fontSize: 20, fontWeight: 600, color: '#1a1a1a' }}>{item.title}</Text>
+            <Text style={{ fontSize: 17, fontWeight: 600, color: '#1a1a1a' }}>{item.title}</Text>
             {badge && (
               <Text
                 style={{
@@ -66,12 +66,12 @@ export function MenuItem({ item, onClick, hovered, onHover, badge }) {
               </Text>
             )}
           </View>
-          <Text style={{ fontSize: 13, color: '#aaa', marginTop: 2 }}>{item.titleEn}</Text>
+          <Text style={{ fontSize: 12, color: '#aaa', marginTop: 2 }}>{item.titleEn}</Text>
         </View>
       </View>
 
       <View style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flex: 1 }}>
-        <Text style={{ fontSize: 14, color: '#666', lineHeight: 1.5, paddingRight: 10, flex: 1 }}>
+        <Text style={{ fontSize: 13, color: '#666', lineHeight: 1.5, paddingRight: 10, flex: 1 }}>
           {item.desc}
         </Text>
         {/* 右向 chevron：正方形留上+右两条边，转 45° */}

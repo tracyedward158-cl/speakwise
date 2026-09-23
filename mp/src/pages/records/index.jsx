@@ -25,6 +25,7 @@ import {
 } from '../../core/utils/recordStore'
 import { FEATURES } from '../../config'
 import { ROUTES, back, go } from '../../platform/nav'
+import { fieldProps } from '../../components/formStyles'
 
 const DIM_LABELS = { pronunciation: '发音', tone: '声调', fluency: '流利度', completeness: '完整度' }
 
@@ -147,10 +148,10 @@ export default function StudentRecords() {
     return back(ROUTES.main)
   }
 
-  if (!ready) return <View style={{ minHeight: '100vh', background: '#FAFAF7' }} />
+  if (!ready) return <View style={{ background: '#FAFAF7' }} />
 
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar title="我的练习记录" subtitle="学习档案" onBack={() => back(ROUTES.main)} />
       <PageWrap>
         <View style={{ padding: '28px 0 80px' }}>
@@ -179,36 +180,38 @@ export default function StudentRecords() {
                 flexShrink: 0
               }}
             >
-              <Text style={{ fontSize: 22, color: '#fff', fontWeight: 700 }}>{String(displayName)[0]}</Text>
+              <Text style={{ fontSize: 18, color: '#fff', fontWeight: 700 }}>{String(displayName)[0]}</Text>
             </View>
 
             <View style={{ flex: 1, minWidth: 0 }}>
               {editing ? (
                 <View style={{ display: 'flex', gap: 8 }}>
-                  <Input
+                  <Input alwaysEmbed
                     value={nickDraft}
                     placeholder={displayName}
                     confirmType="done"
                     onConfirm={handleSaveNickname}
                     onInput={(e) => setNickDraft(e.detail.value)}
-                    style={{
-                      flex: 1,
-                      padding: '6px 12px',
-                      borderRadius: 8,
-                      border: '1px solid #e0dcd0',
-                      fontSize: 15
-                    }}
+                    {...fieldProps({ variant: 'tight', width: 'auto', flex: 1 })}
                   />
                   <View
                     onClick={handleSaveNickname}
-                    style={{ padding: '6px 14px', borderRadius: 8, background: '#D4413A' }}
+                    // alignSelf: stretch 让它自动跟输入框等高，不用另算一个会飘的数字
+                    style={{
+                      alignSelf: 'stretch',
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '0 14px',
+                      borderRadius: 8,
+                      background: '#D4413A'
+                    }}
                   >
-                    <Text style={{ color: '#fff', fontSize: 13 }}>确定</Text>
+                    <Text style={{ color: '#fff', fontSize: 12 }}>确定</Text>
                   </View>
                 </View>
               ) : (
                 <View style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Text style={{ fontSize: 18, fontWeight: 700, color: '#1a1a1a' }}>{displayName}</Text>
+                  <Text style={{ fontSize: 16, fontWeight: 700, color: '#1a1a1a' }}>{displayName}</Text>
                   <View
                     onClick={() => {
                       setNickDraft(displayName)
@@ -216,7 +219,7 @@ export default function StudentRecords() {
                     }}
                     style={{ padding: 2 }}
                   >
-                    <Text style={{ fontSize: 14 }}>✏️</Text>
+                    <Text style={{ fontSize: 13 }}>✏️</Text>
                   </View>
                 </View>
               )}
@@ -249,7 +252,7 @@ export default function StudentRecords() {
                   alignItems: 'center'
                 }}
               >
-                <Text style={{ fontSize: 22, fontWeight: 700, color: d.color }}>{d.value || '—'}</Text>
+                <Text style={{ fontSize: 18, fontWeight: 700, color: d.color }}>{d.value || '—'}</Text>
                 <Text style={{ fontSize: 11, color: '#999' }}>{d.label}</Text>
                 {d.sub ? <Text style={{ fontSize: 10, color: '#bbb' }}>{d.sub}</Text> : null}
               </View>
@@ -258,7 +261,7 @@ export default function StudentRecords() {
 
           {/* ── 能力雷达图：五维可视化成长 ── */}
           <View style={{ marginBottom: 24 }}>
-            <Text style={{ fontSize: 14, fontWeight: 600, color: '#888', display: 'block', marginBottom: 10 }}>
+            <Text style={{ fontSize: 13, fontWeight: 600, color: '#888', display: 'block', marginBottom: 10 }}>
               能力雷达图
               <Text style={{ fontSize: 12, color: '#aaa', fontWeight: 400 }}> 发音 · 语法 · 词汇量 · 流利度 · 写作逻辑</Text>
             </Text>
@@ -304,7 +307,7 @@ export default function StudentRecords() {
           {/* ── 弱项维度追踪 ── */}
           {weakDims.length > 0 && (
             <View style={{ marginBottom: 24 }}>
-              <Text style={{ fontSize: 14, fontWeight: 600, color: '#888', display: 'block', marginBottom: 10 }}>
+              <Text style={{ fontSize: 13, fontWeight: 600, color: '#888', display: 'block', marginBottom: 10 }}>
                 能力维度追踪
                 {weakOnly.length > 0 ? (
                   <Text style={{ fontSize: 12, color: '#D4413A' }}>（{weakOnly.length} 项需关注）</Text>
@@ -339,7 +342,7 @@ export default function StudentRecords() {
                         style={{
                           width: 36,
                           textAlign: 'right',
-                          fontSize: 14,
+                          fontSize: 13,
                           fontWeight: 700,
                           color: d.isWeak ? '#D4413A' : '#2DAA6E'
                         }}
@@ -415,12 +418,12 @@ export default function StudentRecords() {
           <View style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
             {cloudRecords === null && !isGuest && (
               <View style={{ padding: 32, display: 'flex', justifyContent: 'center' }}>
-                <Text style={{ color: '#bbb', fontSize: 14 }}>加载中…</Text>
+                <Text style={{ color: '#bbb', fontSize: 13 }}>加载中…</Text>
               </View>
             )}
             {records.length === 0 && cloudRecords !== null && (
               <View style={{ padding: 32, display: 'flex', justifyContent: 'center' }}>
-                <Text style={{ color: '#bbb', fontSize: 14 }}>暂无记录。完成一次练习后这里会出现数据。</Text>
+                <Text style={{ color: '#bbb', fontSize: 13 }}>暂无记录。完成一次练习后这里会出现数据。</Text>
               </View>
             )}
 
@@ -463,7 +466,7 @@ export default function StudentRecords() {
                   >
                     <Text
                       style={{
-                        fontSize: ungraded ? 10 : 14,
+                        fontSize: ungraded ? 10 : 13,
                         fontWeight: 700,
                         color: ungraded ? '#aaa' : r.score >= 80 ? '#2DAA6E' : r.score >= 60 ? '#E8A838' : '#D4413A'
                       }}
@@ -473,7 +476,7 @@ export default function StudentRecords() {
                   </View>
 
                   <View style={{ flex: 1, minWidth: 0 }}>
-                    <Text style={{ fontSize: 13, fontWeight: 600, color: '#333', display: 'block' }}>
+                    <Text style={{ fontSize: 12, fontWeight: 600, color: '#333', display: 'block' }}>
                       {r.scenario || r.module}
                       {canOpen ? (
                         <Text style={{ fontSize: 10, color: '#bbb', fontWeight: 400 }}> 💬 {messageCount(r)}</Text>
@@ -521,7 +524,7 @@ export default function StudentRecords() {
 
           {/* ── 练习推荐 ── */}
           <View>
-            <Text style={{ fontSize: 14, fontWeight: 600, color: '#888', display: 'block', marginBottom: 10 }}>
+            <Text style={{ fontSize: 13, fontWeight: 600, color: '#888', display: 'block', marginBottom: 10 }}>
               建议练习
             </Text>
             <View style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -544,12 +547,12 @@ export default function StudentRecords() {
                       marginBottom: 6
                     }}
                   >
-                    <Text style={{ fontSize: 14, fontWeight: 600, color: '#D4413A' }}>{rec.label}</Text>
+                    <Text style={{ fontSize: 13, fontWeight: 600, color: '#D4413A' }}>{rec.label}</Text>
                     {rec.weakDetail ? (
                       <Text style={{ fontSize: 11, color: '#999' }}>{rec.weakDetail}</Text>
                     ) : null}
                   </View>
-                  <Text style={{ fontSize: 13, color: '#666', lineHeight: 1.6 }}>{rec.suggest}</Text>
+                  <Text style={{ fontSize: 12, color: '#666', lineHeight: 1.6 }}>{rec.suggest}</Text>
                 </View>
               ))}
             </View>

@@ -62,7 +62,7 @@ export function ChatBubble({
             flexShrink: 0
           }}
         >
-          <Text style={{ fontSize: 16 }}>{icon}</Text>
+          <Text style={{ fontSize: 15 }}>{icon}</Text>
         </View>
       )}
 
@@ -73,14 +73,14 @@ export function ChatBubble({
             background: isUser ? color || '#4A90D9' : '#fff',
             color: isUser ? '#fff' : '#1a1a1a',
             borderRadius: isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-            fontSize: 15,
+            fontSize: 14,
             lineHeight: 1.7,
             boxShadow: isUser ? 'none' : '0 1px 3px rgba(0,0,0,0.04)',
             border: isUser ? 'none' : '1px solid #f0efe8'
           }}
         >
           {isUser ? (
-            <Text style={{ fontSize: 15, lineHeight: 1.7, color: '#fff' }}>{content}</Text>
+            <Text style={{ fontSize: 14, lineHeight: 1.7, color: '#fff' }}>{content}</Text>
           ) : (
             <ChatBubbleText text={content} mode={mode} themeColor={color} />
           )}
@@ -104,7 +104,7 @@ export function ChatBubble({
                 style={{ display: 'flex', alignItems: 'center', gap: 4, opacity: 0.6 }}
               >
                 {/* Web 版这里是内联 svg 喇叭图标，小程序渲染不了 —— 用字形代替 */}
-                <Text style={{ fontSize: 13, color: speaking ? color || '#E8A838' : '#888' }}>
+                <Text style={{ fontSize: 12, color: speaking ? color || '#E8A838' : '#888' }}>
                   {speaking ? '⏹' : '🔊'}
                 </Text>
                 <Text style={{ fontSize: 12, color: '#666' }}>{speaking ? 'Stop' : 'Play'}</Text>

@@ -12,10 +12,10 @@ export default function WrittenMenu() {
   const { ready } = useGuard({ studentOnly: true })
   const { hsk: hskLevel, setHsk: onChangeHSK } = useApp()
 
-  if (!ready) return <View style={{ minHeight: '100vh', background: '#FAFAF7' }} />
+  if (!ready) return <View style={{ background: '#FAFAF7' }} />
 
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar
         title="写作辅导"
         subtitle="Writing Coach"

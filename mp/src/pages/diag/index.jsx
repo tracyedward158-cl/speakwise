@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, Text, Input, ScrollView } from '@tarojs/components'
+import { fieldProps } from '../../components/formStyles'
 import Taro from '@tarojs/taro'
 import { TopBar } from '../../components/TopBar'
 import { PageWrap } from '../../components/PageWrap'
@@ -51,7 +52,7 @@ function Card({ title, children }) {
         marginBottom: 14
       }}
     >
-      <Text style={{ fontSize: 13, fontWeight: 700, color: '#333', display: 'block', marginBottom: 10 }}>
+      <Text style={{ fontSize: 12, fontWeight: 700, color: '#333', display: 'block', marginBottom: 10 }}>
         {title}
       </Text>
       {children}
@@ -170,6 +171,30 @@ export default function Diag() {
     setBusy(false)
   }
 
+  // 输入框尺寸实测。
+  // 目的：内联样式和 WXSS class 两条路都试过、都「看着没生效」，
+  // 与其继续猜，不如把**计算样式**和**实际渲染尺寸**直接打出来 ——
+  // 这两个数能一次性分清「样式没应用」和「应用了但另有东西在裁」。
+  const measureField = () => {
+    Taro.createSelectorQuery()
+      .select('#diag-field')
+      .fields({ computedStyle: ['height', 'width', 'fontSize', 'padding', 'display', 'boxSizing'] })
+      .boundingClientRect()
+      .exec((res) => {
+        const cs = res?.[0]
+        const rect = res?.[1]
+        if (!cs && !rect) {
+          push('❌ 没选到 #diag-field，可能这个版本没有渲染出测量用输入框')
+          return
+        }
+        push('计算样式: ' + JSON.stringify(cs))
+        push(
+          '实际尺寸: ' +
+            (rect ? `${Math.round(rect.width)} × ${Math.round(rect.height)} px` : '取不到')
+        )
+      })
+  }
+
   const cancel = () => {
     resetRecorder()
     stopSpeaking()
@@ -196,7 +221,7 @@ export default function Diag() {
   }
 
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar title="语音链路诊断" subtitle="Voice Diagnostics" onBack={() => back(ROUTES.main)} />
       <PageWrap>
         <View style={{ padding: '18px 0 60px' }}>
@@ -217,12 +242,22 @@ export default function Diag() {
             <Row k="客户端上限" v={`${(MAX_AUDIO_BASE64 / 1024 / 1024).toFixed(1)}MB base64`} />
           </Card>
 
+          {/* 测量用的输入框。样式与其它页面完全一致（同一套 fieldProps），
+              所以量出来的数就是真实输入框的数。 */}
+          <Card title="输入框实测">
+            <Input {...fieldProps()} id="diag-field" placeholder="测量用输入框（与别处同一套样式）" />
+            <Text style={{ fontSize: 11, color: '#bbb', display: 'block', marginTop: 8 }}>
+              点下面的「测量输入框」，把打出来的两行念给我
+            </Text>
+          </Card>
+
           <View style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 14 }}>
             {[
               { label: '检查授权', fn: checkAuth },
               { label: recording ? '停止录音' : '录音测试', fn: testRecord },
               { label: 'TTS 测试', fn: testTts },
               { label: recording ? '停止并识别' : 'ASR 测试', fn: testAsr },
+              { label: '测量输入框', fn: measureField },
               { label: '录音状态', fn: checkState },
               { label: '强制复位', fn: forceReset },
               { label: '取消', fn: cancel }
@@ -236,7 +271,7 @@ export default function Diag() {
                   background: busy ? '#e8e6de' : '#4A90D9'
                 }}
               >
-                <Text style={{ color: busy ? '#aaa' : '#fff', fontSize: 14, fontWeight: 600 }}>
+                <Text style={{ color: busy ? '#aaa' : '#fff', fontSize: 13, fontWeight: 600 }}>
                   {b.label}
                 </Text>
               </View>

@@ -19,7 +19,7 @@ export default function HSKSelect() {
       <View style={{ padding: '60px 0' }}>
         <Text
           style={{
-            fontSize: 28,
+            fontSize: 24,
             fontWeight: 700,
             color: '#D4413A',
             marginBottom: 8,
@@ -29,7 +29,7 @@ export default function HSKSelect() {
         >
           欢迎来到 SpeakWise 琢音
         </Text>
-        <Text style={{ fontSize: 20, fontWeight: 600, marginBottom: 32, display: 'block', textAlign: 'center' }}>
+        <Text style={{ fontSize: 17, fontWeight: 600, marginBottom: 32, display: 'block', textAlign: 'center' }}>
           请选择你的汉语水平
         </Text>
 

@@ -10,6 +10,7 @@ import { getStudentProfile, getStudentRecords } from '../../core/utils/recordSto
 import { formatRecordDate } from '../../core/utils/transcript'
 import { PRON_BANK, ALL_TAGS, UNITS, statsByText } from '../../core/utils/pronunciationBank'
 import { ROUTES, back, go } from '../../platform/nav'
+import { fieldProps } from '../../components/formStyles'
 
 const COLOR = '#4A90D9'
 const ALL = '全部'
@@ -29,7 +30,7 @@ function FilterChip({ active, onClick, children }) {
         flexShrink: 0
       }}
     >
-      <Text style={{ fontSize: 13, color: active ? '#fff' : '#777', fontWeight: active ? 600 : 400 }}>
+      <Text style={{ fontSize: 12, color: active ? '#fff' : '#777', fontWeight: active ? 600 : 400 }}>
         {children}
       </Text>
     </View>
@@ -91,10 +92,10 @@ export default function PronunciationBank() {
   const practice = (it) =>
     go(ROUTES.drill, { mode: 'single', item: it.id, from: 'bank', type: 'practice', section: 'oral' })
 
-  if (!ready) return <View style={{ minHeight: '100vh', background: '#FAFAF7' }} />
+  if (!ready) return <View style={{ background: '#FAFAF7' }} />
 
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar
         title="题库浏览"
         subtitle="Question Bank"
@@ -108,26 +109,18 @@ export default function PronunciationBank() {
         <View style={{ padding: '18px 0 40px' }}>
           {/* ── 搜索 ── */}
           <View style={{ position: 'relative', marginBottom: 14 }}>
-            <Input
+            <Input alwaysEmbed
               value={query}
               onInput={(e) => setQuery(e.detail.value)}
               placeholder="搜索汉字、拼音或英文…"
-              style={{
-                width: '100%',
-                padding: '13px 40px 13px 16px',
-                borderRadius: 12,
-                border: '1px solid #e8e6de',
-                background: '#fff',
-                fontSize: 15,
-                color: '#1a1a1a'
-              }}
+              {...fieldProps({ paddingRight: 40, color: '#1a1a1a' })}
             />
             {query ? (
               <View
                 onClick={() => setQuery('')}
                 style={{ position: 'absolute', right: 12, top: 10, padding: 4 }}
               >
-                <Text style={{ fontSize: 16, color: '#ccc' }}>✕</Text>
+                <Text style={{ fontSize: 15, color: '#ccc' }}>✕</Text>
               </View>
             ) : null}
           </View>
@@ -171,7 +164,7 @@ export default function PronunciationBank() {
                 justifyContent: 'center'
               }}
             >
-              <Text style={{ color: '#bbb', fontSize: 14 }}>没有匹配的题目</Text>
+              <Text style={{ color: '#bbb', fontSize: 13 }}>没有匹配的题目</Text>
             </View>
           )}
 
@@ -193,7 +186,7 @@ export default function PronunciationBank() {
                         <View style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
                           <Text
                             style={{
-                              fontSize: it.unit === '句' ? 16 : 20,
+                              fontSize: it.unit === '句' ? 15 : 17,
                               fontWeight: 600,
                               color: '#1a1a1a'
                             }}

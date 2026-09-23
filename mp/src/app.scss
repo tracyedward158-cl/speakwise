@@ -54,7 +54,7 @@ view, text, image, button, input, textarea, scroll-view, navigator {
 .footer-link {
   text-align: center;
   margin-top: 48px;
-  font-size: 13px;
+  font-size: 12px;
   color: #aaa;
 }
 
@@ -67,4 +67,50 @@ view, text, image, button, input, textarea, scroll-view, navigator {
 // 内联 style 表达不了「长按/按压」这类伪类，凡是需要按压反馈的都落到这里
 .press-dim {
   opacity: 0.7;
+}
+
+// ── 输入框 ──
+//
+// 刻意用 class 而不是内联 style。原生组件 <input> 对内联 style 的处理不稳定：
+// 实测出现「边框、圆角、宽度都生效，但 height 和 padding 被无视」——
+// 结果输入框停留在默认高度（约 1.4rem），文字被裁掉下半截。
+//
+// 高度只用一个值（63px）统管所有输入框，纵向留白交给组件自己居中，
+// 横向用左右 padding。这样 height 和 padding 不会互相打架。
+.sw-field {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 63px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid #e0dcd0;
+  background: #fff;
+  font-size: 14px;
+}
+
+// 对话页 / 造句页底部那条输入栏：圆角更大，底色跟着页面走
+.sw-field--round {
+  border-radius: 24px;
+  border-color: #e8e6de;
+  background: #FAFAF7;
+}
+
+// 记录页改昵称那种嵌在卡片里的小号输入框
+.sw-field--tight {
+  height: 51px;
+  padding: 0 12px;
+  border-radius: 8px;
+}
+
+// 多行输入框同理
+.sw-area {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #e8e6de;
+  background: #FAFAF7;
+  font-size: 15px;
 }

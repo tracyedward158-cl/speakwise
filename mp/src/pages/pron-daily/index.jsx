@@ -19,7 +19,7 @@ function Section({ title, sub, children }) {
   return (
     <View style={{ marginBottom: 22 }}>
       <View style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 10 }}>
-        <Text style={{ fontSize: 14, fontWeight: 600, color: '#555' }}>{title}</Text>
+        <Text style={{ fontSize: 13, fontWeight: 600, color: '#555' }}>{title}</Text>
         <Text style={{ fontSize: 11, color: '#bbb' }}>{sub}</Text>
       </View>
       {children}
@@ -40,7 +40,7 @@ function Chip({ active, disabled, onClick, children, count }) {
         alignItems: 'baseline'
       }}
     >
-      <Text style={{ fontSize: 14, color: disabled ? '#ccc' : active ? '#fff' : '#666', fontWeight: active ? 600 : 400 }}>
+      <Text style={{ fontSize: 13, color: disabled ? '#ccc' : active ? '#fff' : '#666', fontWeight: active ? 600 : 400 }}>
         {children}
       </Text>
       {count != null && (
@@ -96,10 +96,10 @@ export default function PronunciationDaily() {
     go(ROUTES.drill, { ...params, type: 'practice', section: 'oral' })
   }
 
-  if (!ready) return <View style={{ minHeight: '100vh', background: '#FAFAF7' }} />
+  if (!ready) return <View style={{ background: '#FAFAF7' }} />
 
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar
         title="日常练习"
         subtitle="Daily Practice"
@@ -183,11 +183,11 @@ export default function PronunciationDaily() {
                 marginBottom: 18
               }}
             >
-              <Text style={{ fontSize: 13, color: '#888' }}>可练</Text>
-              <Text style={{ fontSize: 20, fontWeight: 700, color: canStart ? COLOR : '#ccc' }}>
+              <Text style={{ fontSize: 12, color: '#888' }}>可练</Text>
+              <Text style={{ fontSize: 17, fontWeight: 700, color: canStart ? COLOR : '#ccc' }}>
                 {available}
               </Text>
-              <Text style={{ fontSize: 13, color: '#888' }}>题</Text>
+              <Text style={{ fontSize: 12, color: '#888' }}>题</Text>
               {canStart && (
                 <Text style={{ fontSize: 12, color: '#aaa', marginLeft: 'auto' }}>
                   {available > TRAIN_SIZE ? `本轮取 ${willTake} 题` : '本轮全部做完'}
@@ -198,14 +198,14 @@ export default function PronunciationDaily() {
             <View
               onClick={canStart ? start : undefined}
               style={{
-                padding: 16,
+                padding: 13,
                 borderRadius: 12,
                 background: canStart ? COLOR : '#e8e6de',
                 display: 'flex',
                 justifyContent: 'center'
               }}
             >
-              <Text style={{ fontSize: 16, fontWeight: 600, color: canStart ? '#fff' : '#aaa' }}>
+              <Text style={{ fontSize: 15, fontWeight: 600, color: canStart ? '#fff' : '#aaa' }}>
                 开始练习 →
               </Text>
             </View>

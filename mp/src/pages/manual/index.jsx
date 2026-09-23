@@ -23,10 +23,10 @@ export default function StudyManual() {
   const data = MANUAL_DATA[hskLevel]?.[tab] || []
   const lv = HSK_LEVELS.find((l) => l.id === hskLevel)
 
-  if (!ready) return <View style={{ minHeight: '100vh', background: '#FAFAF7' }} />
+  if (!ready) return <View style={{ background: '#FAFAF7' }} />
 
   return (
-    <View style={{ minHeight: '100vh', background: '#FAFAF7' }}>
+    <View style={{ background: '#FAFAF7' }}>
       <TopBar
         title="学习手册"
         subtitle="Study Manual"
@@ -49,14 +49,14 @@ export default function StudyManual() {
               boxShadow: '0 4px 12px rgba(0,0,0,0.02)'
             }}
           >
-            <Text style={{ fontSize: 48 }}>{lv?.emoji}</Text>
+            <Text style={{ fontSize: 40 }}>{lv?.emoji}</Text>
             <View style={{ flex: 1 }}>
               <Text
-                style={{ fontSize: 20, color: '#1a1a1a', fontWeight: 600, display: 'block', marginBottom: 8 }}
+                style={{ fontSize: 17, color: '#1a1a1a', fontWeight: 600, display: 'block', marginBottom: 8 }}
               >
                 {lv?.label} 知识图谱
               </Text>
-              <Text style={{ fontSize: 14, color: '#666', lineHeight: 1.6 }}>
+              <Text style={{ fontSize: 13, color: '#666', lineHeight: 1.6 }}>
                 系统化梳理该阶段的{lv?.desc}。建议按照"词汇 → 语法 → 发音"的模块顺序进行复习，构建完整的汉语框架。
               </Text>
             </View>
@@ -92,10 +92,10 @@ export default function StudyManual() {
                   gap: 6
                 }}
               >
-                <Text style={{ fontSize: 16 }}>{t.icon}</Text>
+                <Text style={{ fontSize: 15 }}>{t.icon}</Text>
                 <Text
                   style={{
-                    fontSize: 15,
+                    fontSize: 14,
                     fontWeight: 600,
                     color: tab === t.id ? '#fff' : '#888'
                   }}
@@ -127,7 +127,7 @@ export default function StudyManual() {
                   >
                     <Text
                       style={{
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: 800,
                         color: isOpen ? '#D4413A' : '#eee',
                         marginRight: 16,
@@ -138,7 +138,7 @@ export default function StudyManual() {
                     </Text>
                     <Text
                       style={{
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: 600,
                         color: isOpen ? '#D4413A' : '#1a1a1a',
                         flex: 1
@@ -163,7 +163,7 @@ export default function StudyManual() {
                   {isOpen && (
                     <View style={{ padding: '0 24px 24px', marginLeft: 40, animation: 'su 0.3s both' }}>
                       <Text
-                        style={{ fontSize: 14, color: '#555', lineHeight: 1.7, display: 'block', marginBottom: 16 }}
+                        style={{ fontSize: 13, color: '#555', lineHeight: 1.7, display: 'block', marginBottom: 16 }}
                       >
                         {item.desc}
                       </Text>
@@ -187,7 +187,7 @@ export default function StudyManual() {
                         >
                           Example / 示例
                         </Text>
-                        <Text style={{ lineHeight: 1.5, color: '#D4413A', fontSize: 14 }}>
+                        <Text style={{ lineHeight: 1.5, color: '#D4413A', fontSize: 13 }}>
                           {item.example}
                         </Text>
                       </View>

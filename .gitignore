@@ -13,6 +13,10 @@ dist/
 .vscode/
 .idea/
 
+# 微信开发者工具的本机设置（含 不校验合法域名 这类本机开关）。
+# 官方约定就是不入库：它是每台机器各自的调试偏好，不是工程配置。
+project.private.config.json
+
 # OS
 .DS_Store
 Thumbs.db

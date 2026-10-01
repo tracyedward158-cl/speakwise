@@ -1,0 +1,27 @@
+{
+  "description": "微信开发者工具工程配置。小程序源码在 mp/，构建产物在 mp/dist —— 这个文件让开发者工具可以直接打开仓库根目录，不用专门进 mp/。",
+  "miniprogramRoot": "mp/dist/",
+  "compileType": "miniprogram",
+  "appid": "wxe7dc0a6c4d485ff7",
+  "setting": {
+    "urlCheck": false,
+    "es6": false,
+    "enhance": false,
+    "postcss": false,
+    "minified": false,
+    "uglifyFileName": false,
+    "packNpmRelationList": [],
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "useCompilerPlugins": false
+  },
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {}
+}

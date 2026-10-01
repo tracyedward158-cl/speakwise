@@ -1,0 +1,17 @@
+{
+  "description": "微信开发者工具工程配置（从 mp/ 直接打开时用这个）。从仓库根目录打开也可以 —— 根目录那份的 miniprogramRoot 指向 mp/dist，两边等价。",
+  "miniprogramRoot": "./dist/",
+  "projectname": "speakwise-mp",
+  "appid": "wxe7dc0a6c4d485ff7",
+  "setting": {
+    "urlCheck": false,
+    "es6": false,
+    "enhance": false,
+    "postcss": false,
+    "minified": false,
+    "bigPackageSizeSupport": true
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.5.5",
+  "condition": {}
+}

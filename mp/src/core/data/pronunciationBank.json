@@ -1,0 +1,6724 @@
+[
+  {
+    "text": "你好吗？",
+    "pinyin": "Nǐ hǎo ma?",
+    "english": "How are you?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "声调",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我是学生。",
+    "pinyin": "Wǒ shì xuéshēng.",
+    "english": "I am a student.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "谢谢你！",
+    "pinyin": "Xièxie nǐ!",
+    "english": "Thank you!",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这个多少钱？",
+    "pinyin": "Zhège duōshao qián?",
+    "english": "How much?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我想喝水。",
+    "pinyin": "Wǒ xiǎng hē shuǐ.",
+    "english": "I want water.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "今天很热。",
+    "pinyin": "Jīntiān hěn rè.",
+    "english": "It's hot today.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "你叫什么名字？",
+    "pinyin": "Nǐ jiào shénme míngzi?",
+    "english": "What's your name?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "轻声",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我不知道。",
+    "pinyin": "Wǒ bù zhīdào.",
+    "english": "I don't know.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "请再说一次。",
+    "pinyin": "Qǐng zài shuō yī cì.",
+    "english": "Say it again.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我很高兴认识你。",
+    "pinyin": "Wǒ hěn gāoxìng rènshi nǐ.",
+    "english": "Nice to meet you.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我们在学校学习。",
+    "pinyin": "Wǒmen zài xuéxiào xuéxí.",
+    "english": "We study at school.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "他是我朋友。",
+    "pinyin": "Tā shì wǒ péngyou.",
+    "english": "He is my friend.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我不喜欢吃肉。",
+    "pinyin": "Wǒ bù xǐhuan chī ròu.",
+    "english": "I don't like eating meat.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "现在几点了？",
+    "pinyin": "Xiànzài jǐ diǎn le?",
+    "english": "What time is it now?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "声调",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我要买苹果。",
+    "pinyin": "Wǒ yào mǎi píngguǒ.",
+    "english": "I want to buy apples.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "明天天气很好。",
+    "pinyin": "Míngtiān tiānqì hěn hǎo.",
+    "english": "Tomorrow's weather is good.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "你去哪里？",
+    "pinyin": "Nǐ qù nǎlǐ?",
+    "english": "Where are you going?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "声调",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我在家看电视。",
+    "pinyin": "Wǒ zài jiā kàn diànshì.",
+    "english": "I am watching TV at home.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这是我的书。",
+    "pinyin": "Zhè shì wǒ de shū.",
+    "english": "This is my book.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "太贵了！",
+    "pinyin": "Tài guì le!",
+    "english": "Too expensive!",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "便宜一点，好吗？",
+    "pinyin": "Piányi yīdiǎn, hǎo ma?",
+    "english": "A little cheaper, ok?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "轻声",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "洗手间在哪里？",
+    "pinyin": "Xǐshǒujiān zài nǎlǐ?",
+    "english": "Where is the restroom?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "声调",
+      "平翘舌",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "对不起。",
+    "pinyin": "Duìbuqǐ.",
+    "english": "I'm sorry.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "没关系。",
+    "pinyin": "Méi guānxi.",
+    "english": "It's okay.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "不用谢。",
+    "pinyin": "Búyòng xiè.",
+    "english": "You're welcome.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我听不懂。",
+    "pinyin": "Wǒ tīng bù dǒng.",
+    "english": "I don't understand.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "请写下来。",
+    "pinyin": "Qǐng xiě xiàlái.",
+    "english": "Please write it down.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "你多大了？",
+    "pinyin": "Nǐ duōdà le?",
+    "english": "How old are you?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我喜欢中国。",
+    "pinyin": "Wǒ xǐhuan Zhōngguó.",
+    "english": "I like China.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "再见！",
+    "pinyin": "Zàijiàn!",
+    "english": "Goodbye!",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "今天天气不错，适合出去走走。",
+    "pinyin": "Jīntiān tiānqì búcuò, shìhé chūqù zǒuzou.",
+    "english": "Nice weather for a walk.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "你能帮我一个忙吗？",
+    "pinyin": "Nǐ néng bāng wǒ yī gè máng ma?",
+    "english": "Can you help me?",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "轻声",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我对中国文化特别感兴趣。",
+    "pinyin": "Wǒ duì Zhōngguó wénhuà tèbié gǎn xìngqù.",
+    "english": "I'm interested in Chinese culture.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "虽然很累，但是我很开心。",
+    "pinyin": "Suīrán hěn lèi, dànshì wǒ hěn kāixīn.",
+    "english": "Tired but happy.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "请问附近有没有地铁站？",
+    "pinyin": "Qǐngwèn fùjìn yǒu méiyǒu dìtiě zhàn?",
+    "english": "Subway nearby?",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我昨天看了一部很有意思的电影。",
+    "pinyin": "Wǒ zuótiān kànle yī bù hěn yǒu yìsi de diànyǐng.",
+    "english": "Watched an interesting movie.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "轻声",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "如果明天下雨，我们就不去了。",
+    "pinyin": "Rúguǒ míngtiān xiàyǔ, wǒmen jiù bú qù le.",
+    "english": "If it rains, we won't go.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "轻声",
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这道菜又好吃又便宜。",
+    "pinyin": "Zhè dào cài yòu hǎochī yòu piányi.",
+    "english": "Delicious and cheap.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "轻声",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "他比我大三岁。",
+    "pinyin": "Tā bǐ wǒ dà sān suì.",
+    "english": "3 years older.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我已经在中国住了两年了。",
+    "pinyin": "Wǒ yǐjīng zài Zhōngguó zhùle liǎng nián le.",
+    "english": "Lived in China 2 years.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "请把空调打开，有点热。",
+    "pinyin": "Qǐng bǎ kōngtiáo dǎkāi, yǒudiǎn rè.",
+    "english": "Please turn on the AC, it's a bit hot.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "由于堵车，我迟到了十分钟。",
+    "pinyin": "Yóuyú dǔchē, wǒ chídàole shí fēnzhōng.",
+    "english": "Due to traffic, I was 10 mins late.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "不论多晚，他都会完成工作。",
+    "pinyin": "Búlùn duō wǎn, tā dōu huì wánchéng gōngzuò.",
+    "english": "No matter how late, he finishes work.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "声调",
+      "前后鼻音",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "他连这么简单的汉字都不认识。",
+    "pinyin": "Tā lián zhème jiǎndān de hànzì dōu bú rènshi.",
+    "english": "He doesn't even know such simple characters.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "你的中文说得越来越流利了。",
+    "pinyin": "Nǐ de Zhōngwén shuō de yuè lái yuè liúlì le.",
+    "english": "Your Chinese is getting more fluent.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "n/l辨音",
+      "前后鼻音",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "除了篮球，我还喜欢踢足球。",
+    "pinyin": "Chúle lánqiú, wǒ hái xǐhuan tī zúqiú.",
+    "english": "Besides basketball, I also like soccer.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "n/l辨音",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "经过几个月的努力，他终于通过了考试。",
+    "pinyin": "Jīngguò jǐ gè yuè de nǔlì, tā zhōngyú tōngguòle kǎoshì.",
+    "english": "After months of effort, he finally passed.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "请大家保持安静，会议马上开始。",
+    "pinyin": "Qǐng dàjiā bǎochí ānjìng, huìyì mǎshàng kāishǐ.",
+    "english": "Please keep quiet, the meeting is starting.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这件毛衣不但颜色好看，而且很暖和。",
+    "pinyin": "Zhè jiàn máoyī búdàn yánsè hǎokàn, érqiě hěn nuǎnhuo.",
+    "english": "This sweater is not only pretty but warm.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "轻声",
+      "n/l辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "遇到不懂的问题，你应该多问老师。",
+    "pinyin": "Yùdào bù dǒng de wèntí, nǐ yīnggāi duō wèn lǎoshī.",
+    "english": "Ask the teacher when you don't understand.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我同意你的看法，这个主意不错。",
+    "pinyin": "Wǒ tóngyì nǐ de kànfǎ, zhège zhǔyi búcuò.",
+    "english": "I agree with you, good idea.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "轻声",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "他平时很少说话，但其实很幽默。",
+    "pinyin": "Tā píngshí hěn shǎo shuōhuà, dàn qíshí hěn yōumò.",
+    "english": "He rarely speaks, but is actually humorous.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这件事没有你想的那么复杂。",
+    "pinyin": "Zhè jiàn shì méiyǒu nǐ xiǎng de nàme fùzá.",
+    "english": "This isn't as complicated as you think.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "轻声",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我们要养成早睡早起的好习惯。",
+    "pinyin": "Wǒmen yào yǎngchéng zǎo shuì zǎo qǐ de hǎo xíguàn.",
+    "english": "Develop the habit of sleeping and waking early.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "声调",
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "只要坚持练习，就一定会进步。",
+    "pinyin": "Zhǐyào jiānchí liànxí, jiù yídìng huì jìnbù.",
+    "english": "As long as you practice, you will improve.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "为了健康，他决定开始减肥。",
+    "pinyin": "Wèile jiànkāng, tā juédìng kāishǐ jiǎnféi.",
+    "english": "For his health, he decided to lose weight.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "轻声",
+      "前后鼻音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "周末你有空的话，我们一起去逛街吧。",
+    "pinyin": "Zhōumò nǐ yǒu kòng de huà, wǒmen yìqǐ qù guàngjiē ba.",
+    "english": "If you're free this weekend, let's go shopping.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "抱歉，让您久等了。",
+    "pinyin": "Bàoqiàn, ràng nín jiǔ děng le.",
+    "english": "Sorry to keep you waiting.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "声调",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "那家餐厅的烤鸭非常地道。",
+    "pinyin": "Nà jiā cāntīng de kǎoyā fēicháng dìdào.",
+    "english": "That restaurant's roast duck is very authentic.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "f/h辨音",
+      "前后鼻音",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我的手机快没电了，借我个充电宝吧。",
+    "pinyin": "Wǒ de shǒujī kuài méi diàn le, jiè wǒ gè chōngdiànbǎo ba.",
+    "english": "My phone is dying, lend me a power bank.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "不管遇到什么困难，都不应该轻易放弃。",
+    "pinyin": "Bùguǎn yù dào shénme kùnnan, dōu bù yīnggāi qīngyì fàngqì.",
+    "english": "Never give up.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "f/h辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "与其抱怨环境，不如改变自己。",
+    "pinyin": "Yǔqí bàoyuàn huánjìng, bùrú gǎibiàn zìjǐ.",
+    "english": "Change yourself.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "f/h辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这件事说起来容易，做起来难。",
+    "pinyin": "Zhè jiàn shì shuō qǐlái róngyì, zuò qǐlái nán.",
+    "english": "Easier said than done.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "他的成功并非偶然，而是努力的结果。",
+    "pinyin": "Tā de chénggōng bìngfēi ǒurán, ér shì nǔlì de jiéguǒ.",
+    "english": "Success from effort.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "n/l辨音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "随着科技的发展，生活发生了巨大变化。",
+    "pinyin": "Suízhe kējì de fāzhǎn, shēnghuó fāshēngle jùdà biànhuà.",
+    "english": "Tech changed life.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "f/h辨音",
+      "前后鼻音",
+      "轻声",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "入乡随俗，要尊重当地风俗习惯。",
+    "pinyin": "Rù xiāng suí sú, yào zūnzhòng dāngdì fēngsú xíguàn.",
+    "english": "When in Rome...",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "f/h辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这个问题值得深入思考和讨论。",
+    "pinyin": "Zhège wèntí zhídé shēnrù sīkǎo hé tǎolùn.",
+    "english": "Worth deep thought.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "塞翁失马，焉知非福。",
+    "pinyin": "Sài wēng shī mǎ, yān zhī fēi fú.",
+    "english": "A blessing in disguise.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "只有不断学习，才能跟上时代。",
+    "pinyin": "Zhǐyǒu búduàn xuéxí, cáinéng gēnshàng shídài.",
+    "english": "Keep learning.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "他不但没生气，反而笑着安慰了我。",
+    "pinyin": "Tā búdàn méi shēngqì, fǎn'ér xiàozhe ānwèile wǒ.",
+    "english": "Comforted with a smile.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "前后鼻音",
+      "轻声",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这篇文章见解独到，逻辑严密，令人叹服。",
+    "pinyin": "Zhè piān wénzhāng jiànjiě dúdào, luójí yánmì, lìng rén tànfú.",
+    "english": "This article is insightful and logical.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "n/l辨音",
+      "前后鼻音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我们在追求经济发展的同时，不能忽视环境保护。",
+    "pinyin": "Wǒmen zài zhuīqiú jīngjì fāzhǎn de tóngshí, bùnéng hūshì huánjìng bǎohù.",
+    "english": "Don't ignore the environment for economy.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "f/h辨音",
+      "前后鼻音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "网络虽然拉近了距离，但也让人变得冷漠。",
+    "pinyin": "Wǎngluò suīrán lājìnle jùlí, dàn yě ràng rén biànde lěngmò.",
+    "english": "The internet connects but also isolates.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音",
+      "轻声",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这种观点未免过于片面，缺乏客观性。",
+    "pinyin": "Zhè zhǒng guāndiǎn wèimiǎn guòyú piànmiàn, quēfá kèguānxìng.",
+    "english": "This view is a bit too one-sided.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "f/h辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "面对激烈的竞争，企业必须不断创新才能生存。",
+    "pinyin": "Miànduì jīliè de jìngzhēng, qǐyè bìxū búduàn chuàngxīn cáinéng shēngcún.",
+    "english": "Enterprises must innovate to survive competition.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "中华传统文化源远流长，博大精深。",
+    "pinyin": "Zhōnghuá chuántǒng wénhuà yuányuǎn liúcháng, bódà jīngshēn.",
+    "english": "Chinese culture is profound and enduring.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "哪怕只有一线希望，我们也要尽百分之百的努力。",
+    "pinyin": "Nǎpà zhǐyǒu yí xiàn xīwàng, wǒmen yě yào jìn bǎi fēn zhī bǎi de nǔlì.",
+    "english": "Even with slim hope, give 100% effort.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "前后鼻音",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "他处理危机时的从容不迫，给所有人留下了深刻印象。",
+    "pinyin": "Tā chǔlǐ wēijī shí de cóngróng búpò, gěi suǒyǒu rén liúxiàle shēnkè yìnxiàng.",
+    "english": "His calmness in crisis impressed everyone.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "n/l辨音",
+      "轻声",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "一味地逃避问题并不能解决任何实质性的麻烦。",
+    "pinyin": "Yíwèi de táobì wèntí bìng bùnéng jiějué rènhé shízhìxìng de máfan.",
+    "english": "Blindly avoiding won't solve real issues.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "前后鼻音",
+      "f/h辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "教育的根本目的不仅仅是传授知识，更是培养人格。",
+    "pinyin": "Jiàoyù de gēnběn mùdì bù jǐnjǐn shì chuánshòu zhīshi, gèng shì péiyǎng réngé.",
+    "english": "Education builds character, not just knowledge.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调",
+      "轻声",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "所谓”己所不欲，勿施于人”，这是最基本的道德底线。",
+    "pinyin": "Suǒwèi 'jǐ suǒ bú yù, wù shī yú rén', zhè shì zuì jīběn de dàodé dǐxiàn.",
+    "english": "Do unto others as you would have them do unto you.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "在利益面前，人性的弱点往往会暴露无遗。",
+    "pinyin": "Zài lìyì miànqián, rénxìng de ruòdiǎn wǎngwǎng huì bàolù wú yí.",
+    "english": "Flaws in human nature show in face of profit.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "声调",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这座城市的历史变迁，犹如一部生动的纪录片。",
+    "pinyin": "Zhè zuò chéngshì de lìshǐ biànqiān, yóurú yí bù shēngdòng de jìlùpiān.",
+    "english": "The city's history is like a vivid documentary.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我们不能只看眼前利益，而要着眼于长远发展。",
+    "pinyin": "Wǒmen bùnéng zhǐ kàn yǎnqián lìyì, ér yào zhuóyǎn yú chángyuǎn fāzhǎn.",
+    "english": "Focus on long-term development, not immediate gain.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "f/h辨音",
+      "前后鼻音",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "与其临渊羡鱼，不如退而结网。",
+    "pinyin": "Yǔqí línyuān xiànyú, bùrú tuì ér jiéwǎng.",
+    "english": "Better to make a net than covet fish.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "在人工智能时代，终身学习已经成为一种必然选择。",
+    "pinyin": "Zài réngōng zhìnéng shídài, zhōngshēn xuéxí yǐjīng chéngwéi yì zhǒng bìrán xuǎnzé.",
+    "english": "Lifelong learning is essential in the AI era.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "两国在文化交流方面取得了丰硕的成果。",
+    "pinyin": "Liǎng guó zài wénhuà jiāoliú fāngmiàn qǔdéle fēngshuò de chéngguǒ.",
+    "english": "Rich results in cultural exchange between the two countries.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "平翘舌",
+      "f/h辨音",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这部电影情节跌宕起伏，引人深思。",
+    "pinyin": "Zhè bù diànyǐng qíngjié diēdàng qǐfú, yǐn rén shēnsī.",
+    "english": "The movie has twists and provokes thought.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "事实胜于雄辩，再多的狡辩也掩盖不了真相。",
+    "pinyin": "Shìshí shèng yú xióngbiàn, zài duō de jiǎobiàn yě yǎngài bùliǎo zhēnxiàng.",
+    "english": "Facts speak louder than words.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "无论社会如何变迁，有些传统的价值观依然历久弥新。",
+    "pinyin": "Wúlùn shèhuì rúhé biànqiān, yǒuxiē chuántǒng de jiàzhíguān yīrán lìjiǔ míxīn.",
+    "english": "Some traditional values endure through changes.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "中",
+    "pinyin": "zhōng",
+    "english": "middle/China",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "住",
+    "pinyin": "zhù",
+    "english": "live",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "知",
+    "pinyin": "zhī",
+    "english": "know",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "常",
+    "pinyin": "cháng",
+    "english": "often",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "车",
+    "pinyin": "chē",
+    "english": "car",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "上",
+    "pinyin": "shàng",
+    "english": "up/on",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "谁",
+    "pinyin": "shéi",
+    "english": "who",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "三",
+    "pinyin": "sān",
+    "english": "three",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "做",
+    "pinyin": "zuò",
+    "english": "do",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "次",
+    "pinyin": "cì",
+    "english": "time (measure)",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "才",
+    "pinyin": "cái",
+    "english": "just now/only",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "色",
+    "pinyin": "sè",
+    "english": "color",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "雨",
+    "pinyin": "yǔ",
+    "english": "rain",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "马",
+    "pinyin": "mǎ",
+    "english": "horse",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "起",
+    "pinyin": "qǐ",
+    "english": "rise",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "想",
+    "pinyin": "xiǎng",
+    "english": "think/want",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "晚",
+    "pinyin": "wǎn",
+    "english": "late/evening",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "红",
+    "pinyin": "hóng",
+    "english": "red",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "回",
+    "pinyin": "huí",
+    "english": "return",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "天",
+    "pinyin": "tiān",
+    "english": "sky/day",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "名",
+    "pinyin": "míng",
+    "english": "name",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "人",
+    "pinyin": "rén",
+    "english": "person",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "京",
+    "pinyin": "jīng",
+    "english": "capital",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "认",
+    "pinyin": "rèn",
+    "english": "recognize",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "听",
+    "pinyin": "tīng",
+    "english": "listen",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "年",
+    "pinyin": "nián",
+    "english": "year",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "前后鼻音",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "亮",
+    "pinyin": "liàng",
+    "english": "bright",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "前后鼻音",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "你",
+    "pinyin": "nǐ",
+    "english": "you",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "来",
+    "pinyin": "lái",
+    "english": "come",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "那",
+    "pinyin": "nà",
+    "english": "that",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "老",
+    "pinyin": "lǎo",
+    "english": "old",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "内",
+    "pinyin": "nèi",
+    "english": "inside",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "路",
+    "pinyin": "lù",
+    "english": "road",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "脑",
+    "pinyin": "nǎo",
+    "english": "brain",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "累",
+    "pinyin": "lèi",
+    "english": "tired",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "放",
+    "pinyin": "fàng",
+    "english": "put/release",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "黑",
+    "pinyin": "hēi",
+    "english": "black",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "分",
+    "pinyin": "fēn",
+    "english": "minute/divide",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "后",
+    "pinyin": "hòu",
+    "english": "after/behind",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "风",
+    "pinyin": "fēng",
+    "english": "wind",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "话",
+    "pinyin": "huà",
+    "english": "word/speech",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "饭",
+    "pinyin": "fàn",
+    "english": "meal/rice",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "火",
+    "pinyin": "huǒ",
+    "english": "fire",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "对",
+    "pinyin": "duì",
+    "english": "correct/pair",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "快",
+    "pinyin": "kuài",
+    "english": "fast",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "说话",
+    "pinyin": "shuōhuà",
+    "english": "speak",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "上班",
+    "pinyin": "shàngbān",
+    "english": "go to work",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "左右",
+    "pinyin": "zuǒyòu",
+    "english": "left and right",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "出租车",
+    "pinyin": "chūzūchē",
+    "english": "taxi",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "水果",
+    "pinyin": "shuǐguǒ",
+    "english": "fruit",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "自己",
+    "pinyin": "zìjǐ",
+    "english": "self",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "早上",
+    "pinyin": "zǎoshang",
+    "english": "morning",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "十分",
+    "pinyin": "shífēn",
+    "english": "very/fully",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "城市",
+    "pinyin": "chéngshì",
+    "english": "city",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "所以",
+    "pinyin": "suǒyǐ",
+    "english": "so/therefore",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "可能",
+    "pinyin": "kěnéng",
+    "english": "maybe",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "以后",
+    "pinyin": "yǐhòu",
+    "english": "after/later",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "一样",
+    "pinyin": "yíyàng",
+    "english": "same",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "不对",
+    "pinyin": "búduì",
+    "english": "wrong",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "起床",
+    "pinyin": "qǐchuáng",
+    "english": "get up",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "你好",
+    "pinyin": "nǐhǎo",
+    "english": "hello",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "明年",
+    "pinyin": "míngnián",
+    "english": "next year",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "公园",
+    "pinyin": "gōngyuán",
+    "english": "park",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "银行",
+    "pinyin": "yínháng",
+    "english": "bank",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "房间",
+    "pinyin": "fángjiān",
+    "english": "room",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "工人",
+    "pinyin": "gōngrén",
+    "english": "worker",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "分钟",
+    "pinyin": "fēnzhōng",
+    "english": "minute",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "平翘舌",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "名人",
+    "pinyin": "míngrén",
+    "english": "celebrity",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "感动",
+    "pinyin": "gǎndòng",
+    "english": "moved/touched",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "妈妈",
+    "pinyin": "māma",
+    "english": "mom",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "爸爸",
+    "pinyin": "bàba",
+    "english": "dad",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "桌子",
+    "pinyin": "zhuōzi",
+    "english": "table",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "名字",
+    "pinyin": "míngzi",
+    "english": "name",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "石头",
+    "pinyin": "shítou",
+    "english": "stone",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "孩子",
+    "pinyin": "háizi",
+    "english": "child",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "漂亮",
+    "pinyin": "piàoliang",
+    "english": "beautiful",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "时候",
+    "pinyin": "shíhou",
+    "english": "time/moment",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "老人",
+    "pinyin": "lǎorén",
+    "english": "elderly person",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "里面",
+    "pinyin": "lǐmiàn",
+    "english": "inside",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "难过",
+    "pinyin": "nánguò",
+    "english": "sad",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "牛奶",
+    "pinyin": "niúnǎi",
+    "english": "milk",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "努力",
+    "pinyin": "nǔlì",
+    "english": "work hard",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "方法",
+    "pinyin": "fāngfǎ",
+    "english": "method",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "f/h辨音",
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "回家",
+    "pinyin": "huíjiā",
+    "english": "go home",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "父母",
+    "pinyin": "fùmǔ",
+    "english": "parents",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "f/h辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这儿",
+    "pinyin": "zhèr",
+    "english": "here",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "那儿",
+    "pinyin": "nàr",
+    "english": "there",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "小孩儿",
+    "pinyin": "xiǎoháir",
+    "english": "child",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "玩儿",
+    "pinyin": "wánr",
+    "english": "play",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "一块儿",
+    "pinyin": "yīkuàir",
+    "english": "together",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我不太舒服，想去看医生。",
+    "pinyin": "Wǒ bú tài shūfu, xiǎng qù kàn yīshēng.",
+    "english": "I'm not feeling well, I want to see a doctor.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "轻声",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "老师说得很慢，我能听懂。",
+    "pinyin": "Lǎoshī shuō de hěn màn, wǒ néng tīng dǒng.",
+    "english": "The teacher speaks slowly, I can understand.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "轻声",
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "那个商店里的东西很便宜。",
+    "pinyin": "Nàge shāngdiàn lǐ de dōngxi hěn piányi.",
+    "english": "Things in that store are very cheap.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "轻声",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "从这儿往左走，然后右转。",
+    "pinyin": "Cóng zhèr wǎng zuǒ zǒu, ránhòu yòu zhuǎn.",
+    "english": "Go left from here, then turn right.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "儿化",
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "飞机票还没买呢。",
+    "pinyin": "Fēijī piào hái méi mǎi ne.",
+    "english": "Haven't bought the plane ticket yet.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "f/h辨音",
+      "声调",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "你的房间又大又亮。",
+    "pinyin": "Nǐ de fángjiān yòu dà yòu liàng.",
+    "english": "Your room is big and bright.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "f/h辨音",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我家离学校不远。",
+    "pinyin": "Wǒ jiā lí xuéxiào bù yuǎn.",
+    "english": "My home is not far from school.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "n/l辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "一共多少钱？我付现金。",
+    "pinyin": "Yígòng duōshao qián? Wǒ fù xiànjīn.",
+    "english": "How much total? I'll pay cash.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "声调",
+      "前后鼻音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "你会不会说英文？",
+    "pinyin": "Nǐ huì bu huì shuō Yīngwén?",
+    "english": "Can you speak English?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "春天到了，花儿开了。",
+    "pinyin": "Chūntiān dào le, huār kāi le.",
+    "english": "Spring has come, flowers are blooming.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "儿化",
+      "轻声",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我每天早上跑步锻炼身体。",
+    "pinyin": "Wǒ měi tiān zǎoshang pǎobù duànliàn shēntǐ.",
+    "english": "I jog every morning for exercise.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "声调",
+      "n/l辨音",
+      "前后鼻音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "妹妹在那儿看书呢。",
+    "pinyin": "Mèimei zài nàr kàn shū ne.",
+    "english": "My younger sister is reading over there.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "儿化",
+      "轻声",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "我先吃饭，然后做作业。",
+    "pinyin": "Wǒ xiān chīfàn, ránhòu zuò zuòyè.",
+    "english": "I'll eat first, then do homework.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "你能帮我拿一下那本书吗？",
+    "pinyin": "Nǐ néng bāng wǒ ná yīxià nà běn shū ma?",
+    "english": "Can you get that book for me?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "轻声",
+      "n/l辨音",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "北京的冬天风很大。",
+    "pinyin": "Běijīng de dōngtiān fēng hěn dà.",
+    "english": "Beijing's winter is very windy.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "f/h辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "准",
+    "pinyin": "zhǔn",
+    "english": "accurate/allow",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "指",
+    "pinyin": "zhǐ",
+    "english": "point/finger",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "赚",
+    "pinyin": "zhuàn",
+    "english": "earn",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "尝",
+    "pinyin": "cháng",
+    "english": "taste/try",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "抄",
+    "pinyin": "chāo",
+    "english": "copy",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "省",
+    "pinyin": "shěng",
+    "english": "save/province",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "善",
+    "pinyin": "shàn",
+    "english": "good/kind",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "措",
+    "pinyin": "cuò",
+    "english": "measure/arrange",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "增",
+    "pinyin": "zēng",
+    "english": "increase",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "速",
+    "pinyin": "sù",
+    "english": "speed",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "章",
+    "pinyin": "zhāng",
+    "english": "chapter/badge",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "松",
+    "pinyin": "sōng",
+    "english": "loose/pine",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "展",
+    "pinyin": "zhǎn",
+    "english": "unfold/exhibit",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "免",
+    "pinyin": "miǎn",
+    "english": "avoid/exempt",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "允",
+    "pinyin": "yǔn",
+    "english": "allow",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "舞",
+    "pinyin": "wǔ",
+    "english": "dance",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "某",
+    "pinyin": "mǒu",
+    "english": "certain/some",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "彼",
+    "pinyin": "bǐ",
+    "english": "that/the other",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "仅",
+    "pinyin": "jǐn",
+    "english": "only/merely",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "永",
+    "pinyin": "yǒng",
+    "english": "forever",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "根",
+    "pinyin": "gēn",
+    "english": "root",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "灵",
+    "pinyin": "líng",
+    "english": "spirit/nimble",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "前后鼻音",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "宁",
+    "pinyin": "níng",
+    "english": "peaceful/rather",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "前后鼻音",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "紧",
+    "pinyin": "jǐn",
+    "english": "tight",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "静",
+    "pinyin": "jìng",
+    "english": "quiet",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "盆",
+    "pinyin": "pén",
+    "english": "basin/pot",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "评",
+    "pinyin": "píng",
+    "english": "comment/review",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "温",
+    "pinyin": "wēn",
+    "english": "warm/mild",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "荣",
+    "pinyin": "róng",
+    "english": "glory",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "碰",
+    "pinyin": "pèng",
+    "english": "touch/bump",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "恼",
+    "pinyin": "nǎo",
+    "english": "annoyed",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "烈",
+    "pinyin": "liè",
+    "english": "intense/fierce",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "浓",
+    "pinyin": "nóng",
+    "english": "thick/dense",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "临",
+    "pinyin": "lín",
+    "english": "face/approach",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "农",
+    "pinyin": "nóng",
+    "english": "agriculture",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "连",
+    "pinyin": "lián",
+    "english": "connect/even",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "幅",
+    "pinyin": "fú",
+    "english": "width/measure word",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "宏",
+    "pinyin": "hóng",
+    "english": "grand",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "废",
+    "pinyin": "fèi",
+    "english": "waste/abolish",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "辉",
+    "pinyin": "huī",
+    "english": "splendor",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "仿",
+    "pinyin": "fǎng",
+    "english": "imitate",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "恨",
+    "pinyin": "hèn",
+    "english": "hate",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "扰",
+    "pinyin": "rǎo",
+    "english": "disturb",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "猛",
+    "pinyin": "měng",
+    "english": "fierce/sudden",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "敏",
+    "pinyin": "mǐn",
+    "english": "keen/quick",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "解释",
+    "pinyin": "jiěshì",
+    "english": "explain",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "重视",
+    "pinyin": "zhòngshì",
+    "english": "attach importance to",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "措施",
+    "pinyin": "cuòshī",
+    "english": "measure/step",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "出差",
+    "pinyin": "chūchāi",
+    "english": "go on a business trip",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "素材",
+    "pinyin": "sùcái",
+    "english": "material/source",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "自从",
+    "pinyin": "zìcóng",
+    "english": "since",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "人生",
+    "pinyin": "rénshēng",
+    "english": "life",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "理想",
+    "pinyin": "lǐxiǎng",
+    "english": "ideal/dream",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "准备",
+    "pinyin": "zhǔnbèi",
+    "english": "prepare",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "允许",
+    "pinyin": "yǔnxǔ",
+    "english": "permit",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "手表",
+    "pinyin": "shǒubiǎo",
+    "english": "wristwatch",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "美满",
+    "pinyin": "měimǎn",
+    "english": "happy/perfect",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "以往",
+    "pinyin": "yǐwǎng",
+    "english": "in the past",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "心情",
+    "pinyin": "xīnqíng",
+    "english": "mood",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "温馨",
+    "pinyin": "wēnxīn",
+    "english": "warm and cozy",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "平衡",
+    "pinyin": "pínghéng",
+    "english": "balance",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "根本",
+    "pinyin": "gēnběn",
+    "english": "fundamental",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "力量",
+    "pinyin": "lìliang",
+    "english": "strength",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "窗户",
+    "pinyin": "chuānghu",
+    "english": "window",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "糊涂",
+    "pinyin": "hútu",
+    "english": "muddled",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "算盘",
+    "pinyin": "suànpan",
+    "english": "abacus",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "事情",
+    "pinyin": "shìqing",
+    "english": "matter/affair",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "清楚",
+    "pinyin": "qīngchu",
+    "english": "clear",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "耐心",
+    "pinyin": "nàixīn",
+    "english": "patience",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "劳动",
+    "pinyin": "láodòng",
+    "english": "labor",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "恼怒",
+    "pinyin": "nǎonù",
+    "english": "irritated",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "利润",
+    "pinyin": "lìrùn",
+    "english": "profit",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "流利",
+    "pinyin": "liúlì",
+    "english": "fluent",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "丰收",
+    "pinyin": "fēngshōu",
+    "english": "harvest",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "花费",
+    "pinyin": "huāfèi",
+    "english": "spend/cost",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "复活",
+    "pinyin": "fùhuó",
+    "english": "revive",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "幸福",
+    "pinyin": "xìngfú",
+    "english": "happy/blessed",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "味儿",
+    "pinyin": "wèir",
+    "english": "flavor",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "儿化"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "没事儿",
+    "pinyin": "méishìr",
+    "english": "it's nothing",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "拐弯儿",
+    "pinyin": "guǎiwānr",
+    "english": "turn a corner",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "好好儿",
+    "pinyin": "hǎohāor",
+    "english": "properly",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "一阵儿",
+    "pinyin": "yīzhènr",
+    "english": "a short while",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "马马虎虎",
+    "pinyin": "mǎmǎ-hūhū",
+    "english": "so-so/careless",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "不知不觉",
+    "pinyin": "bùzhī-bùjué",
+    "english": "unconsciously",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "一模一样",
+    "pinyin": "yīmú-yīyàng",
+    "english": "exactly the same",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "各种各样",
+    "pinyin": "gèzhǒng-gèyàng",
+    "english": "all kinds of",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "半途而废",
+    "pinyin": "bàntú-érfèi",
+    "english": "give up halfway",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "f/h辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "脚踏实地",
+    "pinyin": "jiǎotà-shídì",
+    "english": "down to earth",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "他的普通话说得非常标准，一点口音都没有。",
+    "pinyin": "Tā de pǔtōnghuà shuō de fēicháng biāozhǔn, yīdiǎn kǒuyīn dōu méiyǒu.",
+    "english": "His Mandarin is very standard, no accent at all.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "轻声",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "在中国生活了半年以后，他渐渐习惯了这里的饮食。",
+    "pinyin": "Zài Zhōngguó shēnghuóle bàn nián yǐhòu, tā jiànjiàn xíguànle zhèlǐ de yǐnshí.",
+    "english": "After half a year in China, he got used to the food.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "春节是中国人最重要的传统节日。",
+    "pinyin": "Chūnjié shì Zhōngguórén zuì zhòngyào de chuántǒng jiérì.",
+    "english": "Spring Festival is China's most important traditional holiday.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "你最好把这件事儿好好儿想一想。",
+    "pinyin": "Nǐ zuìhǎo bǎ zhè jiàn shìr hǎohāor xiǎng yī xiǎng.",
+    "english": "You'd better think this over carefully.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "儿化",
+      "声调",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "他一边听音乐，一边做家务。",
+    "pinyin": "Tā yībiān tīng yīnyuè, yībiān zuò jiāwù.",
+    "english": "He listens to music while doing housework.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "不管结果怎样，过程本身就是一种收获。",
+    "pinyin": "Bùguǎn jiéguǒ zěnyàng, guòchéng běnshēn jiùshì yī zhǒng shōuhuò.",
+    "english": "Regardless of outcome, the process itself is a gain.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这种方法不但省时间，而且效果很好。",
+    "pinyin": "Zhè zhǒng fāngfǎ búdàn shěng shíjiān, érqiě xiàoguǒ hěn hǎo.",
+    "english": "This method not only saves time but works well.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "f/h辨音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "路上太堵了，我们还是坐地铁吧。",
+    "pinyin": "Lùshang tài dǔ le, wǒmen háishi zuò dìtiě ba.",
+    "english": "Traffic is too bad, let's take the subway.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "n/l辨音",
+      "轻声",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "她的话虽然很简单，但让人感到很温暖。",
+    "pinyin": "Tā de huà suīrán hěn jiǎndān, dàn ràng rén gǎndào hěn wēnnuǎn.",
+    "english": "Her words were simple but made people feel warm.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音",
+      "n/l辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "如果你方便的话，能不能帮我翻译一下？",
+    "pinyin": "Rúguǒ nǐ fāngbiàn de huà, néng bu néng bāng wǒ fānyì yīxià?",
+    "english": "If it's convenient, could you help me translate?",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这个城市的交通特别方便，公共汽车和地铁都很发达。",
+    "pinyin": "Zhège chéngshì de jiāotōng tèbié fāngbiàn, gōnggòng qìchē hé dìtiě dōu hěn fādá.",
+    "english": "This city has very convenient public transport.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "f/h辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "他改掉了晚睡晚起的坏习惯。",
+    "pinyin": "Tā gǎidiàole wǎn shuì wǎn qǐ de huài xíguàn.",
+    "english": "He broke the bad habit of staying up and sleeping in.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "声调",
+      "前后鼻音",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "听说那家新开的火锅店味儿特别正。",
+    "pinyin": "Tīngshuō nà jiā xīn kāi de huǒguō diàn wèir tèbié zhèng.",
+    "english": "I heard the new hotpot place is really authentic.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "f/h辨音",
+      "儿化",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "虽然困难重重，但他从未放弃过希望。",
+    "pinyin": "Suīrán kùnnan chóngchóng, dàn tā cóngwèi fàngqì guò xīwàng.",
+    "english": "Despite many difficulties, he never gave up hope.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "声调",
+      "f/h辨音",
+      "平翘舌",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "老师让我们每天坚持练习朗读。",
+    "pinyin": "Lǎoshī ràng wǒmen měi tiān jiānchí liànxí lǎngdú.",
+    "english": "The teacher asks us to practice reading aloud every day.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "n/l辨音",
+      "平翘舌",
+      "前后鼻音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "兆",
+    "pinyin": "zhào",
+    "english": "omen/trillion",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "辙",
+    "pinyin": "zhé",
+    "english": "track/rut",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "彻",
+    "pinyin": "chè",
+    "english": "thorough",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "绰",
+    "pinyin": "chuò",
+    "english": "spacious/nickname",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "慑",
+    "pinyin": "shè",
+    "english": "fear/awe",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "燥",
+    "pinyin": "zào",
+    "english": "dry",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "簇",
+    "pinyin": "cù",
+    "english": "cluster",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "飒",
+    "pinyin": "sà",
+    "english": "rustle",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "铸",
+    "pinyin": "zhù",
+    "english": "cast/forge",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "矗",
+    "pinyin": "chù",
+    "english": "stand tall",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "淳",
+    "pinyin": "chún",
+    "english": "honest/pure",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "刹",
+    "pinyin": "chà",
+    "english": "instant/temple",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "缜",
+    "pinyin": "zhěn",
+    "english": "meticulous",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "垒",
+    "pinyin": "lěi",
+    "english": "rampart/pile",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "懈",
+    "pinyin": "xiè",
+    "english": "slack",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "沼",
+    "pinyin": "zhǎo",
+    "english": "marsh",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "侣",
+    "pinyin": "lǚ",
+    "english": "companion",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "弊",
+    "pinyin": "bì",
+    "english": "malpractice",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "颖",
+    "pinyin": "yǐng",
+    "english": "clever/tip",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "隽",
+    "pinyin": "juàn",
+    "english": "meaningful",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "凛",
+    "pinyin": "lǐn",
+    "english": "stern/cold",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "前后鼻音",
+      "n/l辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "铭",
+    "pinyin": "míng",
+    "english": "inscribe",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "棱",
+    "pinyin": "léng",
+    "english": "edge/ridge",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "前后鼻音",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "凭",
+    "pinyin": "píng",
+    "english": "lean on/rely",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "吞",
+    "pinyin": "tūn",
+    "english": "swallow",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "腾",
+    "pinyin": "téng",
+    "english": "soar/gallop",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "仁",
+    "pinyin": "rén",
+    "english": "benevolence",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "蒙",
+    "pinyin": "méng",
+    "english": "cover/receive",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "沁",
+    "pinyin": "qìn",
+    "english": "seep/refresh",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "捏",
+    "pinyin": "niē",
+    "english": "pinch/knead",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "聆",
+    "pinyin": "líng",
+    "english": "listen",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "怜",
+    "pinyin": "lián",
+    "english": "pity",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "匿",
+    "pinyin": "nì",
+    "english": "hide/conceal",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "廉",
+    "pinyin": "lián",
+    "english": "incorrupt",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "酿",
+    "pinyin": "niàng",
+    "english": "brew/ferment",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "馥",
+    "pinyin": "fù",
+    "english": "fragrant",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "悍",
+    "pinyin": "hàn",
+    "english": "fierce/bold",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "赴",
+    "pinyin": "fù",
+    "english": "go to/attend",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "涵",
+    "pinyin": "hán",
+    "english": "contain/culvert",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "俘",
+    "pinyin": "fú",
+    "english": "capture",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "豁",
+    "pinyin": "huò",
+    "english": "open up",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "粼",
+    "pinyin": "lín",
+    "english": "ripple",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "拙",
+    "pinyin": "zhuō",
+    "english": "clumsy",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "舆",
+    "pinyin": "yú",
+    "english": "public opinion",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "真挚",
+    "pinyin": "zhēnzhì",
+    "english": "sincere",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "粗糙",
+    "pinyin": "cūcāo",
+    "english": "rough/coarse",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "出色",
+    "pinyin": "chūsè",
+    "english": "outstanding",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "沉着",
+    "pinyin": "chénzhuó",
+    "english": "composed/calm",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "忍受",
+    "pinyin": "rěnshòu",
+    "english": "endure",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "恳切",
+    "pinyin": "kěnqiè",
+    "english": "earnest",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "坦率",
+    "pinyin": "tǎnshuài",
+    "english": "frank",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "抵御",
+    "pinyin": "dǐyù",
+    "english": "resist",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "把握",
+    "pinyin": "bǎwò",
+    "english": "grasp/certainty",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "险峻",
+    "pinyin": "xiǎnjùn",
+    "english": "steep/perilous",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "精辟",
+    "pinyin": "jīngpì",
+    "english": "incisive",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "真诚",
+    "pinyin": "zhēnchéng",
+    "english": "sincere",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "恳请",
+    "pinyin": "kěnqǐng",
+    "english": "sincerely request",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "沉稳",
+    "pinyin": "chénwěn",
+    "english": "steady/composed",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "奔腾",
+    "pinyin": "bēnténg",
+    "english": "gallop/surge",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "认清",
+    "pinyin": "rènqīng",
+    "english": "see clearly",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "平翘舌"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "功夫",
+    "pinyin": "gōngfu",
+    "english": "skill/effort",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "前后鼻音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "动静",
+    "pinyin": "dòngjing",
+    "english": "sound/movement",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "分量",
+    "pinyin": "fènliang",
+    "english": "weight/heft",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "前后鼻音",
+      "n/l辨音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "苗头",
+    "pinyin": "miáotou",
+    "english": "sign/indication",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "凝练",
+    "pinyin": "nínglìan",
+    "english": "concise/refined",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "浓烈",
+    "pinyin": "nóngliè",
+    "english": "strong/intense",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "耐力",
+    "pinyin": "nàilì",
+    "english": "endurance",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "联络",
+    "pinyin": "liánluò",
+    "english": "liaise/contact",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "内涵",
+    "pinyin": "nèihán",
+    "english": "connotation",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "浮华",
+    "pinyin": "fúhuá",
+    "english": "flashy/superficial",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "繁华",
+    "pinyin": "fánhuá",
+    "english": "prosperous",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "荒废",
+    "pinyin": "huāngfèi",
+    "english": "neglect/waste",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "防患",
+    "pinyin": "fánghuàn",
+    "english": "guard against",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "沉浮",
+    "pinyin": "chénfú",
+    "english": "ups and downs",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "颠覆",
+    "pinyin": "diānfù",
+    "english": "subvert",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "淬炼",
+    "pinyin": "cuìliàn",
+    "english": "temper/refine",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "n/l辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "没准儿",
+    "pinyin": "méizhǔnr",
+    "english": "maybe/uncertain",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "老伴儿",
+    "pinyin": "lǎobànr",
+    "english": "spouse (elderly)",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "n/l辨音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "干劲儿",
+    "pinyin": "gànjìnr",
+    "english": "drive/enthusiasm",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "沁人心脾",
+    "pinyin": "qìnrén-xīnpí",
+    "english": "refreshing/enchanting",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "画龙点睛",
+    "pinyin": "huàlóng-diǎnjīng",
+    "english": "add the finishing touch",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "声调",
+      "n/l辨音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "举一反三",
+    "pinyin": "jǔyī-fǎnsān",
+    "english": "learn by analogy",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "前后鼻音",
+      "f/h辨音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "刻舟求剑",
+    "pinyin": "kèzhōu-qiújiàn",
+    "english": "stubbornly cling to the old",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "融会贯通",
+    "pinyin": "rónghuì-guàntōng",
+    "english": "master thoroughly",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "取长补短",
+    "pinyin": "qǔcháng-bǔduǎn",
+    "english": "learn from each other",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "胸有成竹",
+    "pinyin": "xiōngyǒu-chéngzhú",
+    "english": "have a plan in mind",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "鹤立鸡群",
+    "pinyin": "hèlì-jīqún",
+    "english": "stand out from the crowd",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "一针见血",
+    "pinyin": "yīzhēn-jiànxuè",
+    "english": "hit the nail on the head",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "矢志不渝",
+    "pinyin": "shǐzhì-bùyú",
+    "english": "unswerving",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "他的演讲旁征博引，深入浅出，赢得了全场的掌声。",
+    "pinyin": "Tā de yǎnjiǎng pángzhēng-bóyǐn, shēnrù-qiǎnchū, yíngdéle quánchǎng de zhǎngshēng.",
+    "english": "His speech, richly referenced and clearly explained, won the whole audience's applause.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "任何制度的建立都离不开社会成员的共同参与。",
+    "pinyin": "Rènhé zhìdù de jiànlì dōu lí bu kāi shèhuì chéngyuán de gòngtóng cānyù.",
+    "english": "No system can be built without the participation of all members of society.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "真正的智慧不在于积累知识，而在于融会贯通。",
+    "pinyin": "Zhēnzhèng de zhìhuì bú zàiyú jīlěi zhīshi, ér zàiyú rónghuì-guàntōng.",
+    "english": "True wisdom lies not in accumulating knowledge, but in mastering it thoroughly.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "胡同儿里那棵老槐树底下，几个老头儿正在下棋。",
+    "pinyin": "Hútòngr lǐ nà kē lǎo huáishù dǐxia, jǐ ge lǎotóur zhèngzài xiàqí.",
+    "english": "Under the old locust tree in the alley, a few old men are playing chess.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "儿化",
+      "f/h辨音",
+      "平翘舌",
+      "轻声",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "人的一生不可能一帆风顺，总会经历挫折与磨难。",
+    "pinyin": "Rén de yīshēng bù kěnéng yīfān-fēngshùn, zǒng huì jīnglì cuòzhé yǔ mónàn.",
+    "english": "Life can't always go smoothly; there will always be setbacks.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "f/h辨音",
+      "n/l辨音",
+      "平翘舌",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这份调研报告数据翔实，分析透彻，具有很高的参考价值。",
+    "pinyin": "Zhè fèn diàoyán bàogào shùjù xiángshí, fēnxī tòuchè, jùyǒu hěn gāo de cānkǎo jiàzhí.",
+    "english": "This research report has solid data, thorough analysis, and great reference value.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "f/h辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "他在逆境中依然保持沉着冷静，令同事们刮目相看。",
+    "pinyin": "Tā zài nìjìng zhōng yīrán bǎochí chénzhuó lěngjìng, lìng tóngshìmen guāmù-xiāngkàn.",
+    "english": "He stayed calm under adversity, impressing his colleagues.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "n/l辨音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "唯有脚踏实地、持之以恒，方能有所成就。",
+    "pinyin": "Wéiyǒu jiǎotà-shídì, chízhī-yǐhéng, fāng néng yǒusuǒ chéngjiù.",
+    "english": "Only through persistence and down-to-earth effort can one achieve something.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "前后鼻音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "纵观历史，任何变革都不是一蹴而就的。",
+    "pinyin": "Zòngguān lìshǐ, rènhé biàngé dōu búshì yīcù-érjiù de.",
+    "english": "Looking through history, no reform happens overnight.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "这篇散文笔触细腻，字里行间流露出对故乡的深情。",
+    "pinyin": "Zhè piān sǎnwén bǐchù xìnì, zìlǐ-hángjiān liúlù chū duì gùxiāng de shēnqíng.",
+    "english": "This essay is delicate, revealing deep feelings for the homeland between the lines.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "那个小摊儿上的煎饼果子味儿可真正宗。",
+    "pinyin": "Nàge xiǎo tānr shàng de jiānbǐng guǒzi wèir kě zhēn zhèngzōng.",
+    "english": "The jianbing from that little stall tastes really authentic.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "儿化",
+      "平翘舌",
+      "前后鼻音",
+      "轻声"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "凡事不能只凭一时冲动，还要深思熟虑才行。",
+    "pinyin": "Fánshì bùnéng zhǐ píng yīshí chōngdòng, hái yào shēnsī-shúlǜ cái xíng.",
+    "english": "Don't act on impulse; think things through carefully.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调",
+      "f/h辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "两国领导人就双边关系的未来发展交换了意见。",
+    "pinyin": "Liǎng guó lǐngdǎorén jiù shuāngbiān guānxì de wèilái fāzhǎn jiāohuànle yìjiàn.",
+    "english": "Leaders of both countries exchanged views on future bilateral relations.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音",
+      "f/h辨音",
+      "平翘舌",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "他虽出身寒门，却凭借非凡的毅力闯出了一番事业。",
+    "pinyin": "Tā suī chūshēn hánmén, què píngjiè fēifán de yìlì chuǎngchūle yī fān shìyè.",
+    "english": "Despite humble origins, he carved out a career through extraordinary perseverance.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "f/h辨音",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "常言道”磨刀不误砍柴工”，准备充分才能事半功倍。",
+    "pinyin": "Chángyán dào 'módāo bú wù kǎnchái gōng', zhǔnbèi chōngfèn cáinéng shìbàn-gōngbèi.",
+    "english": "As the saying goes, sharpening the axe won't delay the woodcutting — preparation doubles efficiency.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调",
+      "f/h辨音",
+      "多音节语流"
+    ],
+    "set": "train"
+  },
+  {
+    "text": "是",
+    "pinyin": "shì",
+    "english": "is/yes",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "吃",
+    "pinyin": "chī",
+    "english": "eat",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "四",
+    "pinyin": "sì",
+    "english": "four",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "男",
+    "pinyin": "nán",
+    "english": "male",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "女",
+    "pinyin": "nǚ",
+    "english": "female",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "飞",
+    "pinyin": "fēi",
+    "english": "fly",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "小",
+    "pinyin": "xiǎo",
+    "english": "small",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "没",
+    "pinyin": "méi",
+    "english": "not have",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "真",
+    "pinyin": "zhēn",
+    "english": "real",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "前后鼻音",
+      "平翘舌"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "冷",
+    "pinyin": "lěng",
+    "english": "cold",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "知道",
+    "pinyin": "zhīdào",
+    "english": "know",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "老师",
+    "pinyin": "lǎoshī",
+    "english": "teacher",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "轻声",
+      "n/l辨音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "明天",
+    "pinyin": "míngtiān",
+    "english": "tomorrow",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "东西",
+    "pinyin": "dōngxi",
+    "english": "thing",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "一点儿",
+    "pinyin": "yīdiǎnr",
+    "english": "a little",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "声调"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "认识",
+    "pinyin": "rènshi",
+    "english": "know (person)",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "轻声"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "喜欢",
+    "pinyin": "xǐhuan",
+    "english": "like",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "轻声"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "电影",
+    "pinyin": "diànyǐng",
+    "english": "movie",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "暖和",
+    "pinyin": "nuǎnhuo",
+    "english": "warm",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "轻声"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "方便",
+    "pinyin": "fāngbiàn",
+    "english": "convenient",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "请问洗手间在哪里？",
+    "pinyin": "Qǐngwèn xǐshǒujiān zài nǎlǐ?",
+    "english": "Excuse me, where is the restroom?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "他是你的哪个朋友？",
+    "pinyin": "Tā shì nǐ de nǎge péngyou?",
+    "english": "Which friend of yours is he?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "轻声",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "你能不能慢一点儿说？",
+    "pinyin": "Nǐ néng bu néng màn yīdiǎnr shuō?",
+    "english": "Can you speak a bit slower?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "儿化",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "这本书很便宜。",
+    "pinyin": "Zhè běn shū hěn piányi.",
+    "english": "This book is very cheap.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "轻声"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "南方和北方不一样。",
+    "pinyin": "Nánfāng hé běifāng bù yíyàng.",
+    "english": "The south and north are different.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "n/l辨音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "政",
+    "pinyin": "zhèng",
+    "english": "politics",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "产",
+    "pinyin": "chǎn",
+    "english": "produce",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "存",
+    "pinyin": "cún",
+    "english": "store",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "怒",
+    "pinyin": "nù",
+    "english": "anger",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "恋",
+    "pinyin": "liàn",
+    "english": "love",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "防",
+    "pinyin": "fáng",
+    "english": "defend",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "染",
+    "pinyin": "rǎn",
+    "english": "dye",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "影",
+    "pinyin": "yǐng",
+    "english": "shadow",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "纯",
+    "pinyin": "chún",
+    "english": "pure",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "愤",
+    "pinyin": "fèn",
+    "english": "indignant",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "支持",
+    "pinyin": "zhīchí",
+    "english": "support",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "成功",
+    "pinyin": "chénggōng",
+    "english": "succeed",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "精神",
+    "pinyin": "jīngshen",
+    "english": "spirit",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "轻声"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "联系",
+    "pinyin": "liánxì",
+    "english": "contact",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "丰富",
+    "pinyin": "fēngfù",
+    "english": "rich/abundant",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "了解",
+    "pinyin": "liǎojiě",
+    "english": "understand",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "声调"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "尾巴",
+    "pinyin": "wěiba",
+    "english": "tail",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "声调"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "一会儿",
+    "pinyin": "yīhuìr",
+    "english": "a moment",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "声调"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "能力",
+    "pinyin": "nénglì",
+    "english": "ability",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "坚持不懈",
+    "pinyin": "jiānchí-bùxiè",
+    "english": "persevere",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "这次考试的成绩比上次好多了。",
+    "pinyin": "Zhè cì kǎoshì de chéngjì bǐ shàng cì hǎo duō le.",
+    "english": "This exam score is much better than last time.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "虽然条件很简陋，但是大家都很满足。",
+    "pinyin": "Suīrán tiáojiàn hěn jiǎnlòu, dànshì dàjiā dōu hěn mǎnzú.",
+    "english": "Though conditions are simple, everyone is satisfied.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "他拿了一把扇儿，慢慢地扇起风来。",
+    "pinyin": "Tā nále yī bǎ shànr, mànmàn de shān qǐ fēng lái.",
+    "english": "He took a fan and slowly fanned the breeze.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "儿化",
+      "平翘舌",
+      "轻声",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "这份工作不仅辛苦，而且收入也不高。",
+    "pinyin": "Zhè fèn gōngzuò bùjǐn xīnkǔ, érqiě shōurù yě bù gāo.",
+    "english": "This job is not only hard, but the income is low too.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "你能帮我从那个柜子里拿一下吗？",
+    "pinyin": "Nǐ néng bāng wǒ cóng nàge guìzi lǐ ná yīxià ma?",
+    "english": "Can you get something from that cabinet for me?",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音",
+      "轻声",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "滞",
+    "pinyin": "zhì",
+    "english": "stagnate",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "粹",
+    "pinyin": "cuì",
+    "english": "pure/essence",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "嗔",
+    "pinyin": "chēn",
+    "english": "be angry",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "凝",
+    "pinyin": "níng",
+    "english": "congeal",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "履",
+    "pinyin": "lǚ",
+    "english": "fulfill/shoe",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "匮",
+    "pinyin": "kuì",
+    "english": "lack",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "纷",
+    "pinyin": "fēn",
+    "english": "confused/numerous",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "衡",
+    "pinyin": "héng",
+    "english": "balance",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "瞬",
+    "pinyin": "shùn",
+    "english": "instant",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "萎",
+    "pinyin": "wěi",
+    "english": "wither",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "阐述",
+    "pinyin": "chǎnshù",
+    "english": "elaborate",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "逻辑",
+    "pinyin": "luójí",
+    "english": "logic",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "丰碑",
+    "pinyin": "fēngbēi",
+    "english": "monument",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "沉淀",
+    "pinyin": "chéndiàn",
+    "english": "precipitate",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "领悟",
+    "pinyin": "lǐngwù",
+    "english": "comprehend",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "斟酌",
+    "pinyin": "zhēnzhuó",
+    "english": "deliberate",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "门槛儿",
+    "pinyin": "ménkǎnr",
+    "english": "threshold",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "前后鼻音"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "清醒",
+    "pinyin": "qīngxǐng",
+    "english": "clear-headed",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "窃窃私语",
+    "pinyin": "qièqiè-sīyǔ",
+    "english": "whisper",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "本末倒置",
+    "pinyin": "běnmò-dàozhì",
+    "english": "put the cart before the horse",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "声调",
+      "平翘舌"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "从某种程度上讲，创新与传承并不矛盾。",
+    "pinyin": "Cóng mǒu zhǒng chéngdù shàng jiǎng, chuàngxīn yǔ chuánchéng bìng bù máodùn.",
+    "english": "To some extent, innovation and heritage are not contradictory.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "那位老人虽年逾古稀，却依然精神矍铄。",
+    "pinyin": "Nà wèi lǎorén suī nián yú gǔxī, què yīrán jīngshén juéshuò.",
+    "english": "Though past seventy, the elder is still full of vigor.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "缺乏自律的人，往往难以抵御诱惑。",
+    "pinyin": "Quēfá zìlǜ de rén, wǎngwǎng nányǐ dǐyù yòuhuò.",
+    "english": "Those lacking self-discipline often can't resist temptation.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "n/l辨音",
+      "f/h辨音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "他的发言鞭辟入里，赢得满堂喝彩。",
+    "pinyin": "Tā de fāyán biānpì-rùlǐ, yíngdé mǎntáng hècǎi.",
+    "english": "His speech was incisive and won a round of applause.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "平翘舌",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "那个胡同儿里有一家老字号，门脸儿不大。",
+    "pinyin": "Nàge hútòngr lǐ yǒu yī jiā lǎozìhào, ménliǎnr bú dà.",
+    "english": "There's a time-honored shop in that alley with a small storefront.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "儿化",
+      "f/h辨音",
+      "轻声",
+      "多音节语流"
+    ],
+    "set": "testA"
+  },
+  {
+    "text": "书",
+    "pinyin": "shū",
+    "english": "book",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "出",
+    "pinyin": "chū",
+    "english": "go out",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "岁",
+    "pinyin": "suì",
+    "english": "age/year",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "蓝",
+    "pinyin": "lán",
+    "english": "blue",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "旅",
+    "pinyin": "lǚ",
+    "english": "travel",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "花",
+    "pinyin": "huā",
+    "english": "flower",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "走",
+    "pinyin": "zǒu",
+    "english": "walk",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "白",
+    "pinyin": "bái",
+    "english": "white",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "正",
+    "pinyin": "zhèng",
+    "english": "correct",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "前后鼻音",
+      "平翘舌"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "很",
+    "pinyin": "hěn",
+    "english": "very",
+    "level": "1-3",
+    "unit": "字",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "周末",
+    "pinyin": "zhōumò",
+    "english": "weekend",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "上课",
+    "pinyin": "shàngkè",
+    "english": "go to class",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "今天",
+    "pinyin": "jīntiān",
+    "english": "today",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "朋友",
+    "pinyin": "péngyou",
+    "english": "friend",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "好玩儿",
+    "pinyin": "hǎowánr",
+    "english": "fun",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "声调"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "意思",
+    "pinyin": "yìsi",
+    "english": "meaning",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "轻声"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "可以",
+    "pinyin": "kěyǐ",
+    "english": "can",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "声调"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "电脑",
+    "pinyin": "diànnǎo",
+    "english": "computer",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "努力",
+    "pinyin": "nǔlì",
+    "english": "work hard",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "回复",
+    "pinyin": "huífù",
+    "english": "reply",
+    "level": "1-3",
+    "unit": "词",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "请问火车站怎么走？",
+    "pinyin": "Qǐngwèn huǒchēzhàn zěnme zǒu?",
+    "english": "Excuse me, how do I get to the train station?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "她是你的同学吗？",
+    "pinyin": "Tā shì nǐ de tóngxué ma?",
+    "english": "Is she your classmate?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "轻声",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "你能不能再说一次？",
+    "pinyin": "Nǐ néng bu néng zài shuō yí cì?",
+    "english": "Can you say it again?",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "那件衣服很好看。",
+    "pinyin": "Nà jiàn yīfu hěn hǎokàn.",
+    "english": "That piece of clothing looks good.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "轻声",
+      "声调"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "今年和去年不一样。",
+    "pinyin": "Jīnnián hé qùnián bù yíyàng.",
+    "english": "This year and last year are different.",
+    "level": "1-3",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "证",
+    "pinyin": "zhèng",
+    "english": "certificate",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "称",
+    "pinyin": "chēng",
+    "english": "weigh/call",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "粗",
+    "pinyin": "cū",
+    "english": "coarse",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "虐",
+    "pinyin": "nüè",
+    "english": "cruel",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "略",
+    "pinyin": "lüè",
+    "english": "brief",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "慌",
+    "pinyin": "huāng",
+    "english": "flustered",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "忍",
+    "pinyin": "rěn",
+    "english": "endure",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "景",
+    "pinyin": "jǐng",
+    "english": "scenery",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "唇",
+    "pinyin": "chún",
+    "english": "lip",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "混",
+    "pinyin": "hùn",
+    "english": "mix",
+    "level": "4-6",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "组织",
+    "pinyin": "zǔzhī",
+    "english": "organize",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "环境",
+    "pinyin": "huánjìng",
+    "english": "environment",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "消息",
+    "pinyin": "xiāoxi",
+    "english": "news",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "轻声"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "内容",
+    "pinyin": "nèiróng",
+    "english": "content",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "发挥",
+    "pinyin": "fāhuī",
+    "english": "display/exert",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "f/h辨音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "领导",
+    "pinyin": "lǐngdǎo",
+    "english": "leader",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "石头",
+    "pinyin": "shítou",
+    "english": "stone",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "轻声",
+      "平翘舌"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "有空儿",
+    "pinyin": "yǒukòngr",
+    "english": "have free time",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "声调"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "自相矛盾",
+    "pinyin": "zìxiāng-máodùn",
+    "english": "self-contradictory",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "理想",
+    "pinyin": "lǐxiǎng",
+    "english": "ideal/dream",
+    "level": "4-6",
+    "unit": "词",
+    "tags": [
+      "声调",
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "这部电影的情节比小说精彩得多。",
+    "pinyin": "Zhè bù diànyǐng de qíngjié bǐ xiǎoshuō jīngcǎi de duō.",
+    "english": "This movie's plot is much more exciting than the novel.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "尽管天气不好，运动会还是照常举行。",
+    "pinyin": "Jǐnguǎn tiānqì bù hǎo, yùndònghuì háishi zhàocháng jǔxíng.",
+    "english": "Despite bad weather, the sports meet was held as usual.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "门口儿有个小摊儿，卖的全是本地特产。",
+    "pinyin": "Ménkǒur yǒu ge xiǎo tānr, mài de quán shì běndì tèchǎn.",
+    "english": "There's a small stall at the door selling all local specialties.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "儿化",
+      "平翘舌",
+      "轻声",
+      "多音节语流"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "这座城市不但风景优美，而且物价也不贵。",
+    "pinyin": "Zhè zuò chéngshì búdàn fēngjǐng yōuměi, érqiě wùjià yě bú guì.",
+    "english": "This city is not only scenic but also affordable.",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "你能带我从南门那边绕过去吗？",
+    "pinyin": "Nǐ néng dài wǒ cóng nánmén nàbiān rào guòqù ma?",
+    "english": "Can you take me around from the south gate?",
+    "level": "4-6",
+    "unit": "句",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音",
+      "轻声",
+      "多音节语流"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "稚",
+    "pinyin": "zhì",
+    "english": "immature",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "碎",
+    "pinyin": "suì",
+    "english": "broken",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "澄",
+    "pinyin": "chéng",
+    "english": "clear",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "拧",
+    "pinyin": "níng",
+    "english": "twist",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "滤",
+    "pinyin": "lǜ",
+    "english": "filter",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "n/l辨音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "溃",
+    "pinyin": "kuì",
+    "english": "collapse",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "焚",
+    "pinyin": "fén",
+    "english": "burn",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "痕",
+    "pinyin": "hén",
+    "english": "trace",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "撰",
+    "pinyin": "zhuàn",
+    "english": "compose",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "琐",
+    "pinyin": "suǒ",
+    "english": "trivial",
+    "level": "7-9",
+    "unit": "字",
+    "tags": [
+      "声调"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "诠释",
+    "pinyin": "quánshì",
+    "english": "interpret",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "蕴含",
+    "pinyin": "yùnhán",
+    "english": "contain/imply",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "辉煌",
+    "pinyin": "huīhuáng",
+    "english": "glorious",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "f/h辨音",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "沉沦",
+    "pinyin": "chénlún",
+    "english": "sink/degenerate",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "n/l辨音",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "凌驾",
+    "pinyin": "língjià",
+    "english": "override",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音",
+      "声调"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "甄别",
+    "pinyin": "zhēnbié",
+    "english": "distinguish",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "平翘舌",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "眼神儿",
+    "pinyin": "yǎnshénr",
+    "english": "look in one's eyes",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "儿化",
+      "前后鼻音"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "深沉",
+    "pinyin": "shēnchén",
+    "english": "deep/profound",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "平翘舌"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "循规蹈矩",
+    "pinyin": "xúnguī-dǎojǔ",
+    "english": "follow the rules",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "声调"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "居安思危",
+    "pinyin": "jū'ān-sīwēi",
+    "english": "prepare for danger in times of peace",
+    "level": "7-9",
+    "unit": "词",
+    "tags": [
+      "前后鼻音",
+      "声调",
+      "平翘舌"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "在全球化的背景下，文化冲突与融合同时存在。",
+    "pinyin": "Zài quánqiúhuà de bèijǐng xià, wénhuà chōngtū yǔ rónghé tóngshí cúnzài.",
+    "english": "Cultural conflict and integration coexist in globalization.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "平翘舌",
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "这位年轻学者凭实力崭露头角，令人刮目相看。",
+    "pinyin": "Zhè wèi niánqīng xuézhě píng shílì zhǎnlù-tóujiǎo, lìng rén guāmù-xiāngkàn.",
+    "english": "This young scholar distinguished himself with real talent.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "n/l辨音",
+      "前后鼻音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "仅凭一腔热忱，未必能化解根深蒂固的偏见。",
+    "pinyin": "Jǐn píng yī qiāng rèchén, wèibì néng huàjiě gēnshēn-dìgù de piānjiàn.",
+    "english": "Passion alone can't necessarily resolve deep-rooted prejudice.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "f/h辨音",
+      "声调",
+      "多音节语流"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "她的论证层层递进，让反对者无从辩驳。",
+    "pinyin": "Tā de lùnzhèng céngcéng dìjìn, ràng fǎnduìzhě wúcóng biànbó.",
+    "english": "Her argument built step by step, leaving opponents no rebuttal.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "前后鼻音",
+      "平翘舌",
+      "n/l辨音",
+      "多音节语流"
+    ],
+    "set": "testB"
+  },
+  {
+    "text": "巷子口儿有棵老槐树，树底下摆着棋盘儿。",
+    "pinyin": "Xiàngzi kǒur yǒu kē lǎo huáishù, shù dǐxia bǎizhe qípánr.",
+    "english": "At the alley entrance there's an old locust tree, with a chess board underneath.",
+    "level": "7-9",
+    "unit": "句",
+    "tags": [
+      "儿化",
+      "f/h辨音",
+      "轻声",
+      "多音节语流"
+    ],
+    "set": "testB"
+  }
+]

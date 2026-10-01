@@ -1,3 +1,6 @@
+// ⚠️ 本文件由 mp/scripts/sync-core.mjs 从 Web 版 src/utils/pronunciationBank.js 复制生成，请勿直接修改。
+//    要改就在 Web 版改，然后跑 `npm run sync:core`。
+//    确有平台差异需要保留的，登记到 sync-core.mjs 的 PATCHES 里。
 // ── 发音题库：纯逻辑，不依赖 React ──
 // 选课、评测模式映射、讯飞响应解析全部放在这里，而不是埋在组件的事件回调里。
 // 原因很实际：本机没有浏览器自动化，验证只能靠 SSR 渲染初始状态，点不到按钮。

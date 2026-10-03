@@ -85,6 +85,7 @@ export function PronunciationDrill({ bank, title, subtitle, onBack, isCustom = f
         problems: record.problems,
         suggestion: record.suggestion,
         source,
+        rawResult: record.rawResult,
       }));
 
       setFeedback(fb);

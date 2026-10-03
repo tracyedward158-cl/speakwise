@@ -7,6 +7,10 @@
 //    · 列表接口一律【不含】messages，只给 JSON_LENGTH 哨兵 messageCount。
 //      500 行 × 一条 12 轮对话(≈20KB) = 10MB 响应，会撞 SCF 上限。
 //    · messages 的唯一出口是 GET /:id。
+//
+//  发音评测原始数据（raw_result JSON 列）：
+//    · 同样只在 GET /:id 出口，列表接口不带 —— 理由与 messages 相同，量级小些而已。
+//      导出走 hydrateRecords 逐条拉详情，所以照样拿得到。
 //    · 路由注册顺序：/mine、/class、/scenarios 必须在 /:id 之前，
 //      否则 /:id 会把它们吞掉（Number('mine') = NaN → 400）。
 // ============================================================================
@@ -65,6 +69,7 @@ function toClientRecordDetail(r) {
     ...toClientRecord(r),
     messageCount: messages ? messages.length : 0,
     messages,
+    rawResult: parseRawResult(r.raw_result),
   };
 }
 
@@ -74,6 +79,16 @@ function parseMessages(v) {
   try {
     const a = JSON.parse(v);
     return Array.isArray(a) ? a : null;
+  } catch { return null; }
+}
+
+// raw_result 是对象（讯飞 result），不是数组，所以不能复用 parseMessages 的数组校验
+function parseRawResult(v) {
+  if (v === null || v === undefined) return null;
+  if (typeof v === 'object') return Array.isArray(v) ? null : v;
+  try {
+    const o = JSON.parse(v);
+    return o && typeof o === 'object' && !Array.isArray(o) ? o : null;
   } catch { return null; }
 }
 
@@ -113,6 +128,23 @@ function sanitizeMessages(v) {
   return out.length ? out : null;
 }
 
+// ── 发音评测原始数据 ──
+// 讯飞 result 原样存，不做字段裁剪 —— 这份数据的全部价值就在于「没被裁过」，
+// 任何白名单式的重建都会让它退化成第二个 dimensions。
+// 只留一个体积上限做防御：正常一条句子几 KB，超限说明客户端有问题，
+// 那种情况下宁可不存也不能让一条记录撑爆响应或撞 max_allowed_packet。
+const MAX_RAW_BYTES = 128 * 1024;
+function sanitizeRawResult(v) {
+  if (!v || typeof v !== 'object' || Array.isArray(v)) return null;
+  let json;
+  try { json = JSON.stringify(v); } catch { return null; }   // 循环引用等
+  if (Buffer.byteLength(json, 'utf8') > MAX_RAW_BYTES) {
+    console.warn(`[records] raw_result 超过 ${MAX_RAW_BYTES} 字节，已丢弃`);
+    return null;
+  }
+  return json;
+}
+
 // 与 tasks.cjs 中的同名函数保持一致
 async function getClassId(teacherId) {
   const rows = await query('SELECT id FROM classes WHERE teacher_id = ? LIMIT 1', [teacherId]);
@@ -130,8 +162,8 @@ router.post('/', requireAuth, async (req, res) => {
     const rows = await query(
       `INSERT INTO records
        (user_id, legacy_id, module, scenario, score, dimensions, problems, suggestion,
-        hsk_level, created_at, messages, source)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(?, NOW()), ?, ?)`,
+        hsk_level, created_at, messages, source, raw_result)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(?, NOW()), ?, ?, ?)`,
       [
         req.user.id,
         b.id ?? null,
@@ -145,6 +177,7 @@ router.post('/', requireAuth, async (req, res) => {
         createdAt,
         toJson(sanitizeMessages(b.messages)),
         sanitizeSource(b.source),
+        sanitizeRawResult(b.rawResult),
       ]
     );
     return res.json({ id: rows.insertId });
@@ -183,10 +216,12 @@ router.post('/migrate', requireAuth, async (req, res) => {
           : null;
         // 只序列化一次：算批量大小的字符串直接复用给 INSERT，不再 stringify 第二遍
         const messagesJson = toJson(sanitizeMessages(r.messages));
+        const rawJson = sanitizeRawResult(r.rawResult);
         // ×3：中文 UTF-8 三字节/字，按字符数估会低估
         bytes += messagesJson ? messagesJson.length * 3 : 0;
+        bytes += rawJson ? rawJson.length * 3 : 0;
 
-        values.push('(?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(?, NOW()), ?, ?)');
+        values.push('(?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE(?, NOW()), ?, ?, ?)');
         params.push(
           req.user.id,
           Number(r.id),
@@ -199,14 +234,15 @@ router.post('/migrate', requireAuth, async (req, res) => {
           r.hskLevel || null,
           createdAt,
           messagesJson,
-          sanitizeSource(r.source)
+          sanitizeSource(r.source),
+          rawJson
         );
       }
 
       const result = await query(
         `INSERT IGNORE INTO records
          (user_id, legacy_id, module, scenario, score, dimensions, problems, suggestion,
-          hsk_level, created_at, messages, source)
+          hsk_level, created_at, messages, source, raw_result)
          VALUES ${values.join(', ')}`,
         params
       );

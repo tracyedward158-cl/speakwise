@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS records (
   suggestion TEXT,
   messages JSON DEFAULT NULL,           -- 完整对话记录 [{sender,content,at,channel}]，仅对话类模块
   source VARCHAR(8) NOT NULL DEFAULT '', -- 发音测评题目来源 'train'|'testA'|'testB'|'custom'，其余模块留空
+  raw_result JSON DEFAULT NULL,         -- 发音测评的讯飞原始 result（八维总分+逐字评分+增漏读标记），其余模块 / 旧记录为 NULL
   hsk_level VARCHAR(4) DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY uq_user_legacy (user_id, legacy_id),   -- 迁移幂等去重
@@ -125,3 +126,26 @@ DEALLOCATE PREPARE stmt;
 -- 验证：
 --   SHOW COLUMNS FROM records LIKE 'source';                      -- 应返回 1 行
 --   SELECT source, COUNT(*) FROM records GROUP BY source;
+
+-- ── records.raw_result：发音评测的讯飞原始返回 ──
+-- 前端 extractFeedback 会把讯飞结果压成 4 维 dimensions + 最多 4 条 problems 字符串，
+-- 压掉的逐字评分 / charType（增漏错读）/ 逐字 pinyin、tone / 声韵母明细都不可逆，
+-- 科研回溯只能靠这一列存原文。⚠️ 同样必须先跑这段再发布带 raw_result 的后端，
+-- 否则所有 POST /api/records 报 ER_BAD_FIELD_ERROR，前端 saveRecord 会静默降级到
+-- localStorage（用户以为存到云端了，实际没有）。旧记录的该列保持 NULL。
+SET @ddl := (
+  SELECT IF(COUNT(*) = 0,
+    'ALTER TABLE records ADD COLUMN raw_result JSON DEFAULT NULL COMMENT ''发音测评的讯飞原始 result（八维+逐字评分+增漏读标记）''',
+    'SELECT ''skipped: records.raw_result already exists'' AS result')
+  FROM INFORMATION_SCHEMA.COLUMNS
+  WHERE TABLE_SCHEMA = 'speakwise'
+    AND TABLE_NAME   = 'records'
+    AND COLUMN_NAME  = 'raw_result'
+);
+PREPARE stmt FROM @ddl;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+-- 验证：
+--   SHOW COLUMNS FROM records LIKE 'raw_result';                  -- 应返回 1 行
+--   SELECT COUNT(*) FROM records WHERE raw_result IS NOT NULL;     -- 升级后应为 0，之后随练习增长

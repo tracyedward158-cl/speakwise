@@ -137,7 +137,8 @@ export function clearDrafts() {
 //           「下次进入补交」共享同一个 legacy_id，服务端唯一键去重
 // source:   发音测评的题目来源（train/testA/testB/custom），其余模块留空。
 //           测试成绩与日常练习在记录里本无法区分，科研导出要靠它分辨前后测数据。
-export function buildRecord({ module, scenario, score, dimensions, problems, suggestion, hskLevel, messages, id, source }) {
+// rawResult: 发音测评的讯飞原始 result（八维 + 逐字评分 + 增漏读标记），其余模块为 null。
+export function buildRecord({ module, scenario, score, dimensions, problems, suggestion, hskLevel, messages, id, source, rawResult }) {
   return {
     id: id ?? Date.now(),
     studentId: getOwnerId(),
@@ -150,6 +151,7 @@ export function buildRecord({ module, scenario, score, dimensions, problems, sug
     suggestion: suggestion || "",
     messages: messages || null,
     source: source || "",
+    rawResult: rawResult || null,
     createdAt: new Date().toISOString(),
   };
 }

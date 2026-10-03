@@ -247,6 +247,10 @@ export function extractFeedback(result, item = {}) {
       suggestion: overall >= 80 ? "发音较好，继续保持。"
         : overall >= 60 ? "建议重点练习发音和声调，多跟读模仿。"
         : "建议在安静环境下反复跟读，从简单句子开始练习。",
+      // 讯飞原始 result 原样带出，本函数不做任何裁剪（见 server.cjs 的 rawResult）。
+      // 上面 dimensions 只留 4 维、problems 截到 4 条，而且逐字评分整块都不进 record
+      // —— 这些压缩都不可逆，科研要的逐字 / charType 明细只能靠这一份原文。
+      rawResult: r.rawResult ?? null,
     },
   };
 }

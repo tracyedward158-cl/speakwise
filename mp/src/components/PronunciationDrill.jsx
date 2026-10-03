@@ -113,7 +113,8 @@ export function PronunciationDrill({
           dimensions: record.dimensions,
           problems: record.problems,
           suggestion: record.suggestion,
-          source
+          source,
+          rawResult: record.rawResult
         })
       )
 

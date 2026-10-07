@@ -163,7 +163,7 @@ export function computeRecordMetrics(record) {
     avgChars: round1(charsTotal / students.length),
 
     // ③ 间隔。gapsSec 存原始浮点秒、刻意不取整：先四舍五入再平均与「总间隔/总间隔数」
-    //    的池化口径不等，500 条 × 60 个间隔能累积到 0.1 秒量级，而本指标的可报告精度
+    //    的池化口径不等，6000 条 × 60 个间隔能累积到 0.1 秒量级，而本指标的可报告精度
     //    就是 0.1 秒。展示字段才 round1。研究者可在导出文件上自行施加裁切规则。
     gapsSec,
     gapCount: gapsSec.length,

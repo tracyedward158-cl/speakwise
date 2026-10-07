@@ -7,6 +7,114 @@ import { TopBar } from "../components/TopBar.jsx";
 import { PageWrap } from "../components/PageWrap.jsx";
 import { MenuItem } from "../components/MenuItem.jsx";
 
+// ── 我的任务卡片用的小工具 ──
+
+// 任务模块 → 对应练习入口，学生点「去练习」直接跳到那个模块
+const TASK_MODULE_ROUTES = {
+  "生活情境": "/oral/scenes",
+  "自由对话": "/oral/free",
+  "发音测评": "/oral/pronunciation",
+  "造句练习": "/written/drill/sentence",
+  "写作辅导": "/written",
+  "文化文游": "/culture",
+};
+
+// 距截止天数 + 绝对日期。剩余不足 24 小时按「今天截止」显示 ——
+// 学生端 /mine 只返回未过期任务，纯按 ceil 算天数的话这一档永远不会出现。
+function taskDeadline(endAt) {
+  const end = new Date(endAt);
+  if (!endAt || Number.isNaN(end.getTime())) return null;
+  const msLeft = end.getTime() - Date.now();
+  const date = `${end.getMonth() + 1}月${end.getDate()}日`;
+  if (msLeft <= 0) return { daysLeft: 0, label: `已截止（${date}）` };
+  const daysLeft = Math.max(1, Math.ceil(msLeft / 86400000));
+  return {
+    daysLeft,
+    label: msLeft < 86400000 ? `今天截止（${date}）` : `剩 ${daysLeft} 天 · ${date}截止`,
+  };
+}
+
+// 学生主页的「我的任务」卡。纯展示：任务由父组件取好后传进来，
+// 这样 SSR harness 能直接喂 props 渲染（useEffect 在 SSR 下不执行，父组件里跑不出数据）。
+export function MyTasksCard({ tasks, onGo }) {
+  const [showAll, setShowAll] = useState(false);
+  if (!tasks || tasks.length === 0) return null;
+  const visible = showAll ? tasks : tasks.slice(0, 3);
+
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <div style={{
+        background: "linear-gradient(135deg, #7B4FA3, #9B59B6)", borderRadius: 16,
+        padding: "16px 20px", color: "#fff",
+      }}>
+        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 10 }}>
+          🎯 我的任务（{tasks.length}）
+          <span style={{ fontSize: 11, opacity: 0.8, fontWeight: 400, marginLeft: 6 }}>老师发布的练习任务 · 完成自动更新</span>
+        </div>
+        {visible.map((t, i) => {
+          const dl = taskDeadline(t.endAt);
+          const route = TASK_MODULE_ROUTES[t.module];
+          const pct = Math.min(100, Math.round((t.count / Math.max(t.targetCount, 1)) * 100));
+          const urgent = !t.done && dl && dl.daysLeft <= 1;
+          return (
+            <div key={t.id} style={{
+              paddingTop: i === 0 ? 0 : 12, marginTop: i === 0 ? 0 : 12,
+              borderTop: i === 0 ? "none" : "1px solid rgba(255,255,255,0.22)",
+            }}>
+              {/* 标题 + 直达入口 */}
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 700, lineHeight: 1.4 }}>{t.title}</span>
+                {route && (
+                  <button onClick={() => onGo(route)} style={{
+                    flexShrink: 0, cursor: "pointer", fontFamily: "inherit",
+                    border: "1px solid rgba(255,255,255,0.55)", background: "rgba(255,255,255,0.14)",
+                    color: "#fff", borderRadius: 12, padding: "4px 10px", fontSize: 11,
+                  }}>
+                    去练习 →
+                  </button>
+                )}
+              </div>
+              {/* 明细：模块/场景 · 目标次数 · 截止 */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 6, fontSize: 11 }}>
+                <span style={{ background: "rgba(255,255,255,0.18)", borderRadius: 8, padding: "2px 8px" }}>
+                  {t.module}{t.scenario ? ` · ${t.scenario}` : ""}
+                </span>
+                <span style={{ background: "rgba(255,255,255,0.18)", borderRadius: 8, padding: "2px 8px" }}>
+                  目标 {t.targetCount} 次
+                </span>
+                {dl && (
+                  <span style={{
+                    borderRadius: 8, padding: "2px 8px", fontWeight: urgent ? 700 : 400,
+                    background: urgent ? "rgba(255,214,102,0.3)" : "rgba(255,255,255,0.18)",
+                  }}>
+                    {dl.label}
+                  </span>
+                )}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8 }}>
+                <div style={{ flex: 1, height: 6, background: "rgba(255,255,255,0.25)", borderRadius: 3, overflow: "hidden" }}>
+                  <div style={{ width: `${pct}%`, height: "100%", background: "#fff", borderRadius: 3, transition: "width 0.4s" }} />
+                </div>
+                <span style={{ fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}>
+                  {t.done ? "✅ " : ""}{t.count}/{t.targetCount} 次
+                </span>
+              </div>
+            </div>
+          );
+        })}
+        {tasks.length > 3 && (
+          <div onClick={() => setShowAll(v => !v)} style={{
+            marginTop: 12, paddingTop: 10, textAlign: "center", fontSize: 11, cursor: "pointer",
+            borderTop: "1px solid rgba(255,255,255,0.22)", opacity: 0.9,
+          }}>
+            {showAll ? "收起任务 ▲" : `展开全部 ${tasks.length} 个任务 ▼`}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function UserBar({ onLogout }) {
   const { user, guest } = useAuth();
   const navigate = useNavigate();
@@ -178,27 +286,8 @@ function StudentHome({ onOpenAbout }) {
           <UserBar onLogout={handleLogout} />
 
           {/* ── 我的任务：任务进度卡 ── */}
-          {user && user.role === "student" && myTasks && myTasks.length > 0 && (
-            <div style={{ marginBottom: 16 }}>
-              <div style={{
-                background: "linear-gradient(135deg, #7B4FA3, #9B59B6)", borderRadius: 16,
-                padding: "16px 20px", color: "#fff", display: "flex", flexDirection: "column", gap: 10,
-              }}>
-                <div style={{ fontSize: 13, fontWeight: 700 }}>
-                  🎯 我的任务
-                  <span style={{ fontSize: 11, opacity: 0.8, fontWeight: 400, marginLeft: 6 }}>老师发布的练习任务 · 完成自动更新</span>
-                </div>
-                {myTasks.slice(0, 3).map(t => (
-                  <div key={t.id} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 12 }}>
-                    <span style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{t.title}</span>
-                    <div style={{ width: 110, height: 6, background: "rgba(255,255,255,0.25)", borderRadius: 3, overflow: "hidden" }}>
-                      <div style={{ width: `${Math.min((t.count / t.targetCount) * 100, 100)}%`, height: "100%", background: "#fff", borderRadius: 3, transition: "width 0.4s" }} />
-                    </div>
-                    <span style={{ minWidth: 46, textAlign: "right", fontWeight: 700 }}>{t.done ? "✅ " : ""}{t.count}/{t.targetCount}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {user && user.role === "student" && myTasks && (
+            <MyTasksCard tasks={myTasks} onGo={navigate} />
           )}
 
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>

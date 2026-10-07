@@ -5,7 +5,8 @@
 //
 //  对话记录（messages JSON 列）：
 //    · 列表接口一律【不含】messages，只给 JSON_LENGTH 哨兵 messageCount。
-//      500 行 × 一条 12 轮对话(≈20KB) = 10MB 响应，会撞 SCF 上限。
+//      6000 行 × 一条 12 轮对话(≈20KB) = 120MB 响应，会撞 SCF 上限。
+//      单行列表投影实测约 0.6KB，6000 行 ≈ 3.6MB，仍在 SCF 6MB 响应上限内。
 //    · messages 的唯一出口是 GET /:id。
 //
 //  发音评测原始数据（raw_result JSON 列）：
@@ -21,7 +22,10 @@ const { query } = require('./db.cjs');
 const { requireAuth, requireTeacher } = require('./auth.cjs');
 
 const router = express.Router();
-const MAX_ROWS = 500;
+// 列表接口返回条数上限（单次查询，非存储上限：更早的记录始终在库里，只是不返回）。
+// 6000 条 ≈ 3.6MB 响应，已逼近 SCF 6MB 上限；再调高必须先重新评估响应体积。
+// 触顶时响应里的 total 会大于 records.length，前端据此如实提示。
+const MAX_ROWS = 6000;
 
 // ── 对话记录截断上限 ──
 // ⚠️ 必须与前端 src/utils/transcript.js 的 capTranscript 保持同一规则。
@@ -262,7 +266,10 @@ router.get('/mine', requireAuth, async (req, res) => {
       `SELECT ${LIST_COLUMNS} FROM records WHERE user_id = ? ORDER BY created_at DESC LIMIT ?`,
       [req.user.id, MAX_ROWS]
     );
-    return res.json({ records: rows.map(toClientRecord) });
+    // total 是真实总数，可能大于返回条数（触顶时）。前端要靠它如实提示，
+    // 而不是拿 records.length >= MAX_ROWS 去猜「是不是被截断了」。
+    const totals = await query('SELECT COUNT(*) AS total FROM records WHERE user_id = ?', [req.user.id]);
+    return res.json({ records: rows.map(toClientRecord), total: totals[0].total });
   } catch (e) {
     console.error('/api/records/mine error:', e.message);
     return res.status(500).json({ error: e.message || '获取记录失败' });
@@ -273,7 +280,7 @@ router.get('/mine', requireAuth, async (req, res) => {
 router.get('/class', requireAuth, requireTeacher, async (req, res) => {
   try {
     const classId = await getClassId(req.user.id);
-    if (!classId) return res.json({ class: null, records: [] });
+    if (!classId) return res.json({ class: null, records: [], total: 0 });
 
     const rows = await query(
       `SELECT r.id, r.legacy_id, r.user_id, r.module, r.scenario, r.score,
@@ -287,7 +294,14 @@ router.get('/class', requireAuth, requireTeacher, async (req, res) => {
        ORDER BY r.created_at DESC LIMIT ?`,
       [classId, MAX_ROWS]
     );
-    return res.json({ class: { id: classId }, records: rows.map(toClientRecord) });
+    // 同 /mine：total 是全班真实总数，可能大于返回条数
+    const totals = await query(
+      `SELECT COUNT(*) AS total
+       FROM records r JOIN class_members cm ON cm.student_id = r.user_id
+       WHERE cm.class_id = ?`,
+      [classId]
+    );
+    return res.json({ class: { id: classId }, records: rows.map(toClientRecord), total: totals[0].total });
   } catch (e) {
     console.error('/api/records/class error:', e.message);
     return res.status(500).json({ error: e.message || '获取班级记录失败' });

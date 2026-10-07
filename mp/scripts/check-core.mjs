@@ -125,6 +125,18 @@ ok(
     : ''
 )
 
+// iseRaw 是讯飞的原始 result；iseSample 是 server.cjs 白名单重建后发给前端的形状
+// （外加 rawResult 原文）。两者并排摆着，是为了让「哪些字段会被白名单丢掉」在测试里
+// 直接看得见 —— 存原文的全部意义就是这些字段不能丢（charType 就是其中之一：
+// server.cjs 的重建没带它，而 PronunciationDrill 的逐字渲染却要用它过滤）。
+const iseRaw = {
+  overall: 82.5, pronunciation: 85, tone: 78, fluency: 80, integrity: 90, rhythm: 70, speed: 210, duration: 1200,
+  words: [
+    { word: '你', pinyin: 'nǐ', tone: 3, readType: 0, charType: 0, scores: { overall: 88, pronunciation: 90, tone: 80, prominence: 70 } },
+    { word: '好', pinyin: 'hǎo', tone: 3, readType: 0, charType: 1, scores: { overall: 77, pronunciation: 80, tone: 76, prominence: 60 } },
+  ],
+  warning: null,
+}
 const iseSample = {
   refText: '你好',
   overall: 82.5, pronunciation: 85, tone: 78, fluency: 80, integrity: 90, rhythm: 70, speed: 210, duration: 1200,
@@ -133,6 +145,7 @@ const iseSample = {
     { word: '好', pinyin: 'hǎo', tone: 3, readType: 0, scores: { overall: 77, pronunciation: 80, tone: 76, prominence: 60 } },
   ],
   warning: null,
+  rawResult: iseRaw,
 }
 const { feedback: fb, record: rec } = extractFeedback(iseSample, { text: '你好', unit: '词' })
 eq('extractFeedback 保留总分', fb.overall, 82.5)
@@ -146,6 +159,13 @@ ok('record 分数落在 0-100', rec.score >= 0 && rec.score <= 100, String(rec.s
 ok('分数可以是小数（保持讯飞原值）', rec.score === 82.5, String(rec.score))
 ok('record 有 suggestion', typeof rec.suggestion === 'string' && rec.suggestion.length > 0)
 ok('dimensionCells 过滤掉空值', dimensionCells({ pronunciation: 80, tone: null, overall: 80 }).every(c => c.value != null))
+
+// rawResult：整条落库链路的依据（Web/小程序共用这一份逻辑）。上面的 dimensions 只有
+// 4 维、problems 截到 4 条，都是有损压缩；被压掉的逐字评分、charType、逐字 pinyin/tone
+// 只能靠原文回溯，所以这里必须钉住「一个字段都不裁」。
+eq('record 原样带出讯飞原始 result', rec.rawResult, iseRaw)
+eq('原文里白名单会丢的 charType 仍在', rec.rawResult.words[1].charType, 1)
+eq('响应没有原文时 rawResult 为 null', extractFeedback({ overall: 80 }, {}).record.rawResult, null)
 
 // ══════════════ 3. 对话指标口径 ══════════════
 const mkMsgs = () => ([
@@ -286,6 +306,13 @@ ok('按时间倒序', merged.every((r, i) => i === 0 || new Date(merged[i - 1].c
 eq('hasTranscript 认 messageCount', hasTranscript({ messageCount: 3 }), true)
 eq('messageCount 读 messages 长度', messageCount({ messages: [1, 2] }), 2)
 eq('messageCount 缺省为 0', messageCount({}), 0)
+
+// rawResult 经 buildRecord 透传（两条 INSERT 都在服务端，这里只管别在客户端把它丢了）
+eq('buildRecord 透传 rawResult',
+  buildRecord({ module: '发音测评', scenario: '你好', score: 80, hskLevel: '1-3', rawResult: { overall: 80, words: [] } }).rawResult,
+  { overall: 80, words: [] })
+eq('buildRecord 无 rawResult 时为 null',
+  buildRecord({ module: '造句练习', score: 1 }).rawResult, null)
 
 // ══════════════ 6. 雷达图极坐标数学 ══════════════
 // 与 components/AbilityRadar.jsx 里那段逐字相同 —— 渲染层换成 canvas，

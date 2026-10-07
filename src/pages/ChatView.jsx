@@ -42,7 +42,7 @@ export function ChatView() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const endRef = useRef(null);
-  const { listening, speaking, startListening, stopListening, speak, stopSpeaking } = useSpeech();
+  const { listening, speaking, startListening, stopListening, cancelListening, speak, stopSpeaking } = useSpeech();
 
   // ── 话题推荐引擎（仅自由对话模式）──
   const isFreeChat = !params.sceneId && !params.mode;
@@ -235,6 +235,8 @@ export function ChatView() {
     return p;
   };
 
+  // 麦克风按钮 = 开始 / 结束并发送。录音途中想反悔走旁边的「取消」按钮
+  // （cancelListening），它连识别结果都不产出 —— 这里没有「停下但不发」这档事。
   const handleMic = () => { if (listening) { stopListening(); return; } startListening(t => { setInput(t); send(t, "voice"); }); };
 
   // ── 离开对话：AI 评分本次会话并存练习记录（雷达图五维数据来源）──
@@ -320,6 +322,12 @@ export function ChatView() {
       <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "14px 20px", background: "#fff", borderTop: "1px solid #f0efe8", display: "flex", justifyContent: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", maxWidth: 640 }}>
           <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && send(input)} placeholder={showVoice ? "Type or tap mic..." : "Type here..."} style={{ flex: 1, padding: "14px 18px", borderRadius: 24, border: "1px solid #e8e6de", background: "#FAFAF7", fontSize: 15, outline: "none", color: "#1a1a1a", fontFamily: "inherit" }} />
+          {showVoice && listening && (
+            <button onClick={cancelListening} title="取消这次语音输入（不发送）" aria-label="取消这次语音输入"
+              style={{ width: 48, height: 48, borderRadius: "50%", background: "transparent", border: "2px solid #D4413A", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0, animation: "su 0.15s both" }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4413A" strokeWidth="2.5" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
+            </button>
+          )}
           {showVoice && <button onClick={handleMic} style={{ width: 48, height: 48, borderRadius: "50%", background: listening ? (module.color || "#4A90D9") : "transparent", border: `2px solid ${module.color || "#4A90D9"}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", animation: listening ? "pulse 1.5s infinite" : "none", flexShrink: 0 }}><svg width="18" height="18" viewBox="0 0 24 24" fill={listening ? "#fff" : (module.color || "#4A90D9")}><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" /></svg></button>}
           <button onClick={() => send(input)} disabled={!input.trim() || loading} style={{ width: 48, height: 48, borderRadius: "50%", background: input.trim() ? (module.color || "#4A90D9") : "#e8e6de", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: input.trim() ? "pointer" : "default", flexShrink: 0 }}><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg></button>
         </div>

@@ -14,6 +14,173 @@ import { useGuard } from '../../hooks/useGuard'
 
 const ONBOARDED_KEY = 'speakwise_onboarded'
 
+// ── 我的任务卡片用的小工具 ──
+
+// 任务模块 → 对应练习入口，学生点「去练习」直接跳到那个模块。
+// 文化文游没有条目：小程序端尚未迁移该模块（FEATURES.culture = false），按钮不显示。
+const TASK_MODULE_ENTRY = {
+  生活情境: { path: ROUTES.scenes },
+  自由对话: { path: ROUTES.chat, params: { free: 1 } },
+  发音测评: { path: ROUTES.pronunciation },
+  造句练习: { path: ROUTES.drill, params: { type: 'sentence', section: 'written' } },
+  写作辅导: { path: ROUTES.written }
+}
+
+// 距截止天数 + 绝对日期。剩余不足 24 小时按“今天截止”显示 ——
+// 学生端 /mine 只返回未过期任务，纯按 ceil 算天数的话这一档永远不会出现。
+function taskDeadline(endAt) {
+  const end = new Date(endAt)
+  if (!endAt || Number.isNaN(end.getTime())) return null
+  const msLeft = end.getTime() - Date.now()
+  const date = `${end.getMonth() + 1}月${end.getDate()}日`
+  if (msLeft <= 0) return { daysLeft: 0, label: `已截止（${date}）` }
+  const daysLeft = Math.max(1, Math.ceil(msLeft / 86400000))
+  return {
+    daysLeft,
+    label: msLeft < 86400000 ? `今天截止（${date}）` : `剩 ${daysLeft} 天 · ${date}截止`
+  }
+}
+
+// 学生主页的「我的任务」卡。纯展示：任务由父组件取好后传进来。
+export function MyTasksCard({ tasks, onGo }) {
+  const [showAll, setShowAll] = useState(false)
+  if (!tasks || tasks.length === 0) return null
+
+  return (
+    <View style={{ marginBottom: 16 }}>
+      <View
+        style={{
+          background: 'linear-gradient(135deg, #7B4FA3, #9B59B6)',
+          borderRadius: 16,
+          padding: '16px 20px'
+        }}
+      >
+        <Text style={{ fontSize: 12, fontWeight: 700, color: '#fff', display: 'block', marginBottom: 10 }}>
+          🎯 我的任务（{tasks.length}）
+          <Text style={{ fontSize: 11, opacity: 0.8, fontWeight: 400 }}>
+            {' '}
+            老师发布的练习任务 · 完成自动更新
+          </Text>
+        </Text>
+        {(showAll ? tasks : tasks.slice(0, 3)).map((t, i) => {
+          const dl = taskDeadline(t.endAt)
+          const entry = TASK_MODULE_ENTRY[t.module]
+          const pct = Math.min(100, Math.round((t.count / Math.max(t.targetCount, 1)) * 100))
+          const urgent = !t.done && dl && dl.daysLeft <= 1
+          return (
+            <View
+              key={t.id}
+              style={{
+                paddingTop: i === 0 ? 0 : 12,
+                marginTop: i === 0 ? 0 : 12,
+                borderTop: i === 0 ? 'none' : '1px solid rgba(255,255,255,0.22)'
+              }}
+            >
+              <View style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <Text style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 700, color: '#fff', lineHeight: 1.4 }}>
+                  {t.title}
+                </Text>
+                {entry && (
+                  <View
+                    onClick={() => onGo(entry)}
+                    style={{
+                      flexShrink: 0,
+                      border: '1px solid rgba(255,255,255,0.55)',
+                      background: 'rgba(255,255,255,0.14)',
+                      borderRadius: 12,
+                      padding: '4px 10px'
+                    }}
+                  >
+                    <Text style={{ fontSize: 11, color: '#fff', whiteSpace: 'nowrap' }}>去练习 →</Text>
+                  </View>
+                )}
+              </View>
+              <View style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 6 }}>
+                <Text
+                  style={{
+                    fontSize: 11,
+                    color: '#fff',
+                    background: 'rgba(255,255,255,0.18)',
+                    borderRadius: 8,
+                    padding: '2px 8px'
+                  }}
+                >
+                  {t.module}
+                  {t.scenario ? ` · ${t.scenario}` : ''}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 11,
+                    color: '#fff',
+                    background: 'rgba(255,255,255,0.18)',
+                    borderRadius: 8,
+                    padding: '2px 8px'
+                  }}
+                >
+                  目标 {t.targetCount} 次
+                </Text>
+                {dl && (
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      color: '#fff',
+                      borderRadius: 8,
+                      padding: '2px 8px',
+                      fontWeight: urgent ? 700 : 400,
+                      background: urgent ? 'rgba(255,214,102,0.3)' : 'rgba(255,255,255,0.18)'
+                    }}
+                  >
+                    {dl.label}
+                  </Text>
+                )}
+              </View>
+              <View style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 8 }}>
+                <View
+                  style={{
+                    flex: 1,
+                    height: 6,
+                    background: 'rgba(255,255,255,0.25)',
+                    borderRadius: 3,
+                    overflow: 'hidden'
+                  }}
+                >
+                  <View
+                    style={{
+                      width: `${pct}%`,
+                      height: '100%',
+                      background: '#fff',
+                      borderRadius: 3,
+                      transition: 'width 0.4s'
+                    }}
+                  />
+                </View>
+                <Text style={{ fontSize: 12, fontWeight: 700, color: '#fff', whiteSpace: 'nowrap' }}>
+                  {t.done ? '✅ ' : ''}
+                  {t.count}/{t.targetCount} 次
+                </Text>
+              </View>
+            </View>
+          )
+        })}
+        {tasks.length > 3 && (
+          <View
+            onClick={() => setShowAll((v) => !v)}
+            style={{
+              marginTop: 12,
+              paddingTop: 10,
+              borderTop: '1px solid rgba(255,255,255,0.22)'
+            }}
+          >
+            <Text style={{ fontSize: 11, color: '#fff', opacity: 0.9, textAlign: 'center', display: 'block' }}>
+              {showAll ? '收起任务 ▲' : `展开全部 ${tasks.length} 个任务 ▼`}
+            </Text>
+          </View>
+        )}
+      </View>
+    </View>
+  )
+}
+
 function UserBar({ onLogout }) {
   const { user, guest } = useAuth()
   const { hsk: hskLevel } = useApp()
@@ -274,64 +441,8 @@ function StudentHome({ onOpenAbout }) {
           <UserBar onLogout={handleLogout} />
 
           {/* ── 我的任务：任务进度卡 ── */}
-          {user && user.role === 'student' && myTasks && myTasks.length > 0 && (
-            <View style={{ marginBottom: 16 }}>
-              <View
-                style={{
-                  background: 'linear-gradient(135deg, #7B4FA3, #9B59B6)',
-                  borderRadius: 16,
-                  padding: '16px 20px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 10
-                }}
-              >
-                <Text style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>
-                  🎯 我的任务
-                  <Text style={{ fontSize: 11, opacity: 0.8, fontWeight: 400 }}> 老师发布的练习任务 · 完成自动更新</Text>
-                </Text>
-                {myTasks.slice(0, 3).map((t) => (
-                  <View key={t.id} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <Text
-                      style={{
-                        flex: 1,
-                        minWidth: 0,
-                        fontSize: 12,
-                        color: '#fff',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
-                      }}
-                    >
-                      {t.title}
-                    </Text>
-                    <View
-                      style={{
-                        width: 110,
-                        height: 6,
-                        background: 'rgba(255,255,255,0.25)',
-                        borderRadius: 3,
-                        overflow: 'hidden'
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: `${Math.min((t.count / t.targetCount) * 100, 100)}%`,
-                          height: '100%',
-                          background: '#fff',
-                          borderRadius: 3,
-                          transition: 'width 0.4s'
-                        }}
-                      />
-                    </View>
-                    <Text style={{ minWidth: 46, textAlign: 'right', fontSize: 12, fontWeight: 700, color: '#fff' }}>
-                      {t.done ? '✅ ' : ''}
-                      {t.count}/{t.targetCount}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            </View>
+          {user && user.role === 'student' && (
+            <MyTasksCard tasks={myTasks} onGo={(entry) => go(entry.path, entry.params)} />
           )}
 
           <View style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>

@@ -253,6 +253,11 @@ function evaluateViaWebSocket(requestData) {
                 } : null,
               })),
               warning: r.warning || null,
+              // 讯飞原始 result，一个字段都不裁。上面那批字段是白名单重建的：
+              // 逐字的 charType（前端逐字渲染要用它过滤）以及任何没被列进白名单的
+              // 字段都在那一步被丢掉，丢了就不可逆。所以原文一路带到落库
+              // （records.raw_result），供科研回溯。
+              rawResult: obj.result ?? null,
             });
           }
         }

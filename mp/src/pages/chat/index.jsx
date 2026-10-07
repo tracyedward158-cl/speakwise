@@ -65,7 +65,8 @@ export default function ChatView() {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const { listening, speaking, startListening, stopListening, speak, stopSpeaking } = useSpeech()
+  const { listening, speaking, startListening, stopListening, cancelListening, speak, stopSpeaking } =
+    useSpeech()
 
   // ── 话题推荐引擎（仅自由对话模式）──
   const isFreeChat = !sceneId && !chatMode
@@ -282,6 +283,8 @@ export default function ChatView() {
     return p
   }
 
+  // 麦克风按钮 = 开始 / 结束并发送。录到一半想反悔走旁边的「取消」按钮
+  // （cancelListening）：它连识别结果都不产出，所以不会自动发出去。
   const handleMic = () => {
     if (listening) {
       stopListening()
@@ -499,6 +502,24 @@ export default function ChatView() {
             placeholder={showVoice ? 'Type or tap mic...' : 'Type here...'}
             {...fieldProps({ variant: 'round', color: '#1a1a1a', width: 'auto', flex: 1 })}
           />
+
+          {showVoice && listening && (
+            <View
+              onClick={cancelListening}
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: '50%',
+                border: '2px solid #D4413A',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}
+            >
+              <Text style={{ fontSize: 16, color: '#D4413A' }}>✕</Text>
+            </View>
+          )}
 
           {showVoice && (
             <View

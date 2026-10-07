@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import { getToken, recordApi } from '../core/utils/api'
 
 // ── 按需拉取单条记录的完整对话 ──
-// 列表接口刻意不返回 messages（500 行 × 一条对话 = 10MB 响应），
+// 列表接口刻意不返回 messages（6000 行 × 一条对话 = 120MB 响应），
 // 所以登录用户点开某条记录时才发 GET /records/:id。
 // 游客的本地记录自带 messages 数组，不走网络。
 //

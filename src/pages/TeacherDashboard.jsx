@@ -23,6 +23,60 @@ function formatDay(v) {
   return isNaN(d.getTime()) ? "—" : d.toLocaleDateString("zh-CN");
 }
 
+// ── 导出范围：把「模块 + 题目来源」合成一个维度 ──
+// source 只有发音测评才有值（train/testA/testB/custom），其余模块留空。
+// 教师眼里「这是哪一类记录」= 两者合起来，拆成两个筛选项反而要交叉着选。
+const SOURCE_LABEL = { train: "日常练习", testA: "Test A", testB: "Test B", custom: "自定义" };
+
+export function recordTypeKey(r) {
+  if (r.module !== "发音测评") return r.module || "未知";
+  if (!r.source) return "发音测评 · 未标注";          // 加 source 列之前写的历史记录
+  return `发音测评 · ${SOURCE_LABEL[r.source] || r.source}`;
+}
+
+/**
+ * 按导出范围过滤班级记录。纯函数，脱离渲染即可断言。
+ *   scope: { students: number[], types: string[], from: 'YYYY-MM-DD', to: 'YYYY-MM-DD' }
+ *   空数组 / 空串 = 该维度不限制。
+ *
+ * ⚠️ 日期按**本地时区**比较，不能直接切 createdAt 的 UTC 日期串。
+ *    9/30 那批 750 条记录的 UTC 时间是 09-29 22:28 ~ 09-30 00:16，北京时间却是
+ *    09-30 06:28 ~ 08:16 —— 按 UTC 比的话，教师选「9月30日」会一条都查不到。
+ *    不带 Z 的 'YYYY-MM-DDT00:00:00' 被解析为本地时间，正是这里需要的。
+ */
+export function filterClassRecords(records, scope = {}) {
+  const { students = [], types = [], from = "", to = "" } = scope;
+  const fromMs = from ? new Date(`${from}T00:00:00`).getTime() : null;
+  const toMs = to ? new Date(`${to}T23:59:59.999`).getTime() : null;
+
+  return (records || []).filter(r => {
+    if (students.length && !students.includes(r.studentId)) return false;
+    if (types.length && !types.includes(recordTypeKey(r))) return false;
+    if (fromMs !== null || toMs !== null) {
+      const t = new Date(r.createdAt).getTime();
+      if (isNaN(t)) return false;
+      if (fromMs !== null && t < fromMs) return false;
+      if (toMs !== null && t > toMs) return false;
+    }
+    return true;
+  });
+}
+
+/** 可多选的圆角标签，学生 / 记录类型两行共用。 */
+function ScopeChip({ active, onClick, children }) {
+  return (
+    <button onClick={onClick} style={{
+      padding: "5px 12px", borderRadius: 999, fontSize: 12, fontFamily: "inherit",
+      border: `1px solid ${active ? "#7B4FA3" : "#e8e6de"}`,
+      background: active ? "#F3F0FF" : "#fff",
+      color: active ? "#7B4FA3" : "#888",
+      fontWeight: active ? 600 : 400, cursor: "pointer",
+    }}>{children}</button>
+  );
+}
+
+const toggleIn = (list, v) => (list.includes(v) ? list.filter(x => x !== v) : [...list, v]);
+
 /**
  * 班级学生名单。纯展示组件（数据由 TeacherDashboard 从 /me + /records/class 里备好），
  * 单独抽出来是为了能脱离 useEffect 直接渲染验证 —— 名单只读不写，没有内部状态。
@@ -104,6 +158,11 @@ function StatCard({ label, value, sub, color }) {
 
 const TASK_MODULES = ["生活情境", "自由对话", "发音测评", "造句练习", "写作辅导", "文化文游"];
 
+const DATE_INPUT_STYLE = {
+  padding: "6px 10px", borderRadius: 8, border: "1px solid #e8e6de",
+  fontSize: 12, fontFamily: "inherit", color: "#555", background: "#fff",
+};
+
 export function TeacherDashboard() {
   const navigate = useNavigate();
   const { user, guest } = useAuth();
@@ -119,6 +178,13 @@ export function TeacherDashboard() {
   const [exportResult, setExportResult] = useState(null);       // { count, transcriptCount } | null
   const [exportError, setExportError] = useState("");
 
+  // ── 导出范围（教师端）──
+  // 空数组 / 空串 = 该维度不限制，所以初始态就是「全班、全类型、全时段」
+  const [scopeStudents, setScopeStudents] = useState([]);
+  const [scopeTypes, setScopeTypes] = useState([]);
+  const [scopeFrom, setScopeFrom] = useState("");
+  const [scopeTo, setScopeTo] = useState("");
+
   // 学生登录访问教师端 → 重定向主菜单（路由层已拦截，组件层兜底）
   if (user && !isTeacher) return <Navigate to="/main" replace />;
 
@@ -127,15 +193,18 @@ export function TeacherDashboard() {
   // 教师：班级信息（班级码 + 成员）+ 本班记录；游客：本地 mock 演示
   const [classInfo, setClassInfo] = useState(null);
   const [cloudRecords, setCloudRecords] = useState(null); // null = 加载中
+  const [cloudTotal, setCloudTotal] = useState(null);     // 服务端报的全班真实总数
 
   useEffect(() => {
     if (!isTeacher) return;
     let cancelled = false;
     Promise.all([authApi.me(), recordApi.classRecords()])
-      .then(([{ class: cls }, { records }]) => {
+      .then(([{ class: cls }, { records, total }]) => {
         if (cancelled) return;
         setClassInfo(cls);
         setCloudRecords(records);
+        // total 可能大于 records.length（服务端 MAX_ROWS 触顶时），用它才判得准
+        setCloudTotal(total ?? records.length);
       })
       .catch(err => {
         console.warn("[TeacherDashboard] 班级数据获取失败:", err.message);
@@ -220,7 +289,41 @@ export function TeacherDashboard() {
   // 导出的是「真实数据源」，不是页面上展示的 records —— 本班暂无记录时页面会
   // 回退到 MOCK_RECORDS 演示，那批编造的数据绝不能进导出文件。
   const exportSource = isTeacher ? (cloudRecords || []) : guestRecords;
-  const exportableCount = exportSource.length;
+
+  // 范围选项只列真实存在的：学生来自班级名单，记录类型从已加载的记录里汇总，
+  // 班里没人做过的类型不该出现在筛选里（顺带「未标注」这类历史数据也会自然出现）。
+  const scopeOptions = useMemo(() => {
+    if (!isTeacher) return { students: [], types: [] };
+    const students = (classInfo?.members || []).map(m => ({
+      id: m.id, label: m.nickname || `学生${m.id}`,
+    }));
+    const seen = new Map();                     // typeKey -> 条数，用于降序排
+    for (const r of (cloudRecords || [])) {
+      const k = recordTypeKey(r);
+      seen.set(k, (seen.get(k) || 0) + 1);
+    }
+    const types = [...seen.entries()]
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .map(([key, count]) => ({ key, count }));
+    return { students, types };
+  }, [isTeacher, classInfo, cloudRecords]);
+
+  const scoped = useMemo(
+    () => (isTeacher
+      ? filterClassRecords(exportSource, {
+          students: scopeStudents, types: scopeTypes, from: scopeFrom, to: scopeTo,
+        })
+      : exportSource),
+    [isTeacher, exportSource, scopeStudents, scopeTypes, scopeFrom, scopeTo]
+  );
+
+  const exportableCount = scoped.length;
+  const isFiltered = isTeacher
+    && (scopeStudents.length > 0 || scopeTypes.length > 0 || !!scopeFrom || !!scopeTo);
+
+  const resetScope = () => {
+    setScopeStudents([]); setScopeTypes([]); setScopeFrom(""); setScopeTo("");
+  };
 
   const handleExport = async () => {
     if (exporting || !exportableCount) return;
@@ -229,7 +332,7 @@ export function TeacherDashboard() {
     setExportResult(null);
     setExportProgress({ done: 0, total: exportableCount });
     try {
-      const full = await hydrateRecords(exportSource, {
+      const full = await hydrateRecords(scoped, {
         getCached,
         onProgress: (done, total) => setExportProgress({ done, total }),
       });
@@ -242,6 +345,16 @@ export function TeacherDashboard() {
             ? { id: classInfo.id, code: classInfo.code, memberCount: classInfo.members?.length ?? 0 }
             : null,
           exportedBy: { id: user?.id, nickname: user?.nickname || user?.username, role: user?.role },
+          // 把筛选条件写进导出文件：拿到这份 JSON 的人必须知道它是子集还是全班，
+          // 否则「共 112 条」会被当成班级总量。空数组 / null = 该维度未限制。
+          filter: {
+            students: scopeStudents,
+            types: scopeTypes,
+            from: scopeFrom || null,
+            to: scopeTo || null,
+            matched: exportableCount,
+            total: exportSource.length,
+          },
         } : null,
       });
       setExportResult({ count: payload.recordCount, transcriptCount: payload.transcriptCount });
@@ -283,7 +396,7 @@ export function TeacherDashboard() {
               members={members}
               stats={studentStats}
               classCode={classInfo?.code}
-              truncated={(cloudRecords?.length ?? 0) >= EXPORT_LIMIT}
+              truncated={(cloudTotal ?? 0) > (cloudRecords?.length ?? 0)}
             />
           )}
 
@@ -309,13 +422,66 @@ export function TeacherDashboard() {
                 导出原始记录 JSON，供实验后分析
               </span>
             </div>
+            {/* ── 导出范围：教师选「哪些学生 / 哪类记录 / 哪段时间」──
+                纯前端过滤已加载的 cloudRecords，选项只列真实存在的类型。 */}
+            {isTeacher && (scopeOptions.students.length > 0 || scopeOptions.types.length > 0) && (
+              <div style={{
+                background: "#fff", borderRadius: 16, border: "1px solid #f0efe8",
+                padding: "16px 20px", marginBottom: 12,
+              }}>
+                {scopeOptions.students.length > 0 && (
+                  <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 12 }}>
+                    <div style={{ fontSize: 12, color: "#aaa", width: 60, flexShrink: 0, paddingTop: 5 }}>学生</div>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, flex: 1 }}>
+                      {scopeOptions.students.map(s => (
+                        <ScopeChip key={s.id} active={scopeStudents.includes(s.id)}
+                          onClick={() => setScopeStudents(l => toggleIn(l, s.id))}>{s.label}</ScopeChip>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {scopeOptions.types.length > 0 && (
+                  <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 12 }}>
+                    <div style={{ fontSize: 12, color: "#aaa", width: 60, flexShrink: 0, paddingTop: 5 }}>记录类型</div>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, flex: 1 }}>
+                      {scopeOptions.types.map(t => (
+                        <ScopeChip key={t.key} active={scopeTypes.includes(t.key)}
+                          onClick={() => setScopeTypes(l => toggleIn(l, t.key))}>
+                          {t.key}<span style={{ color: "#bbb", marginLeft: 4 }}>{t.count}</span>
+                        </ScopeChip>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <div style={{ fontSize: 12, color: "#aaa", width: 60, flexShrink: 0 }}>时间范围</div>
+                  <input type="date" value={scopeFrom} onChange={e => setScopeFrom(e.target.value)}
+                    aria-label="导出起始日期" style={DATE_INPUT_STYLE} />
+                  <span style={{ color: "#ccc" }}>—</span>
+                  <input type="date" value={scopeTo} onChange={e => setScopeTo(e.target.value)}
+                    aria-label="导出结束日期" style={DATE_INPUT_STYLE} />
+                  {isFiltered && (
+                    <button onClick={resetScope} style={{
+                      marginLeft: 4, padding: "5px 12px", borderRadius: 999, fontSize: 12,
+                      fontFamily: "inherit", border: "1px solid #e8e6de", background: "#fff",
+                      color: "#888", cursor: "pointer",
+                    }}>重置</button>
+                  )}
+                </div>
+              </div>
+            )}
+
             <div style={{
               background: "#fff", borderRadius: 16, border: "1px solid #f0efe8",
               padding: "16px 20px", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap",
             }}>
               <div style={{ flex: "1 1 260px", minWidth: 0 }}>
                 <div style={{ fontSize: 13, fontWeight: 600, color: "#555" }}>
-                  {isTeacher ? "本班练习记录" : "本机练习记录"} {exportableCount} 条
+                  {isFiltered
+                    ? <>将导出 <span style={{ color: "#7B4FA3" }}>{exportableCount}</span> 条 / 共 {exportSource.length} 条</>
+                    : <>{isTeacher ? "本班练习记录" : "本机练习记录"} {exportableCount} 条</>}
                 </div>
                 <div style={{ fontSize: 11, color: "#aaa", marginTop: 4, lineHeight: 1.6 }}>
                   含完整对话、语音测评维度分（发音/声调/流利度/完整度）、问题与建议
@@ -327,12 +493,21 @@ export function TeacherDashboard() {
                   </div>
                 )}
                 {exportError && <div style={{ fontSize: 11, color: "#D4413A", marginTop: 4 }}>{exportError}</div>}
-                {/* 上限必须说出来：静默截断对科研数据不可接受 */}
-                {exportableCount >= EXPORT_LIMIT && (
-                  <div style={{ fontSize: 11, color: "#D4413A", marginTop: 4 }}>
-                    已达服务端 {EXPORT_LIMIT} 条上限，可能仍有更早的记录未包含
-                  </div>
-                )}
+                {/* 上限必须说出来：静默截断对科研数据不可接受。
+                    教师端拿服务端返回的 total 判，比「长度 == 上限」猜得准；
+                    游客/本地记录没有 total，退回长度判断。 */}
+                {isTeacher
+                  ? (cloudTotal !== null && cloudTotal > (cloudRecords?.length ?? 0) && (
+                      <div style={{ fontSize: 11, color: "#D4413A", marginTop: 4 }}>
+                        全班共 {cloudTotal} 条，已达服务端 {EXPORT_LIMIT} 条上限，
+                        更早的 {cloudTotal - (cloudRecords?.length ?? 0)} 条未加载
+                      </div>
+                    ))
+                  : (exportableCount >= EXPORT_LIMIT && (
+                      <div style={{ fontSize: 11, color: "#D4413A", marginTop: 4 }}>
+                        已达 {EXPORT_LIMIT} 条上限，可能仍有更早的记录未包含
+                      </div>
+                    ))}
               </div>
               <button onClick={handleExport} disabled={exporting || exportableCount === 0} style={{
                 padding: "11px 22px", borderRadius: 12, border: "none", fontSize: 13, fontWeight: 600,

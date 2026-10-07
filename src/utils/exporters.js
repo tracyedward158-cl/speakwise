@@ -24,9 +24,9 @@ export const EXPORT_VERSION = 1;
 
 // 单次导出的条数上限，与服务端 GET /records/mine|/class 的 MAX_ROWS 对齐。
 // 超过时界面上必须明说，不做静默截断。
-export const EXPORT_LIMIT = 500;
+export const EXPORT_LIMIT = 6000;
 
-/** 并发受限的 map。导出要逐条拉详情，串行 500 个请求会拖到几分钟。 */
+/** 并发受限的 map。导出要逐条拉详情，串行 6000 个请求会拖到几分钟。 */
 async function mapLimit(items, limit, fn) {
   const out = new Array(items.length);
   let next = 0;
@@ -44,7 +44,7 @@ async function mapLimit(items, limit, fn) {
 /**
  * 补齐记录里的 messages。
  *
- * 列表接口刻意不带 messages（500 行 × 一条对话 ≈ 10MB 响应），所以登录用户
+ * 列表接口刻意不带 messages（6000 行 × 一条对话 ≈ 120MB 响应），所以登录用户
  * 必须逐条走详情接口。拉不到的那条按元信息原样导出，不让它整体消失 ——
  * 科研数据不能因为一次网络抖动就少一条。
  */

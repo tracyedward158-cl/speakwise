@@ -5,7 +5,7 @@ import { getSnapshot, speak as ttsSpeak, stopSpeaking as ttsStop, subscribe } fr
 import { micErrorToast } from '../platform/privacy'
 
 // useSpeech —— 对外签名与 Web 版 src/hooks/useSpeech.js **逐字一致**：
-//   { listening, speaking, startListening(cb), stopListening(), speak(t, slow), stopSpeaking() }
+//   { listening, speaking, startListening(cb), stopListening(), cancelListening(), speak(t, slow), stopSpeaking() }
 // 这样四个调用点（ChatView / DrillView / PronunciationDrill / ChatTranscript）才能
 // 只换 import、不动逻辑。
 //
@@ -91,6 +91,17 @@ export function useSpeech() {
     }
   }, [])
 
+  // 取消 = 这次说的不要了：停硬件、丢掉音频、不上传、不回调。
+  // 与 stopListening 的区别落在 platform/asr 的 cancelListen → abortRecording：
+  // 它会把在途 promise 用 ABORTED 拒掉，所以即便「停止」已经按下去、
+  // 正在上传转写，也照样拦得住（endListen 抛 ABORTED，stopListening 静默吞掉）。
+  const cancelListening = useCallback(() => {
+    clearAutoStop()
+    cbRef.current = null
+    cancelListen()
+    setListening(false)
+  }, [])
+
   useEffect(() => {
     stopRef.current = stopListening
   }, [stopListening])
@@ -119,5 +130,5 @@ export function useSpeech() {
     []
   )
 
-  return { listening, speaking, startListening, stopListening, speak, stopSpeaking }
+  return { listening, speaking, startListening, stopListening, cancelListening, speak, stopSpeaking }
 }

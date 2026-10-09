@@ -2,12 +2,12 @@ import { transcribeAudio } from '../core/utils/api'
 import { abortRecording, isRecording, startRecording, stopRecording } from './recorder'
 import { stopSpeaking } from './tts'
 
-// 语音识别（STT）。Web 版靠浏览器 SpeechRecognition，边说边出字；
-// 小程序里没有对应物，走「录音 → 上行 → 服务端转发讯飞 IAT → 返回整段文本」。
+// 语音识别（STT）：录音 → 上行 → 服务端转发讯飞 IAT → 返回整段文本。
+// 当初只有小程序走这条（Web 版那时靠浏览器 SpeechRecognition、边说边出字）；
+// 2026-10 起网页端也切了过来，两端行为一致。
 //
-// 产品上必须接受一个差异：**没有实时中间结果**了。识别期间只能显示状态，
-// 拿不到逐字上屏 —— 这不是实现没做好，是这条链路的固有形态。
-// Web 版的 ChatView 是靠 SpeechRecognition 自己停的，这里必须由用户显式停止。
+// 这条链路的固有形态：**没有实时中间结果**。识别期间只能显示状态，拿不到逐字上屏。
+// 也因此必须由用户显式停止（或等 hook 的自动收尾），没有浏览器 VAD 那套停顿检测。
 
 /** 开始录音。会先过隐私协议与麦克风授权。 */
 export async function beginListen() {

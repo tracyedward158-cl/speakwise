@@ -52,6 +52,9 @@ export function PronunciationDrill({ bank, title, subtitle, onBack, isCustom = f
   // ── Pronunciation mode: record audio → iFlytek API ──
   const startRecording = useCallback(async () => {
     try {
+      // 正在播的示范音会被麦克风一起录进去，评测分数直接失真 —— 先掐掉
+      // （与 useSpeech.startListening、小程序端 platform/asr.beginListen 同一条规矩）
+      stopSpeaking();
       const recorder = createAudioRecorder();
       recorderRef.current = recorder;
       await recorder.start();

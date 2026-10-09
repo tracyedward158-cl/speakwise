@@ -6,8 +6,7 @@ import { ChatBubbleText } from './ChatText'
 // 从 ChatView 内联的 JSX 抽出，使实时对话页与回看页共用同一份外观实现。
 //
 // ⚠️ 不要在本组件内部调用 useSpeech()。
-//    Web 版的理由是「`window.speechSynthesis` 是全局单例」；小程序里引擎换成了
-//    InnerAudioContext，但约束**依然成立**，只是理由变成了「同一时刻只能播一条音频」。
+//    理由是「同一时刻只能播一条音频」：播放器是模块级单例（两端都是），
 //    逐气泡各自持有 speaking 的话，点第 7 条播放时所有气泡的按钮都会变成 Stop。
 //    由父组件调用一次，把 speaking / onSpeak / onStopSpeak 传下来。
 export function ChatBubble({

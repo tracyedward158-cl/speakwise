@@ -3,6 +3,7 @@ import { ChatTranscript } from './ChatTranscript'
 import { moduleMeta } from '../core/data/moduleMeta'
 import { formatRecordDate } from '../core/utils/transcript'
 import { computeRecordMetrics, LONG_GAP_SEC } from '../core/utils/conversationMetrics'
+import { useNavMetrics } from '../hooks/useNavMetrics'
 
 // ── 完整对话弹窗 ──
 // 遮罩模式沿用原设计。整段对话可能几千像素，放进列表行内会让页面高度失控，
@@ -82,13 +83,25 @@ function MetricsStrip({ m }) {
 }
 
 export function TranscriptModal({ record, messages, loading, error, onRetry, onClose, onExport }) {
+  // hook 必须在早返回之前无条件调用（record 为空时组件不渲染，但这个 hook 照样跑）。
+  // 取真实窗口高度是为了下面那个 panelHeight。
+  const nav = useNavMetrics()
+
   if (!record) return null
   const meta = moduleMeta(record.module)
 
-  // ⚠️ 刻意不用 useMemo：本函数第一行就是 `if (!record) return null`，在任何 hook
-  //    之前 —— 加 hook 得先把它挪到早返回上面才合法。messages 来自详情接口或缓存，
-  //    其余字段来自列表行，所以按 messages 覆盖合并。
+  // ⚠️ 刻意不用 useMemo：`if (!record) return null` 之后不能再加 hook ——
+  //    要加得先把它挪到早返回上面（useNavMetrics 就在上面，是同一个道理）。
+  //    messages 来自详情接口或缓存，其余字段来自列表行，所以按 messages 覆盖合并。
   const metrics = !loading && !error && messages ? computeRecordMetrics({ ...record, messages }) : null
+
+  // 面板高度必须是**确定的像素值**，不能只给 maxHeight：
+  // 小程序 scroll-view 竖向滚动要求固定高度（微信文档原文），而 maxHeight 只是上限 ——
+  // 高度 auto 的父容器里，flex:1 的滚动区会撑成内容高度，超出部分被父级
+  // overflow:hidden 裁掉，表现正是「点开后滑不动、看不到后面的对话」。
+  // 对话越长越明显：自由对话最容易触发，短记录看不出问题，所以只在真机上暴露。
+  // 也刻意不用 85vh —— 首帧 WebView 还不知道自己多高，chat 页为此踩过同一个坑。
+  const panelHeight = Math.round(nav.screenHeight * 0.85)
 
   return (
     <View
@@ -114,7 +127,7 @@ export function TranscriptModal({ record, messages, loading, error, onRetry, onC
           background: '#FAFAF7',
           borderRadius: 20,
           width: '100%',
-          maxHeight: '85vh',
+          height: panelHeight,
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden'

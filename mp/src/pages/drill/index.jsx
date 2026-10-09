@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { View, Text, Input, Textarea } from '@tarojs/components'
-import Taro, { useRouter } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { useApp } from '../../context/AppContext'
 import { TopBar } from '../../components/TopBar'
 import { PageWrap } from '../../components/PageWrap'
@@ -18,7 +18,7 @@ import {
   nextRoundParams
 } from '../../core/utils/pronunciationBank'
 import { useGuard } from '../../hooks/useGuard'
-import { ROUTES, back, go, replace, stableParamsKey } from '../../platform/nav'
+import { ROUTES, back, go, replace, stableParamsKey, useRouteParams } from '../../platform/nav'
 import { fieldProps, areaProps } from '../../components/formStyles'
 
 // ── 自定义练习：学生自己输入的文本 ──
@@ -39,8 +39,9 @@ function pickParams(params) {
 
 export default function DrillView() {
   const { ready } = useGuard({ studentOnly: true })
-  const router = useRouter()
-  const params = router?.params || {}
+  // 走 useRouteParams 而不是 Taro 的 useRouter：中文参数（unit=句 / tag=轻声）
+  // 在真机上可能是未解码的 %XX，直接拿去筛题库会一道题都选不出来。见 platform/nav.js。
+  const params = useRouteParams()
   const {
     hsk: hskLevel,
     setHsk: onChangeHSK,

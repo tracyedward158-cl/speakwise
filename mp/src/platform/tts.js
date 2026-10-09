@@ -26,11 +26,11 @@ import { storage } from './storage'
 //
 // ── 为什么是单例，以及 ChatBubble 那条约束为什么还成立 ──
 //
-// Web 版的约束是「`window.speechSynthesis` 是全局单例，所以不要在 ChatterBubble
-// 里各自调 useSpeech」。小程序里引擎换了（InnerAudioContext 每次调用都能拿到
-// 独立实例），但约束**依然成立**，只是理由变了：同一时刻只能有一条音频在响，
-// 否则两段朗读叠在一起。所以父组件调一次 useSpeech、把 speaking/onSpeak
-// 传下去的写法原样保留，只是这里的实现换成模块级单例。
+// 这条约束的理由从一开始就是「同一时刻只能有一条音频在响」——
+// 当年 Web 版是因为 `window.speechSynthesis` 恰好是全局单例才碰巧成立，
+// 现在网页端也换成了模块级单例播放器（src/utils/tts.js），两端同一个道理。
+// 所以父组件调一次 useSpeech、把 speaking/onSpeak 传下去的写法原样保留，
+// 只是这里的实现是模块级单例。
 //
 // ── token 而不是布尔量 ──
 //

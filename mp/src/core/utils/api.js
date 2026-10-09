@@ -38,9 +38,10 @@ export async function evaluatePronunciation(audioBase64, refText, core = 'sent')
   })
 }
 
-// ── 语音识别（小程序新增）──
-// Web 版走浏览器 SpeechRecognition，没有服务端接口；这里补一个。
-// 服务端内部转发讯飞 IAT。返回 { text }。
+// ── 语音识别（两端共用）──
+// 当初只有小程序走这条（Web 版那时用浏览器 SpeechRecognition）；
+// 2026-10 起网页端也切了过来，两端共用同一条服务端转发讯飞 IAT 的链路。
+// 返回 { text }。
 export async function transcribeAudio(audioBase64, timeout = 30000) {
   // 分帧发送到讯飞本身就有节奏开销（见 server.cjs 的 IAT 客户端），
   // 所以超时比 evaluate 还宽。

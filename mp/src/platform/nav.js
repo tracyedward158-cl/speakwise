@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 
 // 路由表。Web 版 24 条路由收敛到这里。
 //
@@ -78,4 +78,38 @@ export function back(target) {
 // 所以给一个把指定字段拼成稳定字符串的工具，把那条约等于「字符串不变」的契约平移过来。
 export function stableParamsKey(params, keys) {
   return keys.map((k) => `${k}=${params?.[k] ?? ''}`).join('&')
+}
+
+// ── 查询参数的解码 ──
+// buildUrl 出门时 encodeURIComponent，但小程序这一端**不保证**会还回来：
+// 微信 onLoad options 是否自动解码，官方文档没有承诺 —— 社区大量实测的结论是
+// 「小程序真机不解码、H5 才解」，开发者工具与真机之间还可能不一致。
+// 于是 unit=句 这种中文参数在接收页可能拿到 %E5%8F%A5，拿它去筛题库必然 0 题
+// —— 日常练习「没有题目」就是栽在这里（测试卷传 testA、题库单练传数字 id，
+// 全是 ASCII，所以只有日常练习这一个入口出事）。
+//
+// 兜底：拿到参数后再解一次，但只在字符串确实像百分号编码时才解 ——
+// 平台已经解过时就原样放过，免得二次解码把中文变成乱码。
+const PERCENT_RE = /%[0-9A-Fa-f]{2}/
+
+export function decodeRouteParams(params) {
+  const out = {}
+  for (const [k, v] of Object.entries(params || {})) {
+    if (typeof v !== 'string' || !PERCENT_RE.test(v)) {
+      out[k] = v
+      continue
+    }
+    try {
+      out[k] = decodeURIComponent(v)
+    } catch {
+      out[k] = v // 残缺的 % 序列：不是编码过的，保持原样
+    }
+  }
+  return out
+}
+
+/** 页面读路由参数一律走这里，拿到的就是 buildUrl 编进去的原值。 */
+export function useRouteParams() {
+  const router = useRouter()
+  return decodeRouteParams(router?.params)
 }

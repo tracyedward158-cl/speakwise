@@ -7,7 +7,9 @@
     "dev": "vite",
     "dev:api": "node server.cjs",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check:voice": "node scripts/check-voice.mjs",
+    "check:voice:live": "node scripts/check-voice.mjs --live"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

@@ -1,9 +1,10 @@
 // ── 对话气泡 ──
 // 从 ChatView 内联的 JSX 抽出，使实时对话页与回看页共用同一份外观实现。
 //
-// ⚠️ 不要在本组件内部调用 useSpeech()。`speaking` 是每个 hook 实例独立的 state，
-//    而 window.speechSynthesis 是全局单例 —— 逐气泡各自持有会让所有气泡同时
-//    显示 "Stop"。由父组件调用一次，把 speaking/onSpeak/onStopSpeak 传下来。
+// ⚠️ 不要在本组件内部调用 useSpeech()。播放器是模块级单例（utils/tts.js）——
+//    同一时刻只有一条音频在响 —— 而 speaking 是每个 hook 实例独立的 state。
+//    逐气泡各自持有会让所有气泡同时显示 "Stop"。
+//    由父组件调用一次，把 speaking/onSpeak/onStopSpeak 传下来。
 import { renderChatBubble } from "../utils/helpers.jsx";
 
 export function ChatBubble({

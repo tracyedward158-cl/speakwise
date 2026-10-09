@@ -140,11 +140,17 @@ function decodeAudioForIflytek(base64Audio) {
   const format = sniffAudio(base64Audio);
   if (format === 'm4a' || format === 'amr' || format === 'unknown') {
     const e = new Error(
-      `不支持的音频格式（识别为 ${format}）。小程序端应录制 mp3；` +
-        `若该机型把 format:'mp3' 降级成了 aac，请在 mp/src/config.js 里切到 RECORD_FORMAT='pcm'。`
+      `不支持的音频格式（识别为 ${format}）。网页端传 WAV、小程序端传 mp3 都可以；` +
+        `小程序端若某机型把 format:'mp3' 降级成了 aac，请在 mp/src/config.js 里切到 RECORD_FORMAT='pcm'。`
     );
     e.code = 'UNSUPPORTED_AUDIO';
     throw e;
+  }
+  if (format === 'wav') {
+    // 网页端录音器产出 16k 单声道 WAV，而讯飞这条通道只吃 lame(mp3)。
+    // 原样透传会被当 mp3 解码，讯飞回 10043 audioCoding decode fail（502）——
+    // 网页端接 ASR 时实测到的就是这个。转换复用 /api/evaluate 已在跑的同一条路。
+    return { buf: Buffer.from(wavBase64ToMp3Base64(base64Audio), 'base64'), format: 'mp3' };
   }
   const buf = Buffer.from(base64Audio, 'base64');
   return { buf: stripId3(buf), format };
@@ -633,10 +639,12 @@ app.post('/api/tts', async (req, res) => {
 });
 
 // ──────────────────────────────────────────────────────────────────────────
-// POST /api/asr — 语音听写（小程序端新增）
+// POST /api/asr — 语音听写（两端共用）
 //
-// 浏览器有 SpeechRecognition，小程序没有，所以 STT 只能走服务端转发讯飞 IAT。
-// 入参 { audio: <base64> } —— 小程序录 mp3 直传，命中「非 WAV 透传」那条路。
+// 小程序没有浏览器那套 SpeechRecognition，当初只有它走这里；
+// 2026-10 起网页端也从浏览器原生识别切过来（Chrome 的识别走 Google 服务器，
+// 国内基本不可用），所以现在是两端共用的一条链路。
+// 入参 { audio: <base64> } —— 小程序录 mp3 直传；网页端录 16k WAV，先转 mp3。
 // 返回 { text }。
 // ──────────────────────────────────────────────────────────────────────────
 app.post('/api/asr', async (req, res) => {

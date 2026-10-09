@@ -28,6 +28,7 @@ import {
   buildTestSequence, buildPracticeSession, nextRoundParams,
   extractFeedback, dimensionCells, buildCustomBank, statsByText,
 } from './src/core/utils/pronunciationBank'
+import { buildUrl, decodeRouteParams } from './src/platform/nav'
 import { computeRecordMetrics, summarizeMetrics, METRICS_VERSION } from './src/core/utils/conversationMetrics'
 import { toTranscript, countStudentTurns, messageCount, hasTranscript, formatTime, formatRecordDate, MAX_MESSAGES } from './src/core/utils/transcript'
 import { cleanForTTS, normalizeForCompare, parseChatBubble } from './src/core/utils/text'
@@ -89,6 +90,38 @@ const nr = nextRoundParams({ set: 'train', unit: '句', mode: 'seq', offset: '0'
 ok('顺序模式下一轮推进 offset', Number(nr.offset) > 0, JSON.stringify(nr))
 const nrRand = nextRoundParams({ set: 'train', unit: '句', mode: 'random', seed: '1' }, { mode: 'random' }, 1700000000000)
 ok('随机模式下一轮换 seed', nrRand.seed !== '1', JSON.stringify(nrRand))
+
+// ── 日常练习的 URL 参数往返：中文参数必须原样回到 drill 页 ──
+// 微信 onLoad options 是否自动解码没有保证（社区公认：H5 解、小程序真机不解，
+// 开发者工具与真机也可能不一致）。而 unit=句 / tag=轻声 一旦以 %XX 到达接收页，
+// filterBank 一个也筛不出来 —— 界面上的表现正是「日常练习没有题目」。
+// 这里把「编码出门 → 未解码到达 → decodeRouteParams 还原」整条链路钉死。
+const dailyUrl = buildUrl('/pages/drill/index', {
+  set: 'train', unit: '句', mode: 'focus', tag: '轻声', from: 'daily', seed: '123456',
+})
+ok('buildUrl 把中文参数编码进 URL', dailyUrl.includes('unit=%E5%8F%A5') && dailyUrl.includes('tag=%E8%BD%BB%E5%A3%B0'))
+
+// 模拟真机的 onLoad：按 & 切开、不做解码
+const rawParams = Object.fromEntries(
+  dailyUrl.split('?')[1].split('&').map((kv) => {
+    const i = kv.indexOf('=')
+    return [kv.slice(0, i), kv.slice(i + 1)]
+  })
+)
+eq('未解码的参数筛出 0 题（这就是线上那个 bug 的机制）',
+  countAvailable({ level: '1-3', unit: rawParams.unit, tag: rawParams.tag, set: 'train' }), 0)
+
+const decoded = decodeRouteParams(rawParams)
+eq('decodeRouteParams 还原 unit', decoded.unit, '句')
+eq('decodeRouteParams 还原 tag', decoded.tag, '轻声')
+eq('decodeRouteParams 不动 ASCII 参数', decoded.set, 'train')
+const dailySess = buildPracticeSession(decoded, '1-3')
+ok('解码后日常练习能选出一轮题', dailySess.items.length > 0, JSON.stringify(dailySess.actual))
+ok('选出的题全是「句」粒度', dailySess.items.every((i) => i.unit === '句'))
+
+// 防二次解码：平台已经解过的中文原样放过；残缺的 % 序列不是编码，也不该被解
+eq('已解码的中文原样返回', decodeRouteParams({ unit: '句' }).unit, '句')
+eq('非编码的 % 保持原样', decodeRouteParams({ q: '100%' }).q, '100%')
 
 // ══════════════ 2. 评测响应解析 ══════════════
 eq('coreFor 字→word', coreFor('字'), 'word')

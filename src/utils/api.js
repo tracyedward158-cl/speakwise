@@ -85,6 +85,26 @@ export async function evaluatePronunciation(audioBase64, refText, core = "sent")
   });
 }
 
+// ── 语音合成 / 语音听写（讯飞，网页端与小程序端共用同两条接口）──
+// 超时都比服务端宽一档（服务端 TTS 20s / IAT 30s）：否则用户看到的是本地的
+// 「请求超时」，而服务端那条「文本过长 / 讯飞错误码」才是能自查的信息。
+
+export async function synthesizeSpeech(text, speed = 50, timeout = 30000) {
+  return apiFetch("/api/tts", {
+    method: "POST",
+    body: JSON.stringify({ text, speed }),
+    timeout,
+  });
+}
+
+export async function transcribeAudio(audioBase64, timeout = 45000) {
+  return apiFetch("/api/asr", {
+    method: "POST",
+    body: JSON.stringify({ audio: audioBase64 }),
+    timeout,
+  });
+}
+
 // ── 用户系统 ──
 export const authApi = {
   register: (payload) => apiFetch("/api/auth/register", { method: "POST", body: JSON.stringify(payload) }),

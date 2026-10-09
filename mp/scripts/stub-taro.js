@@ -129,3 +129,7 @@ const Taro = {
 }
 
 export default Taro
+
+// 具名导出：平台层（platform/nav.js）按 `import Taro, { useRouter }` 引入，
+// 自检里也要能被打包进去。默认返回空参数——参数相关的断言传的是纯函数。
+export const useRouter = Taro.useRouter

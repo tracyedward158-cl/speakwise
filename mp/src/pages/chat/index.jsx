@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { View, Text, Input, ScrollView } from '@tarojs/components'
-import { useRouter } from '@tarojs/taro'
 import { useApp } from '../../context/AppContext'
 import { TopBar } from '../../components/TopBar'
 import { HSK_PROMPT } from '../../core/data/constants'
@@ -22,7 +21,7 @@ import { buildFreeModule, buildWritingChat } from '../../core/utils/moduleBuilde
 import { toTranscript, countStudentTurns, nowIso } from '../../core/utils/transcript'
 import { gradeConversation } from '../../core/utils/chatGrading'
 import { useGuard } from '../../hooks/useGuard'
-import { ROUTES, back } from '../../platform/nav'
+import { ROUTES, back, useRouteParams } from '../../platform/nav'
 import { fieldProps } from '../../components/formStyles'
 import { useNavMetrics } from '../../hooks/useNavMetrics'
 
@@ -564,8 +563,9 @@ export default function ChatView() {
 
 // Taro 的 useRouter().params 每次渲染返回新对象，直接当 useMemo 依赖会让
 // module 每秒重建一次。这里只取需要的三个标量。
+// 解码交给 nav 的 useRouteParams（场景 id 是 ASCII，本不会中招，
+// 但入口统一走一个地方，以后再加中文参数就不会漏）。
 function useRouterParams() {
-  const router = useRouter()
-  const p = router?.params || {}
+  const p = useRouteParams()
   return { sceneId: p.sceneId, mode: p.mode, free: p.free }
 }

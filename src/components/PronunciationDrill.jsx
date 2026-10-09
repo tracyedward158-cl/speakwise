@@ -35,7 +35,7 @@ export function PronunciationDrill({ bank, title, subtitle, onBack, isCustom = f
   const [loading, setLoading] = useState(false);
   const [scores, setScores] = useState([]);
   const [done, setDone] = useState(false);
-  const { speaking, speak, stopSpeaking } = useSpeech();
+  const { speaking, speakingSlow, speak, stopSpeaking } = useSpeech();
   const fbRef = useRef(null);
 
   const q = bank[idx];
@@ -193,12 +193,14 @@ export function PronunciationDrill({ bank, title, subtitle, onBack, isCustom = f
                 ))}
               </div>
             )}
+            {/* 播放/慢速两颗按钮各管各的档：慢速在播时是慢速键变成停止，
+                而不是播放键（见 ChatBubble 顶部的说明）。 */}
             <div style={{ display: "flex", gap: 8 }}>
-              <button onClick={() => speaking ? stopSpeaking() : speak(q.text)} style={{ marginTop: 14, background: bg, border: `1px solid ${color}30`, borderRadius: 20, padding: "8px 18px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontSize: 13, color, fontFamily: "inherit" }}>
+              <button onClick={() => (speaking && !speakingSlow ? stopSpeaking() : speak(q.text))} style={{ marginTop: 14, background: bg, border: `1px solid ${color}30`, borderRadius: 20, padding: "8px 18px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontSize: 13, color, fontFamily: "inherit" }}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill={color}><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" /></svg>
-                {speaking ? "停止" : "播放"}
+                {speaking && !speakingSlow ? "停止" : "播放"}
               </button>
-              <button onClick={() => speak(q.text, true)} style={{ marginTop: 14, background: "#fff", border: `1px solid ${color}30`, borderRadius: 20, padding: "8px 14px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontSize: 13, color, fontFamily: "inherit" }}>慢速</button>
+              <button onClick={() => (speakingSlow ? stopSpeaking() : speak(q.text, true))} style={{ marginTop: 14, background: speakingSlow ? bg : "#fff", border: `1px solid ${color}30`, borderRadius: 20, padding: "8px 14px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontSize: 13, color, fontFamily: "inherit" }}>{speakingSlow ? "停止" : "慢速"}</button>
             </div>
           </div>
 

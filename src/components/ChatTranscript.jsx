@@ -12,7 +12,7 @@ import { formatTime } from "../utils/transcript.js";
 const VIEW_MODE = "HPE";
 
 export function ChatTranscript({ messages, loading, error, onRetry, moduleName }) {
-  const { speaking, speak, stopSpeaking } = useSpeech();
+  const { speaking, speakingSlow, speak, stopSpeaking } = useSpeech();
   const meta = moduleMeta(moduleName);
 
   if (loading) {
@@ -61,6 +61,7 @@ export function ChatTranscript({ messages, loading, error, onRetry, moduleName }
           icon={meta.icon}
           showVoice={m.sender === "ai"}
           speaking={speaking}
+          speakingSlow={speakingSlow}
           onSpeak={speak}
           onStopSpeak={stopSpeaking}
           time={formatTime(m.at)}

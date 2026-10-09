@@ -42,7 +42,7 @@ export function ChatView() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const endRef = useRef(null);
-  const { listening, transcribing, speaking, startListening, stopListening, cancelListening, speak, stopSpeaking } = useSpeech();
+  const { listening, transcribing, speaking, speakingSlow, startListening, stopListening, cancelListening, speak, stopSpeaking } = useSpeech();
 
   // ── 话题推荐引擎（仅自由对话模式）──
   const isFreeChat = !params.sceneId && !params.mode;
@@ -270,6 +270,7 @@ export function ChatView() {
               icon={module.icon}
               showVoice={showVoice}
               speaking={speaking}
+              speakingSlow={speakingSlow}
               onSpeak={speak}
               onStopSpeak={stopSpeaking}
             />

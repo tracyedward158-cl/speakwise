@@ -23,6 +23,9 @@ const ASR_AUTO_STOP_MS = 20000
 export function useSpeech() {
   const [listening, setListening] = useState(false)
   const [speaking, setSpeaking] = useState(false)
+  // 当前在播的是不是「慢速」那一档：界面上播放/慢速是两颗按钮，
+  // 各自只该在自己那一档在播时变成停止（见 ChatBubble）。
+  const [speakingSlow, setSpeakingSlow] = useState(false)
   const cbRef = useRef(null)
   const autoStopRef = useRef(null)
   // 自动收尾要调「最新的」stopListening。用 ref 转一层，避免把 stopListening
@@ -34,8 +37,13 @@ export function useSpeech() {
   // 之所以不是本地 state：同一时刻只能播一条音频，而这个「谁在播」的事实
   // 属于播放器，不属于任何单个组件实例 —— 与 Web 版把 speechSynthesis 当全局单例同理。
   useEffect(() => {
-    setSpeaking(getSnapshot().playing)
-    return subscribe((s) => setSpeaking(s.playing))
+    const s0 = getSnapshot()
+    setSpeaking(s0.playing)
+    setSpeakingSlow(s0.slow)
+    return subscribe((s) => {
+      setSpeaking(s.playing)
+      setSpeakingSlow(s.slow)
+    })
   }, [])
 
   const clearAutoStop = () => {
@@ -130,5 +138,5 @@ export function useSpeech() {
     []
   )
 
-  return { listening, speaking, startListening, stopListening, cancelListening, speak, stopSpeaking }
+  return { listening, speaking, speakingSlow, startListening, stopListening, cancelListening, speak, stopSpeaking }
 }

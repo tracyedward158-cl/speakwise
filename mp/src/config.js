@@ -37,11 +37,16 @@ export const RECORD_OPTIONS = {
 }
 
 // ── TTS ──
-// 讯飞 speed 取值 [0,100]，50 为常速。
-// Web 版用的是 rate 0.45(慢) / 0.85(常速) —— 注意「常速」本来就只有 85%。
-// 下面两个值是起点，需要对着 Web 版**用耳朵校准**：speed→语速倍率没有官方对应表。
+// 讯飞 speed 取值 [0,100]，50 为常速，**0 是最慢的一档**。
+// 2026-10 实测全程：99 → ×0.68，50 → ×1.00，0 → ×1.34（同一句话 3.96s / 5.80s / 7.74s）。
+//
+// ⚠️ 慢速走服务端合成（传 TTS_SPEED_SLOW），**不要在客户端变速** ——
+//    InnerAudioContext.playbackRate 在小程序上是否保音高因平台而异，
+//    而网页端有 preservesPitch 保证，两端会各是各的效果。合成端做，两端逐字节一致。
+// （踩过的坑：服务端曾写 `Number(speed) || 50`，把 0 当成「没传」换回 50，
+//   表现为「慢速调了没反应」；现在只有非数字才回落常速。）
 export const TTS_SPEED_NORMAL = 50
-export const TTS_SPEED_SLOW = 23 // ≈ 50 × 0.45
+export const TTS_SPEED_SLOW = 0
 
 export const TTS_VOICE = process.env.TARO_APP_TTS_VCN || 'xiaoyan'
 

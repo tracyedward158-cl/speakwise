@@ -44,7 +44,7 @@ export function PronunciationDrill({
   const [scores, setScores] = useState([])
   const [done, setDone] = useState(false)
   const [recording, setRecording] = useState(false)
-  const { speaking, speak, stopSpeaking } = useSpeech()
+  const { speaking, speakingSlow, speak, stopSpeaking } = useSpeech()
   const fbRef = useRef(null)
 
   const q = bank[idx]
@@ -387,9 +387,10 @@ export function PronunciationDrill({
               </View>
             ) : null}
 
+            {/* 播放/慢速两颗按钮各管各的档：慢速在播时是慢速键变成停止（与 Web 版一致） */}
             <View style={{ display: 'flex', gap: 8 }}>
               <View
-                onClick={() => (speaking ? stopSpeaking() : speak(q.text))}
+                onClick={() => (speaking && !speakingSlow ? stopSpeaking() : speak(q.text))}
                 style={{
                   marginTop: 14,
                   background: bg,
@@ -401,19 +402,19 @@ export function PronunciationDrill({
                   gap: 6
                 }}
               >
-                <Text style={{ fontSize: 12, color }}>{speaking ? '⏹ 停止' : '🔊 播放'}</Text>
+                <Text style={{ fontSize: 12, color }}>{speaking && !speakingSlow ? '⏹ 停止' : '🔊 播放'}</Text>
               </View>
               <View
-                onClick={() => speak(q.text, true)}
+                onClick={() => (speakingSlow ? stopSpeaking() : speak(q.text, true))}
                 style={{
                   marginTop: 14,
-                  background: '#fff',
+                  background: speakingSlow ? bg : '#fff',
                   border: `1px solid ${color}30`,
                   borderRadius: 20,
                   padding: '8px 14px'
                 }}
               >
-                <Text style={{ fontSize: 12, color }}>慢速</Text>
+                <Text style={{ fontSize: 12, color }}>{speakingSlow ? '⏹ 停止' : '慢速'}</Text>
               </View>
             </View>
           </View>

@@ -19,6 +19,7 @@ export function ChatBubble({
   icon,
   showVoice = false,
   speaking = false,
+  speakingSlow = false,
   onSpeak,
   onStopSpeak,
   time
@@ -96,21 +97,26 @@ export function ChatBubble({
         >
           {time ? <Text style={{ fontSize: 11, color: '#c4c2ba' }}>{time}</Text> : null}
 
+          {/* 两颗按钮各管各的档：播放键只在「常速在播」时变停止，慢速键只在
+              「慢速在播」时变停止（与 Web 版一致）。 */}
           {!isUser && showVoice && (
             <>
               <View
-                onClick={() => (speaking ? onStopSpeak?.() : onSpeak?.(parsed.ttsText))}
+                onClick={() => (speaking && !speakingSlow ? onStopSpeak?.() : onSpeak?.(parsed.ttsText))}
                 style={{ display: 'flex', alignItems: 'center', gap: 4, opacity: 0.6 }}
               >
                 {/* Web 版这里是内联 svg 喇叭图标，小程序渲染不了 —— 用字形代替 */}
-                <Text style={{ fontSize: 12, color: speaking ? color || '#E8A838' : '#888' }}>
-                  {speaking ? '⏹' : '🔊'}
+                <Text style={{ fontSize: 12, color: speaking && !speakingSlow ? color || '#E8A838' : '#888' }}>
+                  {speaking && !speakingSlow ? '⏹' : '🔊'}
                 </Text>
-                <Text style={{ fontSize: 12, color: '#666' }}>{speaking ? 'Stop' : 'Play'}</Text>
+                <Text style={{ fontSize: 12, color: '#666' }}>{speaking && !speakingSlow ? 'Stop' : 'Play'}</Text>
               </View>
-              <View onClick={() => onSpeak?.(parsed.ttsText, true)} style={{ padding: '2px 8px' }}>
-                <Text style={{ fontSize: 11, color: '#666', fontWeight: 600, opacity: 0.6 }}>
-                  慢速
+              <View
+                onClick={() => (speakingSlow ? onStopSpeak?.() : onSpeak?.(parsed.ttsText, true))}
+                style={{ padding: '2px 8px' }}
+              >
+                <Text style={{ fontSize: 11, color: speakingSlow ? color || '#E8A838' : '#666', fontWeight: 600, opacity: 0.6 }}>
+                  {speakingSlow ? '停止' : '慢速'}
                 </Text>
               </View>
             </>

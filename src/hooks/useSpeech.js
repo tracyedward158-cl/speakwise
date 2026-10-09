@@ -27,6 +27,9 @@ export function useSpeech() {
   const [listening, setListening] = useState(false);
   const [transcribing, setTranscribing] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  // 当前在播的是不是「慢速」那一档。界面上播放/慢速是两颗按钮，
+  // 各自只该在自己那一档在播时显示停止（见 ChatBubble）。
+  const [speakingSlow, setSpeakingSlow] = useState(false);
 
   const cbRef = useRef(null);
   const recorderRef = useRef(null);
@@ -39,8 +42,13 @@ export function useSpeech() {
 
   // speaking 的事实来自 utils/tts.js 的模块级单例（同一时刻只有一条音频在响）。
   useEffect(() => {
-    setSpeaking(getSnapshot().speaking);
-    return subscribe((s) => setSpeaking(s.speaking));
+    const s0 = getSnapshot();
+    setSpeaking(s0.speaking);
+    setSpeakingSlow(s0.slow);
+    return subscribe((s) => {
+      setSpeaking(s.speaking);
+      setSpeakingSlow(s.slow);
+    });
   }, []);
 
   const clearTimers = useCallback(() => {
@@ -193,5 +201,5 @@ export function useSpeech() {
     [cancelListening]
   );
 
-  return { listening, transcribing, speaking, startListening, stopListening, cancelListening, speak, stopSpeaking };
+  return { listening, transcribing, speaking, speakingSlow, startListening, stopListening, cancelListening, speak, stopSpeaking };
 }

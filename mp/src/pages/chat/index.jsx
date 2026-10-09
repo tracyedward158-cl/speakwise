@@ -64,7 +64,7 @@ export default function ChatView() {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const { listening, speaking, startListening, stopListening, cancelListening, speak, stopSpeaking } =
+  const { listening, speaking, speakingSlow, startListening, stopListening, cancelListening, speak, stopSpeaking } =
     useSpeech()
 
   // ── 话题推荐引擎（仅自由对话模式）──
@@ -348,6 +348,7 @@ export default function ChatView() {
               icon={module.icon}
               showVoice={showVoice}
               speaking={speaking}
+              speakingSlow={speakingSlow}
               onSpeak={speak}
               onStopSpeak={stopSpeaking}
             />

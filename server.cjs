@@ -177,6 +177,21 @@ const TTS_VOICE = process.env.IFLYTEK_TTS_VCN || 'xiaoyan';
 // host/path 必须作为参数传进来，不能像原来那样闭包捕获 ——
 // 三个服务的地址不同，而签名原文里就带着它们。
 function generateAuth(host, path, apiKey, apiSecret) {
+// IAT（语音听写）与 TTS（在线语音合成）各自的服务地址。
+//
+// ⚠️ 这两个服务要在讯飞控制台**单独开通**，服务 ID 与 ISE 的 s8e098720 不通用。
+// 私有域部署的话，把控制台上看到的那对 host/path 填进环境变量即可 ——
+// 签名覆盖 host+path，两者必须成对替换，只改一个会 401。
+// 默认值指向公有域，账号没开私有域时直接可用。
+const IAT_HOST = process.env.IFLYTEK_IAT_HOST || 'iat-api.xfyun.cn';
+const IAT_PATH = process.env.IFLYTEK_IAT_PATH || '/v2/iat';
+const TTS_HOST = process.env.IFLYTEK_TTS_HOST || 'tts-api.xfyun.cn';
+const TTS_PATH = process.env.IFLYTEK_TTS_PATH || '/v2/tts';
+const TTS_VOICE = process.env.IFLYTEK_TTS_VCN || 'xiaoyan';
+
+// host/path 必须作为参数传进来，不能像原来那样闭包捕获 ——
+// 三个服务的地址不同，而签名原文里就带着它们。
+function generateAuth(host, path, apiKey, apiSecret) {
   const date = new Date().toUTCString();
   const requestLine = `GET ${path} HTTP/1.1`;
   const signatureOrigin = `host: ${host}\ndate: ${date}\n${requestLine}`;
@@ -194,6 +209,13 @@ function iflytekUrl(host, path, apiKey, apiSecret) {
   return `wss://${host}${path}${qs}`;
 }
 
+/** 组装带鉴权参数的 wss:// 地址 */
+function iflytekUrl(host, path, apiKey, apiSecret) {
+  const { date, authorization } = generateAuth(host, path, apiKey, apiSecret);
+  const qs = `?host=${encodeURIComponent(host)}&date=${encodeURIComponent(date)}&authorization=${encodeURIComponent(authorization)}`;
+  return `wss://${host}${path}${qs}`;
+}
+
 function evaluateViaWebSocket(requestData) {
   return new Promise((resolve, reject) => {
     const apiKey = process.env.IFLYTEK_API_KEY || '';
@@ -202,6 +224,7 @@ function evaluateViaWebSocket(requestData) {
       return reject(new Error('Missing IFLYTEK_API_KEY or IFLYTEK_API_SECRET'));
     }
 
+    const url = iflytekUrl(IFLYTEK_HOST, IFLYTEK_PATH, apiKey, apiSecret);
     const url = iflytekUrl(IFLYTEK_HOST, IFLYTEK_PATH, apiKey, apiSecret);
 
     const ws = new WebSocket(url);
@@ -415,8 +438,9 @@ function recognizeViaWebSocket(audioBuf, timeoutMs = 30000) {
 // iFlytek TTS — 在线语音合成
 //
 // 也是 WebSocket。一次会话只合成一段文本，data.status 固定为 2。
-// speed ∈ [0,100]，50 为常速 —— 慢速跟读靠它实现（改的是语速不是采样率，
-// 音高不变，才是一段合格的示范音）。
+// speed ∈ [0,100]，50 为常速，**0 是最慢的一档**（2026-10 实测全程：
+// 99→×0.68、50→×1.00、0→×1.34；语速改在合成本身，音高不变，才是合格的示范音）。
+// 客户端不做任何变速 —— 两端（浏览器 / 小程序）拿到的都是成品音频，行为一致。
 // ──────────────────────────────────────────────────────────────────────────
 
 function synthesizeViaWebSocket(text, speed, timeoutMs = 20000) {
@@ -611,7 +635,7 @@ app.post('/api/evaluate', async (req, res) => {
 //   · InnerAudioContext + 客户端变速：音高会变，做跟读示范不合格
 // 服务端讯飞合成能把语速写进合成本身，音高不变。
 //
-// 入参 { text, speed }，speed ∈ [0,100]（50 常速）。
+// 入参 { text, speed }，speed ∈ [0,100]（50 常速，**0 = 慢速档**，两端点「慢速」就传它）。
 // 返回 { audio: <base64 mp3>, format: 'mp3' }。
 // ──────────────────────────────────────────────────────────────────────────
 const TTS_MAX_CHARS = 1200; // 讯飞上限约 2000 汉字；留出安全余量
@@ -629,7 +653,10 @@ app.post('/api/tts', async (req, res) => {
       return res.status(400).json({ error: `文本过长（${clean.length} 字，上限 ${TTS_MAX_CHARS}）` });
     }
 
-    const audio = await synthesizeViaWebSocket(clean, Number(speed) || 50);
+    // ⚠️ 不能写 `Number(speed) || 50` —— 0 是**合法且最慢**的一档（实测比常速长 33%），
+    //    用 || 会把它悄悄换成 50，表现为「慢速调了没反应」。只有传了非数字才回落。
+    const n = Number(speed);
+    const audio = await synthesizeViaWebSocket(clean, Number.isFinite(n) ? n : 50);
     return res.json({ audio: audio.toString('base64'), format: 'mp3' });
   } catch (e) {
     console.error('/api/tts error:', e);

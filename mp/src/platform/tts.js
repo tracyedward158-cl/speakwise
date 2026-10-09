@@ -65,7 +65,14 @@ export function subscribe(fn) {
 }
 
 export function getSnapshot() {
-  return { playing: current != null, text: current?.text ?? null, id: current?.id ?? null }
+  // slow 要暴露出去：界面上播放/慢速是两颗按钮，各自只该在自己那一档在播时
+  // 变成停止（否则点了慢速，却是播放键在管停止）。
+  return {
+    playing: current != null,
+    text: current?.text ?? null,
+    id: current?.id ?? null,
+    slow: !!current?.slow
+  }
 }
 
 function context() {
@@ -105,6 +112,8 @@ function bind() {
 // 文件名用哈希，纯十六进制 —— 中文文件名在某些机型上会让 InnerAudioContext.src
 // 静默失败（路径编码问题）。
 
+// 键里**带语速**：常速与慢速是两份不同的合成音频，不区分的话慢速会命中
+// 常速的缓存，听起来「点了没反应」。
 function cacheKey(text, slow) {
   return hash32(`${text}|${TTS_VOICE}|${slow ? TTS_SPEED_SLOW : TTS_SPEED_NORMAL}`)
 }
@@ -216,7 +225,7 @@ function splitText(text) {
   return parts
 }
 
-/** 取（必要时合成）音频文件路径。带缓存。 */
+/** 取（必要时合成）音频文件路径。带缓存。常速/慢速各是一份合成。 */
 async function ensureAudioFile(text, slow) {
   await mkdirIfNeeded(cacheDir())
   const key = cacheKey(text, slow)
@@ -288,15 +297,14 @@ export async function speak(rawText, slow = false) {
   if (id !== seq) return null
 
   return new Promise((resolve, reject) => {
-    current = { id, text, resolve, reject }
+    current = { id, text, slow, resolve, reject }
     notify()
 
     c.src = filePath
-    // playbackRate 范围 0.5–2.0（基础库 2.11.0+）。
-    // 慢速主要靠服务端 speed 参数实现（音高不变，才是合格的教学示范），
-    // 这里只在服务端速度之上做一点微调，不作为主要手段。
+    // 这里**不做任何变速**：慢速是服务端合成好的另一份音频（见 config.js）。
+    // 播放器是复用的，早期版本设过 playbackRate，留一行清干净。
     try {
-      c.playbackRate = slow ? 0.95 : 1
+      c.playbackRate = 1
     } catch (e) {
       /* 低版本基础库不支持，忽略 */
     }

@@ -35,5 +35,4 @@ userrequest/
 
 scf-package/
 
-#数据库备份（含学生数据，不入库）
 backups/

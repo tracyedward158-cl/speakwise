@@ -17,6 +17,7 @@ export function ChatBubble({
   icon,
   showVoice = false,
   speaking = false,
+  speakingSlow = false,
   onSpeak,
   onStopSpeak,
   time,
@@ -53,13 +54,16 @@ export function ChatBubble({
         </div>
         <div style={{ display: "flex", gap: 10, alignItems: "center", alignSelf: isUser ? "flex-end" : "flex-start", marginLeft: isUser ? 0 : 4 }}>
           {time && <span style={{ fontSize: 11, color: "#c4c2ba" }}>{time}</span>}
+          {/* 两颗按钮各管各的档：播放键只在「常速在播」时变停止，慢速键只在
+              「慢速在播」时变停止。以前 speaking 是一个布尔量，点了慢速之后是播放键
+              在管停止（慢速键点下去只会重播），两颗按钮的语义对不上。 */}
           {!isUser && showVoice && (
             <>
-              <button onClick={() => (speaking ? onStopSpeak?.() : onSpeak?.(parsed.ttsText))} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", gap: 4, opacity: 0.6 }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill={speaking ? (color || "#E8A838") : "#888"}><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" /></svg>
-                <span style={{ fontSize: 12, color: "#666" }}>{speaking ? "Stop" : "Play"}</span>
+              <button onClick={() => (speaking && !speakingSlow ? onStopSpeak?.() : onSpeak?.(parsed.ttsText))} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", gap: 4, opacity: 0.6 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill={speaking && !speakingSlow ? (color || "#E8A838") : "#888"}><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" /></svg>
+                <span style={{ fontSize: 12, color: "#666" }}>{speaking && !speakingSlow ? "Stop" : "Play"}</span>
               </button>
-              <button onClick={() => onSpeak?.(parsed.ttsText, true)} style={{ background: "none", border: "none", cursor: "pointer", padding: "2px 8px", borderRadius: 10, fontSize: 11, color: "#666", fontWeight: 600, opacity: 0.6 }}>慢速</button>
+              <button onClick={() => (speakingSlow ? onStopSpeak?.() : onSpeak?.(parsed.ttsText, true))} style={{ background: "none", border: "none", cursor: "pointer", padding: "2px 8px", borderRadius: 10, fontSize: 11, color: speakingSlow ? (color || "#E8A838") : "#666", fontWeight: 600, opacity: 0.6 }}>{speakingSlow ? "停止" : "慢速"}</button>
             </>
           )}
         </div>
